@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Common.props))\Common.props" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{12952B24-C70B-4A26-839A-EE4183BE8CC0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SampleTestsBuilder</RootNamespace>
+    <AssemblyName>SampleTestsBuilder</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <!--
+    Builds the TAEF sample test DLLs of ..\..\SampleTests\SampleTests.sln for Debug/Release x Win32/x64 into
+    $(OutRoot)binaries\SampleTests\{Debug,Release,Debug-x64,Release-x64}\ before this (dummy) project is built.
+    The test projects of TaefTestAdapter.sln depend on this project. Requires the TAEF development files of the
+    Windows Kits (installed with the WDK, see SampleTests\Taef.props). Set SkipSampleTestsBuild=true to skip building the samples.
+  -->
+  <PropertyGroup>
+    <SampleTestsSolution>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\SampleTests\SampleTests.sln'))</SampleTestsSolution>
+    <SampleTestsBuildArguments>/t:Build /m /nr:false /v:minimal /nologo "/p:OutRoot=$([MSBuild]::EnsureTrailingSlash('$(OutRoot)'))\"</SampleTestsBuildArguments>
+  </PropertyGroup>
+
+  <Target Name="BuildSampleTests" BeforeTargets="BeforeBuild" Condition="'$(SkipSampleTestsBuild)' != 'true'">
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Debug;Platform=Win32" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Release;Platform=Win32" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Debug;Platform=x64" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Release;Platform=x64" />
+  </Target>
+
+  <Target Name="CleanSampleTests" AfterTargets="Clean" Condition="'$(SkipSampleTestsBuild)' != 'true'">
+    <RemoveDir Directories="$(OutRoot)binaries\SampleTests\Debug;$(OutRoot)binaries\SampleTests\Release;$(OutRoot)binaries\SampleTests\Debug-x64;$(OutRoot)binaries\SampleTests\Release-x64;$(OutRoot)binaries\SampleTests\Debug-AnyCPU;$(OutRoot)binaries\SampleTests\Release-AnyCPU;$(OutRoot)intermediate\SampleTests" ContinueOnError="true" />
+  </Target>
+</Project>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Settings for the "Microsoft Child Process Debugging Power Tool" extension, used when debugging the
+  Test Adapter for TAEF itself (e.g. VsPackage/Packaging started with F5 in the experimental instance).
+  - testhost*.exe: vstest host processes running the adapter (TaefTestAdapter.TestAdapter.dll);
+    attached with the managed/native interop engine.
+  - TE.exe / TE.ProcessHost.exe: TAEF processes started by the adapter; the test DLL's code runs in
+    TE.ProcessHost.exe (default) or in TE.exe itself (/inproc); attached with the native engine.
+-->
+<ChildProcessDebuggingSettings IsEnabled="true" xmlns="http://schemas.microsoft.com/vstudio/ChildProcessDebuggingSettings/2014">
+  <DefaultRule Attach="false" />
+  <Rule IsEnabled="true" ProcessName="testhost.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.x86.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net472.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net472.x86.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net48.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net48.x86.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net481.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="testhost.net481.x86.exe" EngineFilter="{92ef0900-2251-11d2-b72e-0000f87572ef}" />
+  <Rule IsEnabled="true" ProcessName="TE.exe" EngineFilter="{3b476d35-a401-11d2-aad4-00c04f990171}" />
+  <Rule IsEnabled="true" ProcessName="TE.ProcessHost.exe" EngineFilter="{3b476d35-a401-11d2-aad4-00c04f990171}" />
+</ChildProcessDebuggingSettings>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fallback settings of the generated end-to-end tests (CSV key 'true'): solution settings plus project settings for Tests_taef.dll -->
+<RunSettings>
+  <TaefTestAdapterSettings>
+    <SolutionSettings>
+      <Settings>
+        <MaxNrOfThreads>3</MaxNrOfThreads>
+        <WorkingDir>$(TestDllDir)\..</WorkingDir>
+      </Settings>
+    </SolutionSettings>
+    <ProjectSettings>
+      <Settings ProjectRegex=".*\\Tests_taef\.dll">
+        <RunIgnoredTests>true</RunIgnoredTests>
+        <AdditionalTestExecutionParam>/p:"TestDirectory=$(TestDir)"</AdditionalTestExecutionParam>
+      </Settings>
+    </ProjectSettings>
+  </TaefTestAdapterSettings>
+</RunSettings>

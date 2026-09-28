@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Common.props))\Common.props" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">17.0</VisualStudioVersion>
+    <!-- NuGet (PackageReference, as VsPackage): the VS SDK packages are needed to compile against VsPackage. Packages are
+         restored into the repository's package folder, the restore output does not depend on the configuration. -->
+    <RestorePackagesPath>$(NuGetPackages)</RestorePackagesPath>
+    <MSBuildProjectExtensionsPath>$(OutRoot)intermediate\$(SolutionName)\NuGet\$(MSBuildProjectName)\</MSBuildProjectExtensionsPath>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{87F26371-0005-4301-9C49-A6DF4F06B81C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaefTestAdapter.VsPackage</RootNamespace>
+    <AssemblyName>TaefTestAdapter.VsPackage.Tests.Unit</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
+    <SignAssembly>false</SignAssembly>
+    <!-- the VS SDK packages bring newer versions of assemblies also used by Tests.Common (e.g. System.Threading.Tasks.Extensions) -->
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <!-- MSTest v1 is taken from the Visual Studio installation building the project (see Tests.Common.csproj) -->
+    <MSTestV1AssemblyPath Condition="'$(MSTestV1AssemblyPath)' == '' and '$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</MSTestV1AssemblyPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(MSTestV1AssemblyPath)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- a Visual Studio 2022 (17.x) SDK; its assemblies are copied to the output folder so that the tests can run outside of
+         Visual Studio. It may be newer than the SDK VsPackage is compiled against (17.0, the oldest supported Visual Studio):
+         the generated binding redirects (AutoGenerateBindingRedirects) redirect VsPackage's references to these versions,
+         as Visual Studio does. -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" />
+    <PackageReference Include="Microsoft.VisualStudio.TestWindow.Interfaces" Version="11.0.61030" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" />
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- all C# files of the project folder are compiled: add or delete test files without editing this project file -->
+    <Compile Include="**\*.cs" Exclude="bin\**;obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{bc05d210-68cd-47d0-ae8c-0f3168d1be73}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{7f4372da-70e2-48d0-bee2-8043528428d0}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestAdapter\TestAdapter.csproj">
+      <Project>{44c04e51-d543-4155-a57e-bbeb73d3f8e5}</Project>
+      <Name>TestAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj">
+      <Project>{2f0e4458-6c1c-461f-a60a-b731ad97e839}</Project>
+      <Name>Tests.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VsPackage\VsPackage.csproj">
+      <Project>{e6276cad-e4c3-4b25-876a-65b265ebff1a}</Project>
+      <Name>VsPackage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,10 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+StartGroup: TaefSamples::MissingDataSource::Test#error
+TestBlocked: TAEF: [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.
+EndGroup: TaefSamples::MissingDataSource::Test#error [Blocked]
+
+Summary of Non-passing Tests:
+    TaefSamples::MissingDataSource::Test#error [Blocked]
+
+Summary: Total=1, Passed=0, Failed=0, Blocked=1, Not Run=0, Skipped=0

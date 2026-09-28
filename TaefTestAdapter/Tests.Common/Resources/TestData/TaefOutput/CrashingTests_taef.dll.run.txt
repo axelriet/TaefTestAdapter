@@ -1,0 +1,57 @@
+Test Authoring and Execution Framework v10.104k for x64
+[Crashing] class setup
+
+StartGroup: TaefSamples::Crashing::AddFailsBeforeCrash
+Error: Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20) [File: C:\src\TAEF-Test-Adapter\SampleTests\CrashingTests\CrashingTests.cpp, Function: TaefSamples::Crashing::AddFailsBeforeCrash, Line: 50]
+EndGroup: TaefSamples::Crashing::AddFailsBeforeCrash [Failed]
+
+StartGroup: TaefSamples::Crashing::AddPassesBeforeCrash
+Verify: AreEqual(20, Add(10, 10))
+EndGroup: TaefSamples::Crashing::AddPassesBeforeCrash [Passed]
+
+StartGroup: TaefSamples::Crashing::TheCrash
+About to dereference a null pointer
+Error: TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheCrash'. (The test host process was unexpectedly terminated with exit code 0xC0000005 while invoking a test operation. (An RPC call failed.))
+EndGroup: TaefSamples::Crashing::TheCrash [Failed]
+TestSkipped: TAEF: The cleanup method 'TaefSamples::Crashing::ClassCleanup' will not be run as TAEF has stopped communicating with the test host process due to a previous failure.
+[Crashing] class setup
+
+StartGroup: TaefSamples::Crashing::AddFailsAfterCrash
+Error: Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20) [File: C:\src\TAEF-Test-Adapter\SampleTests\CrashingTests\CrashingTests.cpp, Function: TaefSamples::Crashing::AddFailsAfterCrash, Line: 69]
+EndGroup: TaefSamples::Crashing::AddFailsAfterCrash [Failed]
+
+StartGroup: TaefSamples::Crashing::AddPassesAfterCrash
+Verify: AreEqual(20, Add(10, 10))
+EndGroup: TaefSamples::Crashing::AddPassesAfterCrash [Passed]
+
+StartGroup: TaefSamples::Crashing::LongRunning
+Verify: AreEqual(1, 1)
+EndGroup: TaefSamples::Crashing::LongRunning [Passed]
+
+StartGroup: TaefSamples::Crashing::TheAbort
+About to call abort()
+Error: TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheAbort'. (The test host process was unexpectedly terminated with exit code 0x00000003 while invoking a test operation. (An RPC call failed.))
+EndGroup: TaefSamples::Crashing::TheAbort [Failed]
+TestSkipped: TAEF: The cleanup method 'TaefSamples::Crashing::ClassCleanup' will not be run as TAEF has stopped communicating with the test host process due to a previous failure.
+[Crashing] class setup
+
+StartGroup: TaefSamples::Crashing::TheStackOverflow
+About to overflow the stack
+Error: TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheStackOverflow'. (The test host process was unexpectedly terminated with exit code 0xC00000FD while invoking a test operation. (An RPC call failed.))
+EndGroup: TaefSamples::Crashing::TheStackOverflow [Failed]
+TestSkipped: TAEF: The cleanup method 'TaefSamples::Crashing::ClassCleanup' will not be run as TAEF has stopped communicating with the test host process due to a previous failure.
+[Crashing] class setup
+
+StartGroup: TaefSamples::Crashing::AddPassesAfterAllCrashes
+Verify: AreEqual(20, Add(10, 10)): AddPassesAfterAllCrashes
+EndGroup: TaefSamples::Crashing::AddPassesAfterAllCrashes [Passed]
+[Crashing] class cleanup
+
+Summary of Non-passing Tests:
+    TaefSamples::Crashing::AddFailsBeforeCrash [Failed]
+    TaefSamples::Crashing::TheCrash [Failed]
+    TaefSamples::Crashing::AddFailsAfterCrash [Failed]
+    TaefSamples::Crashing::TheAbort [Failed]
+    TaefSamples::Crashing::TheStackOverflow [Failed]
+
+Summary: Total=9, Passed=4, Failed=5, Blocked=0, Not Run=0, Skipped=0

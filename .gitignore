@@ -18,6 +18,9 @@ out/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
+# ...but not the adapter's source folders named TestResults
+!TaefTestAdapter/Core/TestResults/
+!TaefTestAdapter/Core.Tests/TestResults/
 [Bb]uild[Ll]og.*
 
 *_i.c
@@ -152,14 +155,13 @@ $RECYCLE.BIN/
 .DS_Store
 /packages
 
-# ============================
-# Google Test Adapter specific
-# ============================
+# ==============================
+# Test Adapter for TAEF specific
+# ==============================
 
-*.gta_testdurations
-OpenCover/
+*.taef.testdurations
 *.VC.db
-/GoogleTestAdapter/.vs/GoogleTestAdapter.sqlite
+/TaefTestAdapter/.vs/
 *.VC.opendb
 *.VC.db-shm
 *.VC.db-wal

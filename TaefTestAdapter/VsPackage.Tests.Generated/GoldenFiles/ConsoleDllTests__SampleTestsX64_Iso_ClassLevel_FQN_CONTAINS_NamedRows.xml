@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun>
+  <Results>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#01234567890_" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#FunctorName" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#back\slash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with space" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with#hash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with::colons [x]" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with'quote" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#01234567890_" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#01234567890_" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#abcdefghijklmnopqrstuvwxyz" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#FunctorName" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#FunctorName" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#back\slash" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#back\slash" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#Ünïcødé 名前" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with space" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with space" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with#hash" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with#hash" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with::colons [x]" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with::colons [x]" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with'quote" storage="$(Directory)\sampletests\release-x64\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with'quote" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\Tests_taef.dll" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary outcome="Failed">
+    <Counters total="10" executed="10" passed="7" failed="3" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output />
+  </ResultSummary>
+</TestRun>

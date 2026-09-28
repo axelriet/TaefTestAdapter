@@ -1,0 +1,23 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+StartGroup: TaefSamples::LongRunningTests::Test1
+Error: TAEF: The user-specified test timeout has expired. TAEF will now abort the test. The /miniDumpOnTimeout switch can be used to have TAEF gather a minidump of the test host process and the /liveKernelDumpOnTimeout switch can be used to have TAEF gather an LKD.
+Warning: TAEF: Forcibly terminating a test host process (PID: 37592).
+Error: TAEF: [HRESULT 0x800705B4] A test timeout expired while running a test operation: 'TaefSamples::LongRunningTests::Test1'. (The test host process was terminated by TAEF while invoking a test operation.)
+EndGroup: TaefSamples::LongRunningTests::Test1 [Failed]
+
+StartGroup: TaefSamples::LongRunningTests::Test2
+Error: TAEF: The user-specified test timeout has expired. TAEF will now abort the test. The /miniDumpOnTimeout switch can be used to have TAEF gather a minidump of the test host process and the /liveKernelDumpOnTimeout switch can be used to have TAEF gather an LKD.
+Warning: TAEF: Forcibly terminating a test host process (PID: 26188).
+Error: TAEF: [HRESULT 0x800705B4] A test timeout expired while running a test operation: 'TaefSamples::LongRunningTests::Test2'. (The test host process was terminated by TAEF while invoking a test operation.)
+EndGroup: TaefSamples::LongRunningTests::Test2 [Failed]
+
+Summary of TAEF Warnings:
+    Warning: TAEF: Forcibly terminating a test host process (PID: 37592).
+    Warning: TAEF: Forcibly terminating a test host process (PID: 26188).
+
+Summary of Non-passing Tests:
+    TaefSamples::LongRunningTests::Test1 [Failed]
+    TaefSamples::LongRunningTests::Test2 [Failed]
+
+Summary: Total=2, Passed=0, Failed=2, Blocked=0, Not Run=0, Skipped=0

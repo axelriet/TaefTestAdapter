@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  All settings of the Test Adapter for TAEF with their default values (see TestAdapter\TaefTestAdapterSettings.xsd).
+  Not listed: the internal settings DebuggingNamedPipeId, SolutionDir, PlatformName and ConfigurationName, and
+  SkipOriginCheck (default: false). With the Visual Studio extension installed, SkipOriginCheck can only be set in the
+  Visual Studio options (its value in settings files is ignored); with the NuGet package only or vstest.console.exe, it is
+  read from the settings file like all other settings.
+  If the TaefTestAdapterSettings node contains an unknown element or an invalid value (or a Settings element of
+  ProjectSettings has no ProjectRegex attribute), the whole node is ignored and an error is logged.
+-->
+<RunSettings>
+	<TaefTestAdapterSettings>
+		<SolutionSettings>
+			<Settings>
+				<!-- General -->
+				<PrintTestOutput>false</PrintTestOutput>
+				<OutputMode>Info</OutputMode>
+				<TimestampMode>Automatic</TimestampMode>
+				<SeverityMode>Automatic</SeverityMode>
+				<SummaryMode>WarningOrError</SummaryMode>
+				<PrefixOutputWithTaef>false</PrefixOutputWithTaef>
+
+				<!-- Test discovery -->
+				<TestDiscoveryRegex></TestDiscoveryRegex>
+				<TestDiscoveryTimeoutInSeconds>30</TestDiscoveryTimeoutInSeconds>
+				<ParseSymbolInformation>true</ParseSymbolInformation>
+				<TraitsRegexesBefore></TraitsRegexesBefore>
+				<TraitsRegexesAfter></TraitsRegexesAfter>
+
+				<!-- Test execution -->
+				<AdditionalPdbs></AdditionalPdbs>
+				<WorkingDir>$(TestDllDir)</WorkingDir>
+				<PathExtension></PathExtension>
+				<EnvironmentVariables></EnvironmentVariables>
+				<AdditionalTestExecutionParam></AdditionalTestExecutionParam>
+				<BatchForTestSetup></BatchForTestSetup>
+				<BatchForTestTeardown></BatchForTestTeardown>
+				<KillProcessesOnCancel>false</KillProcessesOnCancel>
+				<DebuggerKind>Native</DebuggerKind>
+				<ParallelTestExecution>false</ParallelTestExecution>
+				<MaxNrOfThreads>0</MaxNrOfThreads>
+				<MissingTestsReportMode>ReportAsNotFound</MissingTestsReportMode>
+
+				<!-- TAEF (if tests are run in process or debugged, TestTimeout and IsolationLevel have no effect, and
+				     NrOfTestRepetitions repeats each test within the same process) -->
+				<TeExecutable></TeExecutable>
+				<RunIgnoredTests>false</RunIgnoredTests>
+				<BreakOnError>false</BreakOnError>
+				<NrOfTestRepetitions>1</NrOfTestRepetitions>
+				<TestTimeout></TestTimeout>
+				<IsolationLevel>Default</IsolationLevel>
+				<RunInProcess>false</RunInProcess>
+			</Settings>
+		</SolutionSettings>
+		<ProjectSettings>
+			<!--
+			Settings for test DLLs whose full path matches the ProjectRegex (required); unset values are taken from the solution settings. Example:
+			<Settings ProjectRegex=".*\\MyTests_taef\.dll$">
+				<RunInProcess>true</RunInProcess>
+			</Settings>
+			-->
+		</ProjectSettings>
+	</TaefTestAdapterSettings>
+</RunSettings>

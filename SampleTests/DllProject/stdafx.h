@@ -1,16 +1,9 @@
-// stdafx.h: Includedatei für Standardsystem-Includedateien
-// oder häufig verwendete projektspezifische Includedateien,
-// die nur in unregelmäßigen Abständen geändert werden.
+// stdafx.h: precompiled header with the system headers used by the project.
 //
 
 #pragma once
 
 #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN             // Selten verwendete Komponenten aus Windows-Headern ausschließen
-// Windows-Headerdateien:
+#define WIN32_LEAN_AND_MEAN             // exclude rarely used parts of the Windows headers
 #include <windows.h>
-
-
-
-// TODO: Hier auf zusätzliche Header, die das Programm erfordert, verweisen.

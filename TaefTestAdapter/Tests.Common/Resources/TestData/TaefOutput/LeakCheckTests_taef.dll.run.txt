@@ -1,0 +1,39 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+StartGroup: TaefSamples::MemoryLeaks::Passing
+Verify: IsTrue(true)
+Verify: AreEqual(static_cast<size_t>(0), leakedBytes): memory leaked by the test: 0 bytes in 0 blocks
+EndGroup: TaefSamples::MemoryLeaks::Passing [Passed]
+
+StartGroup: TaefSamples::MemoryLeaks::Failing
+This test does not leak, but fails
+Error: Verify: IsTrue(false) [File: C:\src\TAEF-Test-Adapter\SampleTests\LeakCheckTests\LeakCheckTests.cpp, Function: TaefSamples::MemoryLeaks::Failing, Line: 55]
+EndGroup: TaefSamples::MemoryLeaks::Failing [Failed]
+
+StartGroup: TaefSamples::MemoryLeaks::PassingAndLeaking
+Leaking 100 chars...
+Verify: IsTrue(true)
+Error: Verify: AreEqual(static_cast<size_t>(0), leakedBytes): memory leaked by the test: 100 bytes in 1 blocks - Values (0, 100) [File: C:\src\TAEF-Test-Adapter\SampleTests\LeakCheckTests\LeakDetector.h, Function: TaefSamples::LeakDetector::VerifyNoMemoryLeaks, Line: 53]
+EndGroup: TaefSamples::MemoryLeaks::PassingAndLeaking [Failed]
+Error: memory leak detected after the test: 100 bytes in 1 blocks
+Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope 'TaefSamples::MemoryLeaks::PassingAndLeaking' failed.
+
+StartGroup: TaefSamples::MemoryLeaks::FailingAndLeaking
+Leaking 100 chars...
+Error: Verify: IsTrue(false) [File: C:\src\TAEF-Test-Adapter\SampleTests\LeakCheckTests\LeakCheckTests.cpp, Function: TaefSamples::MemoryLeaks::FailingAndLeaking, Line: 73]
+EndGroup: TaefSamples::MemoryLeaks::FailingAndLeaking [Failed]
+Error: memory leak detected after the test: 100 bytes in 1 blocks
+Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope 'TaefSamples::MemoryLeaks::FailingAndLeaking' failed.
+
+Summary of Errors Outside of Tests:
+    Error: memory leak detected after the test: 100 bytes in 1 blocks
+    Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope 'TaefSamples::MemoryLeaks::PassingAndLeaking' failed.
+    Error: memory leak detected after the test: 100 bytes in 1 blocks
+    Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope 'TaefSamples::MemoryLeaks::FailingAndLeaking' failed.
+
+Summary of Non-passing Tests:
+    TaefSamples::MemoryLeaks::Failing [Failed]
+    TaefSamples::MemoryLeaks::PassingAndLeaking [Failed]
+    TaefSamples::MemoryLeaks::FailingAndLeaking [Failed]
+
+Summary: Total=4, Passed=1, Failed=3, Blocked=0, Not Run=0, Skipped=0

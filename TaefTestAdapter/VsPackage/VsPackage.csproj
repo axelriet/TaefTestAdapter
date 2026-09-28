@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Common.props))\Common.props" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">17.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <!-- NuGet (PackageReference): packages are restored into the repository's package folder (like the packages.config
+         projects), and the restore output does not depend on the configuration (Common.props puts the configuration
+         into BaseIntermediateOutputPath, so a configuration-less 'msbuild /t:Restore' would not be found otherwise). -->
+    <RestorePackagesPath>$(NuGetPackages)</RestorePackagesPath>
+    <MSBuildProjectExtensionsPath>$(OutRoot)intermediate\$(SolutionName)\NuGet\$(MSBuildProjectName)\</MSBuildProjectExtensionsPath>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6276CAD-E4C3-4B25-876A-65B265EBFF1A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaefTestAdapter.VsPackage</RootNamespace>
+    <AssemblyName>TaefTestAdapter.VsPackage</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <UseCodebase>true</UseCodebase>
+    <!-- the VSIX is created (and deployed for debugging) by the Packaging project -->
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Keys\StrongNameKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Commands\AbstractSwitchBooleanOptionCommand.cs" />
+    <Compile Include="Commands\SwitchBreakOnErrorOptionCommand.cs" />
+    <Compile Include="Commands\SwitchParallelExecutionOptionCommand.cs" />
+    <Compile Include="Commands\SwitchPrintTestOutputOptionCommand.cs" />
+    <Compile Include="Commands\SwitchRunInProcessOptionCommand.cs" />
+    <Compile Include="Debugging\DebuggerAttacherService.cs" />
+    <Compile Include="Debugging\VsDebuggerAttacher.cs" />
+    <Compile Include="Helpers\ActivityLogLogger.cs" />
+    <Compile Include="Helpers\SolutionChangeListener.cs" />
+    <Compile Include="ITaefTestAdapterPackage.cs" />
+    <Compile Include="OptionsPages\GeneralOptionsDialogPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OptionsPages\NotifyingDialogPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OptionsPages\TaefOptionsDialogPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OptionsPages\TestDiscoveryOptionsDialogPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OptionsPages\TestExecutionOptionsDialogPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\RunSettingsService.cs" />
+    <Compile Include="TaefTestAdapterPackage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\taef-logo.ico" />
+    <None Include="..\Resources\Icons\toolbaricons.png">
+      <Link>Resources\toolbaricons.png</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="TaefTestAdapterPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Visual Studio 2022 17.0 SDK: its assemblies are provided by Visual Studio at runtime. Visual Studio redirects each of
+         them to the version it ships, but only from lower versions, so the package must not be compiled against assemblies
+         newer than those of the oldest Visual Studio it can be installed into (InstallationTarget of
+         Packaging\source.extension.vsixmanifest, currently 17.0; checked by the VsPackage.Tests.Unit test
+         VsixManifestTests.VsPackageAssembly_ReferencesNoVisualStudioAssemblyNewerThanMinimumInstallationTarget).
+         Threading and Validation, which the package uses directly, are referenced explicitly to keep them at 17.0. -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.0.64" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VisualStudio.Validation" Version="17.0.28" ExcludeAssets="runtime" />
+    <!-- the build tools are independent of the SDK version (and of the Visual Studio versions the extension supports);
+         17.14 is needed to build with the MSBuild of Visual Studio 2026 -->
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2142">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <!-- IRunSettingsService (Test Explorer) and the test platform's object model; provided by Visual Studio at runtime -->
+    <PackageReference Include="Microsoft.VisualStudio.TestWindow.Interfaces" Version="11.0.61030" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" ExcludeAssets="runtime" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{bc05d210-68cd-47d0-ae8c-0f3168d1be73}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{7f4372da-70e2-48d0-bee2-8043528428d0}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestAdapter\TestAdapter.csproj">
+      <Project>{44c04e51-d543-4155-a57e-bbeb73d3f8e5}</Project>
+      <Name>TestAdapter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

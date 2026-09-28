@@ -1,0 +1,847 @@
+Test Authoring and Execution Framework v10.104k for x64
+[Tests] module setup
+
+StartGroup: TaefSamples::TestMath::AddFails
+Error: Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::TestMath::AddFails, Line: 22]
+EndGroup: TaefSamples::TestMath::AddFails [Failed]
+
+StartGroup: TaefSamples::TestMath::AddPasses
+Verify: AreEqual(20, Add(10, 10))
+EndGroup: TaefSamples::TestMath::AddPasses [Passed]
+
+StartGroup: TaefSamples::TestMath::AddPassesWithTraits
+Verify: AreEqual(20, Add(10, 10)): AddPassesWithTraits
+EndGroup: TaefSamples::TestMath::AddPassesWithTraits [Passed]
+
+StartGroup: TaefSamples::OutputHandling::Output_ManyLinesWithNewlines
+before test 1
+before test 2
+
+Error: Verify: AreEqual(1, 2): test output - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::Output_ManyLinesWithNewlines, Line: 54]
+after test 1
+after test 2
+
+EndGroup: TaefSamples::OutputHandling::Output_ManyLinesWithNewlines [Failed]
+
+StartGroup: TaefSamples::OutputHandling::Output_OneLineWithNewlines
+before test
+
+Error: Verify: AreEqual(1, 2): test output - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::Output_OneLineWithNewlines, Line: 63]
+after test
+
+EndGroup: TaefSamples::OutputHandling::Output_OneLineWithNewlines [Failed]
+
+StartGroup: TaefSamples::OutputHandling::Output_OneLine
+before test
+Error: Verify: AreEqual(1, 2): test output - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::Output_OneLine, Line: 73]
+after test
+EndGroup: TaefSamples::OutputHandling::Output_OneLine [Failed]
+
+StartGroup: TaefSamples::OutputHandling::ManyLinesWithNewlines
+before test 1
+before test 2
+
+Error: Verify: AreEqual(1, 2) - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::ManyLinesWithNewlines, Line: 81]
+after test 1
+after test 2
+
+EndGroup: TaefSamples::OutputHandling::ManyLinesWithNewlines [Failed]
+
+StartGroup: TaefSamples::OutputHandling::OneLineWithNewlines
+before test
+
+Error: Verify: AreEqual(1, 2) - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::OneLineWithNewlines, Line: 89]
+after test
+
+EndGroup: TaefSamples::OutputHandling::OneLineWithNewlines [Failed]
+
+StartGroup: TaefSamples::OutputHandling::OneLine
+before test
+Error: Verify: AreEqual(1, 2) - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::OutputHandling::OneLine, Line: 97]
+after test
+EndGroup: TaefSamples::OutputHandling::OneLine [Failed]
+
+StartGroup: TaefSamples::OutputHandling::OutputOfPassingTest
+Log::Comment output
+MyContext: Log::Comment output with a context
+Warning: Log::Warning output (does not fail the test)
+Verify: IsTrue(true): OutputOfPassingTest
+EndGroup: TaefSamples::OutputHandling::OutputOfPassingTest [Passed]
+
+StartGroup: TaefSamples::abcd::t
+Verify: AreEqual(1, 1): abcd::t
+EndGroup: TaefSamples::abcd::t [Passed]
+
+StartGroup: TaefSamples::bbcd::t
+Verify: AreEqual(1, 1): bbcd::t
+EndGroup: TaefSamples::bbcd::t [Passed]
+
+StartGroup: TaefSamples::bcd::t
+Verify: AreEqual(1, 1): bcd::t
+EndGroup: TaefSamples::bcd::t [Passed]
+
+StartGroup: TaefSamples::Exceptions::ThrowsStdException
+Error: Caught std::exception: std::runtime_error thrown by the test
+EndGroup: TaefSamples::Exceptions::ThrowsStdException [Failed]
+
+StartGroup: TaefSamples::Exceptions::ThrowsInt
+Error: Caught an unidentified C++ exception
+EndGroup: TaefSamples::Exceptions::ThrowsInt [Failed]
+
+StartGroup: TaefSamples::Exceptions::ThrowsWexException
+Error: Caught WEX::Common::Exception: WEX::Common::Exception thrown by the test [HRESULT: 0x80070057]
+EndGroup: TaefSamples::Exceptions::ThrowsWexException [Failed]
+
+StartGroup: TaefSamples::Exceptions::VerifyThrowsPasses
+Verify: Expected exception (std::out_of_range) caught during (ThrowOutOfRange())
+EndGroup: TaefSamples::Exceptions::VerifyThrowsPasses [Passed]
+
+StartGroup: TaefSamples::Exceptions::VerifyNoThrowFails
+Error: Verify: Caught std::exception: index out of range during (ThrowOutOfRange()) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::Exceptions::VerifyNoThrowFails, Line: 179]
+EndGroup: TaefSamples::Exceptions::VerifyNoThrowFails [Failed]
+
+StartGroup: TaefSamples::ExplicitResults::SkippedByTest
+This test decides at runtime that it cannot run on this machine
+TestSkipped: Skipped by the test
+EndGroup: TaefSamples::ExplicitResults::SkippedByTest [Skipped]
+
+StartGroup: TaefSamples::ExplicitResults::BlockedByTest
+TestBlocked: Blocked by the test: a prerequisite is missing
+EndGroup: TaefSamples::ExplicitResults::BlockedByTest [Blocked]
+
+StartGroup: TaefSamples::ExplicitResults::NotRunByTest
+TestNotRun: NotRun set by the test
+EndGroup: TaefSamples::ExplicitResults::NotRunByTest [NotRun]
+
+StartGroup: TaefSamples::ExplicitResults::FailedByLogResult
+TestFailed: Failed set by the test
+EndGroup: TaefSamples::ExplicitResults::FailedByLogResult [Failed]
+
+StartGroup: TaefSamples::ExplicitResults::FailedByLogError
+Error: Log::Error marks the test as failed
+EndGroup: TaefSamples::ExplicitResults::FailedByLogError [Failed]
+
+StartGroup: TaefSamples::ExplicitResults::PassedWithWarning
+Warning: Only a warning - the test passes
+EndGroup: TaefSamples::ExplicitResults::PassedWithWarning [Passed]
+
+StartGroup: TaefSamples::LongRunning::Sleeps1Second
+Verify: IsTrue(true): Sleeps1Second
+EndGroup: TaefSamples::LongRunning::Sleeps1Second [Passed]
+
+StartGroup: TaefSamples::LongRunning::Sleeps2SecondsAndFails
+Error: Verify: AreEqual(1, 2): Sleeps2SecondsAndFails - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\BasicTests.cpp, Function: TaefSamples::LongRunning::Sleeps2SecondsAndFails, Line: 236]
+EndGroup: TaefSamples::LongRunning::Sleeps2SecondsAndFails [Failed]
+
+StartGroup: TaefSamples::RuntimeParameterTests::TestDirectoryIsSet
+Error: Verify: Runtime parameter 'TestDirectory' is not set: pass /p:"TestDirectory=$(TestDir)" to TE.exe (adapter setting AdditionalTestExecutionParam, see SampleTests.taef.runsettings) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\EnvironmentTests.cpp, Function: TaefSamples::RuntimeParameterTests::TestDirectoryIsSet, Line: 28]
+EndGroup: TaefSamples::RuntimeParameterTests::TestDirectoryIsSet [Failed]
+
+StartGroup: TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable
+Verify: SUCCEEDED(RuntimeParameters::TryGetValue(L"FullTestName", fullTestName))
+Verify: AreEqual(String(L"TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable"), fullTestName)
+Verify: SUCCEEDED(RuntimeParameters::TryGetValue(L"TestDeploymentDir", deploymentDirectory))
+TestDeploymentDir=C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64\
+EndGroup: TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable [Passed]
+
+StartGroup: TaefSamples::WorkingDir::IsSolutionDirectory
+Error: Verify: IsTrue(endsWithSampleTests): working directory is C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64 [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\EnvironmentTests.cpp, Function: TaefSamples::WorkingDir::IsSolutionDirectory, Line: 64]
+EndGroup: TaefSamples::WorkingDir::IsSolutionDirectory [Failed]
+
+StartGroup: TaefSamples::EnvironmentVariable::IsSet
+Verify: AreEqual(0, _wdupenv_s(&value, &size, L"MYENVVAR"))
+Error: Verify: IsNotNull(value): environment variable MYENVVAR is not set (adapter setting EnvironmentVariables: MYENVVAR=MyValue) - Value () [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\EnvironmentTests.cpp, Function: TaefSamples::EnvironmentVariable::IsSet, Line: 79]
+EndGroup: TaefSamples::EnvironmentVariable::IsSet [Failed]
+[ClassWithFixtures] class setup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddFails
+Error: Verify: AreEqual(1000, Add(m_summand, 10)) - Values (1000, 20) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::ClassWithFixtures::AddFails, Line: 52]
+EndGroup: TaefSamples::ClassWithFixtures::AddFails [Failed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPasses
+Verify: AreEqual(20, Add(m_summand, 10))
+EndGroup: TaefSamples::ClassWithFixtures::AddPasses [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits2
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits2
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits2 [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits3
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits3
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits3 [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest
+Verify: AreEqual(10, m_summand): method setup resets the state
+Verify: AreEqual(1, m_classSetupCalls): class setup runs once
+EndGroup: TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] class cleanup
+[FailingClassSetup] class setup returns false
+TestBlocked: TAEF: Setup fixture 'TaefSamples::FailingClassSetup::ClassSetup' for the scope 'TaefSamples::FailingClassSetup' returned 'false'.
+
+StartGroup: TaefSamples::FailingClassSetup::FirstTest
+EndGroup: TaefSamples::FailingClassSetup::FirstTest [Blocked]
+
+StartGroup: TaefSamples::FailingClassSetup::SecondTest
+EndGroup: TaefSamples::FailingClassSetup::SecondTest [Blocked]
+[FailingMethodSetup] method setup returns false
+TestBlocked: TAEF: Setup fixture 'TaefSamples::FailingMethodSetup::MethodSetup' for the scope 'TaefSamples::FailingMethodSetup::Test' returned 'false'.
+
+StartGroup: TaefSamples::FailingMethodSetup::Test
+EndGroup: TaefSamples::FailingMethodSetup::Test [Blocked]
+Error: Verify: AreEqual(5, 6): VERIFY failing in TEST_CLASS_SETUP - Values (5, 6) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::VerifyInClassSetup::ClassSetup, Line: 143]
+Error: TAEF: Setup fixture 'TaefSamples::VerifyInClassSetup::ClassSetup' for the scope 'TaefSamples::VerifyInClassSetup' failed.
+
+StartGroup: TaefSamples::VerifyInClassSetup::Test
+EndGroup: TaefSamples::VerifyInClassSetup::Test [Failed]
+Error: Verify: AreEqual(7, 8): VERIFY failing in TEST_METHOD_SETUP - Values (7, 8) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::VerifyInMethodSetup::MethodSetup, Line: 160]
+Error: TAEF: Setup fixture 'TaefSamples::VerifyInMethodSetup::MethodSetup' for the scope 'TaefSamples::VerifyInMethodSetup::Test' failed.
+
+StartGroup: TaefSamples::VerifyInMethodSetup::Test
+EndGroup: TaefSamples::VerifyInMethodSetup::Test [Failed]
+
+StartGroup: TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails
+Verify: IsTrue(true): TestPassesAlthoughCleanupFails
+EndGroup: TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails [Passed]
+[FailingMethodCleanup] method cleanup returns false
+TestBlocked: TAEF: Cleanup fixture 'TaefSamples::FailingMethodCleanup::MethodCleanup' for the scope 'TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails' returned 'false'.
+
+StartGroup: TaefSamples::TableDataTests::Simple#0
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 0
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+Simple: TestData = (1,)
+Verify: AreEqual(1, i)
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::Simple#0 [Passed]
+
+StartGroup: TaefSamples::TableDataTests::Simple#1
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 1
+TAEF: Data[s]: !
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+Simple: TestData = (1,!)
+Verify: AreEqual(1, i)
+Error: Verify: AreEqual(String(L""), s) - Values (, !) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::Simple#1 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::Simple#2
+TAEF: Data[i]: -1
+TAEF: Data[Index]: 2
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+Simple: TestData = (-1,)
+Error: Verify: AreEqual(1, i) - Values (1, -1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::Simple#2 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::Simple#Underscore
+TAEF: Data[i]: 0
+TAEF: Data[Index]: 3
+TAEF: Data[s]: _
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+Simple: TestData = (0,_)
+Error: Verify: AreEqual(1, i) - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Error: Verify: AreEqual(String(L""), s) - Values (, _) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::Simple#Underscore [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits#0
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 0
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits: TestData = (1,)
+Verify: AreEqual(1, i)
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits#0 [Passed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits#1
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 1
+TAEF: Data[s]: !
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits: TestData = (1,!)
+Verify: AreEqual(1, i)
+Error: Verify: AreEqual(String(L""), s) - Values (, !) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits#1 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits#2
+TAEF: Data[i]: -1
+TAEF: Data[Index]: 2
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits: TestData = (-1,)
+Error: Verify: AreEqual(1, i) - Values (1, -1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits#2 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits#Underscore
+TAEF: Data[i]: 0
+TAEF: Data[Index]: 3
+TAEF: Data[s]: _
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits: TestData = (0,_)
+Error: Verify: AreEqual(1, i) - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Error: Verify: AreEqual(String(L""), s) - Values (, _) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits#Underscore [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits2#0
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 0
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits2: TestData = (1,)
+Verify: AreEqual(1, i)
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits2#0 [Passed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits2#1
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 1
+TAEF: Data[s]: !
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits2: TestData = (1,!)
+Verify: AreEqual(1, i)
+Error: Verify: AreEqual(String(L""), s) - Values (, !) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits2#1 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits2#2
+TAEF: Data[i]: -1
+TAEF: Data[Index]: 2
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits2: TestData = (-1,)
+Error: Verify: AreEqual(1, i) - Values (1, -1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits2#2 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits2#Underscore
+TAEF: Data[i]: 0
+TAEF: Data[Index]: 3
+TAEF: Data[s]: _
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits2: TestData = (0,_)
+Error: Verify: AreEqual(1, i) - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Error: Verify: AreEqual(String(L""), s) - Values (, _) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits2#Underscore [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits3#0
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 0
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits3: TestData = (1,)
+Verify: AreEqual(1, i)
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits3#0 [Passed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits3#1
+TAEF: Data[i]: 1
+TAEF: Data[Index]: 1
+TAEF: Data[s]: !
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits3: TestData = (1,!)
+Verify: AreEqual(1, i)
+Error: Verify: AreEqual(String(L""), s) - Values (, !) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits3#1 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits3#2
+TAEF: Data[i]: -1
+TAEF: Data[Index]: 2
+TAEF: Data[s]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits3: TestData = (-1,)
+Error: Verify: AreEqual(1, i) - Values (1, -1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Verify: AreEqual(String(L""), s)
+EndGroup: TaefSamples::TableDataTests::SimpleTraits3#2 [Failed]
+
+StartGroup: TaefSamples::TableDataTests::SimpleTraits3#Underscore
+TAEF: Data[i]: 0
+TAEF: Data[Index]: 3
+TAEF: Data[s]: _
+Verify: SUCCEEDED(TestData::TryGetValue(L"i", i))
+Verify: SUCCEEDED(TestData::TryGetValue(L"s", s))
+SimpleTraits3: TestData = (0,_)
+Error: Verify: AreEqual(1, i) - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 29]
+Error: Verify: AreEqual(String(L""), s) - Values (, _) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::TableDataTests::CheckParameters, Line: 30]
+EndGroup: TaefSamples::TableDataTests::SimpleTraits3#Underscore [Failed]
+
+StartGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet0
+TAEF: Data[Value]: 1
+Verify: SUCCEEDED(TestData::TryGetValue(L"Value", value))
+Verify: AreNotEqual(2, value): the data set with Value 2 is designed to fail
+EndGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet0 [Passed]
+
+StartGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet1
+TAEF: Data[Value]: 2
+Verify: SUCCEEDED(TestData::TryGetValue(L"Value", value))
+Error: Verify: AreNotEqual(2, value): the data set with Value 2 is designed to fail - Values (2, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::LightweightDataTests::SingleValue, Line: 96]
+EndGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet1 [Failed]
+
+StartGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet2
+TAEF: Data[Value]: 3
+Verify: SUCCEEDED(TestData::TryGetValue(L"Value", value))
+Verify: AreNotEqual(2, value): the data set with Value 2 is designed to fail
+EndGroup: TaefSamples::LightweightDataTests::SingleValue#metadataSet2 [Passed]
+
+StartGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet0
+TAEF: Data[Color]: Red
+TAEF: Data[Size]: 10
+Verify: SUCCEEDED(TestData::TryGetValue(L"Size", size))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Color", color))
+Size=10, Color=Red
+Verify: IsFalse(size == 20 && color == L"Blue"): the data set (20, Blue) is designed to fail
+EndGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet0 [Passed]
+
+StartGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet1
+TAEF: Data[Color]: Blue
+TAEF: Data[Size]: 10
+Verify: SUCCEEDED(TestData::TryGetValue(L"Size", size))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Color", color))
+Size=10, Color=Blue
+Verify: IsFalse(size == 20 && color == L"Blue"): the data set (20, Blue) is designed to fail
+EndGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet1 [Passed]
+
+StartGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet2
+TAEF: Data[Color]: Red
+TAEF: Data[Size]: 20
+Verify: SUCCEEDED(TestData::TryGetValue(L"Size", size))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Color", color))
+Size=20, Color=Red
+Verify: IsFalse(size == 20 && color == L"Blue"): the data set (20, Blue) is designed to fail
+EndGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet2 [Passed]
+
+StartGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet3
+TAEF: Data[Color]: Blue
+TAEF: Data[Size]: 20
+Verify: SUCCEEDED(TestData::TryGetValue(L"Size", size))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Color", color))
+Size=20, Color=Blue
+Error: Verify: IsFalse(size == 20 && color == L"Blue"): the data set (20, Blue) is designed to fail [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::LightweightDataTests::TwoValues, Line: 106]
+EndGroup: TaefSamples::LightweightDataTests::TwoValues#metadataSet3 [Failed]
+
+StartGroup: TaefSamples::StringTableDataTests::CheckStringLength#0
+TAEF: Data[Index]: 0
+TAEF: Data[Length]: 0
+TAEF: Data[Text]: 
+Verify: SUCCEEDED(TestData::TryGetValue(L"Text", text))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Length", length))
+Verify: AreEqual(length, text.GetLength())
+EndGroup: TaefSamples::StringTableDataTests::CheckStringLength#0 [Passed]
+
+StartGroup: TaefSamples::StringTableDataTests::CheckStringLength#1
+TAEF: Data[Index]: 1
+TAEF: Data[Length]: 4
+TAEF: Data[Text]: Test
+Verify: SUCCEEDED(TestData::TryGetValue(L"Text", text))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Length", length))
+Verify: AreEqual(length, text.GetLength())
+EndGroup: TaefSamples::StringTableDataTests::CheckStringLength#1 [Passed]
+
+StartGroup: TaefSamples::StringTableDataTests::CheckStringLength#2
+TAEF: Data[Index]: 2
+TAEF: Data[Length]: 23
+TAEF: Data[Text]: ooops
+Verify: SUCCEEDED(TestData::TryGetValue(L"Text", text))
+Verify: SUCCEEDED(TestData::TryGetValue(L"Length", length))
+Error: Verify: AreEqual(length, text.GetLength()) - Values (23, 5) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::StringTableDataTests::CheckStringLength, Line: 125]
+EndGroup: TaefSamples::StringTableDataTests::CheckStringLength#2 [Failed]
+
+StartGroup: TaefSamples::NamedRows::AllowedCharacters#FunctorName
+TAEF: Data[Characters]: FunctorName
+TAEF: Data[Index]: 0
+Verify: SUCCEEDED(TestData::TryGetValue(L"Characters", characters))
+Verify: IsFalse(characters.IsEmpty())
+EndGroup: TaefSamples::NamedRows::AllowedCharacters#FunctorName [Passed]
+
+StartGroup: TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz
+TAEF: Data[Characters]: abcdefghijklmnopqrstuvwxyz
+TAEF: Data[Index]: 1
+Verify: SUCCEEDED(TestData::TryGetValue(L"Characters", characters))
+Verify: IsFalse(characters.IsEmpty())
+EndGroup: TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz [Passed]
+
+StartGroup: TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ
+TAEF: Data[Characters]: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+TAEF: Data[Index]: 2
+Verify: SUCCEEDED(TestData::TryGetValue(L"Characters", characters))
+Verify: IsFalse(characters.IsEmpty())
+EndGroup: TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ [Passed]
+
+StartGroup: TaefSamples::NamedRows::AllowedCharacters#01234567890_
+TAEF: Data[Characters]: 01234567890_
+TAEF: Data[Index]: 3
+Verify: SUCCEEDED(TestData::TryGetValue(L"Characters", characters))
+Verify: IsFalse(characters.IsEmpty())
+EndGroup: TaefSamples::NamedRows::AllowedCharacters#01234567890_ [Passed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#with space
+TAEF: Data[Index]: 0
+TAEF: Data[Number]: 1
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#with space [Passed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#with'quote
+TAEF: Data[Index]: 1
+TAEF: Data[Number]: 2
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Error: Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::NamedRows::SpecialCharacters, Line: 155]
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#with'quote [Failed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#with#hash
+TAEF: Data[Index]: 2
+TAEF: Data[Number]: 3
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#with#hash [Passed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#with::colons [x]
+TAEF: Data[Index]: 3
+TAEF: Data[Number]: 4
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Error: Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::NamedRows::SpecialCharacters, Line: 155]
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#with::colons [x] [Failed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#back\slash
+TAEF: Data[Index]: 4
+TAEF: Data[Number]: 5
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#back\slash [Passed]
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前
+TAEF: Data[Index]: 5
+TAEF: Data[Number]: 6
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Error: Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::NamedRows::SpecialCharacters, Line: 155]
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前 [Failed]
+
+StartGroup: TaefSamples::MissingDataSource::Test#error
+TestBlocked: TAEF: [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.
+EndGroup: TaefSamples::MissingDataSource::Test#error [Blocked]
+
+StartGroup: TaefSamples::ClassTemplates::NumberTemplateTests<long>::CanHoldLargeSum
+Verify: AreEqual(130, static_cast<int>(sum))
+EndGroup: TaefSamples::ClassTemplates::NumberTemplateTests<long>::CanHoldLargeSum [Passed]
+
+StartGroup: TaefSamples::ClassTemplates::NumberTemplateTests<int>::CanHoldLargeSum
+Verify: AreEqual(130, static_cast<int>(sum))
+EndGroup: TaefSamples::ClassTemplates::NumberTemplateTests<int>::CanHoldLargeSum [Passed]
+
+StartGroup: TaefSamples::ClassTemplates::NumberTemplateTests<signed char>::CanHoldLargeSum
+Error: Verify: AreEqual(130, static_cast<int>(sum)) - Values (130, -126) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::ClassTemplates::NumberTemplateTests<signed char>::CanHoldLargeSum, Line: 100]
+EndGroup: TaefSamples::ClassTemplates::NumberTemplateTests<signed char>::CanHoldLargeSum [Failed]
+
+StartGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanIterate
+Verify: AreEqual(1 + 2 + 3, sum)
+EndGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanIterate [Passed]
+
+StartGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanDefeatMath
+Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): CanDefeatMath
+EndGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanDefeatMath [Passed]
+
+StartGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::TwoTraits
+Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): TwoTraits
+EndGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::TwoTraits [Passed]
+
+StartGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::ThreeTraits
+Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): ThreeTraits
+EndGroup: TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::ThreeTraits [Passed]
+
+StartGroup: TaefSamples::TemplateTests<class std::array<int,3> >::CanIterate
+Verify: AreEqual(1 + 2 + 3, sum)
+EndGroup: TaefSamples::TemplateTests<class std::array<int,3> >::CanIterate [Passed]
+
+StartGroup: TaefSamples::TemplateTests<class std::array<int,3> >::CanDefeatMath
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): CanDefeatMath - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::array<int,3> >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::array<int,3> >::CanDefeatMath [Failed]
+
+StartGroup: TaefSamples::TemplateTests<class std::array<int,3> >::TwoTraits
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): TwoTraits - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::array<int,3> >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::array<int,3> >::TwoTraits [Failed]
+
+StartGroup: TaefSamples::TemplateTests<class std::array<int,3> >::ThreeTraits
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): ThreeTraits - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::array<int,3> >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::array<int,3> >::ThreeTraits [Failed]
+
+StartGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanIterate
+Verify: AreEqual(1 + 2 + 3, sum)
+EndGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanIterate [Passed]
+
+StartGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanDefeatMath
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): CanDefeatMath - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanDefeatMath [Failed]
+
+StartGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::TwoTraits
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): TwoTraits - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::TwoTraits [Failed]
+
+StartGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::ThreeTraits
+Error: Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): ThreeTraits - Values (3, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\ClassTemplateTests.cpp, Function: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CheckCanDefeatMath, Line: 31]
+EndGroup: TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::ThreeTraits [Failed]
+
+StartGroup: TaefSamples::Namespace_1::Namespace_Named::Test
+Verify: AreEqual(1, 1): TaefSamples::Namespace_1::Namespace_Named::Test
+EndGroup: TaefSamples::Namespace_1::Namespace_Named::Test [Passed]
+
+StartGroup: TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test
+Verify: AreEqual(1, 1): TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test
+EndGroup: TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test [Passed]
+
+StartGroup: TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails
+Error: Verify: AreEqual(1, 2): TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\NamespaceTests.cpp, Function: TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails, Line: 43]
+EndGroup: TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails [Failed]
+
+StartGroup: TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon::Test
+Verify: AreEqual(1, 1): TaefSamples::Namespace_1::(anonymous)::Namespace_Named_Anon::Test
+EndGroup: TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon::Test [Passed]
+
+StartGroup: TaefSamples::`anonymous-namespace'::Namespace_Anon::Test
+Verify: AreEqual(1, 1): TaefSamples::(anonymous)::Namespace_Anon::Test
+EndGroup: TaefSamples::`anonymous-namespace'::Namespace_Anon::Test [Passed]
+
+StartGroup: TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon::Test
+Verify: AreEqual(1, 1): TaefSamples::(anonymous)::(anonymous)::Namespace_Anon_Anon::Test
+EndGroup: TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon::Test [Passed]
+
+StartGroup: TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named::Test
+Verify: AreEqual(1, 1): TaefSamples::(anonymous)::Anon_Nested::Namespace_Anon_Named::Test
+EndGroup: TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named::Test [Passed]
+
+StartGroup: TaefSamples::Namespace_Root::Test
+Verify: AreEqual(1, 1): TaefSamples::Namespace_Root::Test
+EndGroup: TaefSamples::Namespace_Root::Test [Passed]
+
+StartGroup: TaefSamples::Traits::With8Traits
+Verify: AreEqual(1, 1): With8Traits
+EndGroup: TaefSamples::Traits::With8Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With7Traits
+Verify: AreEqual(1, 1): With7Traits
+EndGroup: TaefSamples::Traits::With7Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With6Traits
+Verify: AreEqual(1, 1): With6Traits
+EndGroup: TaefSamples::Traits::With6Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With5Traits
+Verify: AreEqual(1, 1): With5Traits
+EndGroup: TaefSamples::Traits::With5Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With4Traits
+Verify: AreEqual(1, 1): With4Traits
+EndGroup: TaefSamples::Traits::With4Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With3Traits
+Verify: AreEqual(1, 1): With3Traits
+EndGroup: TaefSamples::Traits::With3Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With2Traits
+Verify: AreEqual(1, 1): With2Traits
+EndGroup: TaefSamples::Traits::With2Traits [Passed]
+
+StartGroup: TaefSamples::Traits::With1Traits
+Verify: AreEqual(1, 1): With1Traits
+EndGroup: TaefSamples::Traits::With1Traits [Passed]
+
+StartGroup: TaefSamples::Traits::WithEqualTraits
+Verify: AreEqual(1, 1): WithEqualTraits
+EndGroup: TaefSamples::Traits::WithEqualTraits [Passed]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::InheritsClassProperties
+Verify: IsTrue(true): InheritsClassProperties
+EndGroup: TaefSamples::ClassAndMethodProperties::InheritsClassProperties [Passed]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::OverridesClassProperties
+Verify: IsTrue(true): OverridesClassProperties
+EndGroup: TaefSamples::ClassAndMethodProperties::OverridesClassProperties [Passed]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::WithPriority1
+Verify: IsTrue(true): WithPriority1
+EndGroup: TaefSamples::ClassAndMethodProperties::WithPriority1 [Passed]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::WithPriority2AndFails
+Error: Verify: IsTrue(false): WithPriority2AndFails [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\TraitsTests.cpp, Function: TaefSamples::ClassAndMethodProperties::WithPriority2AndFails, Line: 187]
+EndGroup: TaefSamples::ClassAndMethodProperties::WithPriority2AndFails [Failed]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::WithMultipleValues
+Verify: IsTrue(true): WithMultipleValues
+EndGroup: TaefSamples::ClassAndMethodProperties::WithMultipleValues [Passed]
+Property: TAEF: Description [A test with custom properties]
+
+StartGroup: TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails
+Property: TAEF: Description [A test with custom properties]
+Error: Verify: IsTrue(false): WithCustomPropertiesAndFails [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\TraitsTests.cpp, Function: TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails, Line: 197]
+EndGroup: TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails [Failed]
+
+StartGroup: TaefSamples::Ümlautß::Täst
+Error: Verify: AreEqual(1, 2): Ümlautß::Täst - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\UmlautTests.cpp, Function: TaefSamples::Ümlautß::Täst, Line: 16]
+EndGroup: TaefSamples::Ümlautß::Täst [Failed]
+
+StartGroup: TaefSamples::Ümlautß::Träits
+Ümlaut output: äöü ÄÖÜ ß 名前 ✓
+EndGroup: TaefSamples::Ümlautß::Träits [Passed]
+
+StartGroup: TaefSamples::Nämespace::KlässWithSetüp::Täst
+Error: Verify: AreEqual(2, m_välue): TaefSamples::Nämespace::KlässWithSetüp::Täst - Values (2, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\UmlautTests.cpp, Function: TaefSamples::Nämespace::KlässWithSetüp::Täst, Line: 48]
+EndGroup: TaefSamples::Nämespace::KlässWithSetüp::Täst [Failed]
+
+StartGroup: TaefSamples::Nämespace::KlässWithSetüp::Träits
+Verify: AreEqual(1, m_välue): TaefSamples::Nämespace::KlässWithSetüp::Träits
+EndGroup: TaefSamples::Nämespace::KlässWithSetüp::Träits [Passed]
+
+StartGroup: TaefSamples::DataDrivenTästs::Täst#metadataSet0
+TAEF: Data[Päräm]: ÄÖÜäöüß
+Verify: SUCCEEDED(TestData::TryGetValue(L"Päräm", päräm))
+Verify: AreEqual(String(L"ÄÖÜäöüß"), päräm)
+EndGroup: TaefSamples::DataDrivenTästs::Täst#metadataSet0 [Passed]
+
+StartGroup: TaefSamples::DataDrivenTästs::Träits#metadataSet0
+TAEF: Data[Päräm]: ÄÖÜäöüß
+Verify: SUCCEEDED(TestData::TryGetValue(L"Päräm", päräm))
+Error: Verify: AreEqual(String(L"äöüßÄÖÜ"), päräm) - Values (äöüßÄÖÜ, ÄÖÜäöüß) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\UmlautTests.cpp, Function: TaefSamples::DataDrivenTästs::Träits, Line: 92]
+EndGroup: TaefSamples::DataDrivenTästs::Träits#metadataSet0 [Failed]
+
+StartGroup: TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationB>::Täst
+Error: Verify: AreEqual(2, theInstance.GetValue(1)) - Values (2, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\UmlautTests.cpp, Function: TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationB>::Täst, Line: 123]
+EndGroup: TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationB>::Täst [Failed]
+
+StartGroup: TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationA>::Täst
+Verify: AreEqual(2, theInstance.GetValue(1))
+EndGroup: TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationA>::Täst [Passed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyThrows
+Error: Verify: AreEqual(1, 2) - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::VerifyThrows, Line: 31]
+EndGroup: TaefSamples::MessageParserTests::VerifyThrows [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyWithoutExceptions
+Error: Verify: AreEqual(2, 3) - Values (2, 3) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::VerifyWithoutExceptions, Line: 38]
+EndGroup: TaefSamples::MessageParserTests::VerifyWithoutExceptions [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions
+Error: Verify: AreEqual(3, 4) - Values (3, 4) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions, Line: 45]
+Error: Verify: AreEqual(4, 5) - Values (4, 5) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions, Line: 47]
+EndGroup: TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyInOtherMethod
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+EndGroup: TaefSamples::MessageParserTests::VerifyInOtherMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyInOtherFile
+Error: Verify: AreEqual(0, i): CheckIfZeroInOtherFile - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\Helpers.cpp, Function: TaefSamples::CheckIfZeroInOtherFile, Line: 9]
+EndGroup: TaefSamples::MessageParserTests::VerifyInOtherFile [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyInHeader
+Error: Verify: AreEqual(0, i): CheckIfZeroInHeader - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\Helpers.h, Function: TaefSamples::CheckIfZeroInHeader, Line: 19]
+EndGroup: TaefSamples::MessageParserTests::VerifyInHeader [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile
+Error: Verify: AreEqual(5, 6) - Values (5, 6) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile, Line: 68]
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+Error: Verify: AreEqual(0, i): CheckIfZeroInOtherFile - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\Helpers.cpp, Function: TaefSamples::CheckIfZeroInOtherFile, Line: 9]
+EndGroup: TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::LogScopeInTestMethod
+Scope: TestMethod (MessageParserTests.cpp:75)
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+End of scope: TestMethod
+EndGroup: TaefSamples::MessageParserTests::LogScopeInTestMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::TwoLogScopesInTestMethod
+Scope: TestMethod Outer (MessageParserTests.cpp:81)
+Scope: TestMethod Inner (MessageParserTests.cpp:83)
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+End of scope: TestMethod Inner
+End of scope: TestMethod Outer
+EndGroup: TaefSamples::MessageParserTests::TwoLogScopesInTestMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::LogScopeInHelperMethod
+Scope: HelperMethod (MessageParserTests.cpp:20)
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+End of scope: HelperMethod
+EndGroup: TaefSamples::MessageParserTests::LogScopeInHelperMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethod
+Scope: TestMethod (MessageParserTests.cpp:95)
+Scope: HelperMethod (MessageParserTests.cpp:20)
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+End of scope: HelperMethod
+End of scope: TestMethod
+EndGroup: TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod
+Scope: TestMethod (MessageParserTests.cpp:102)
+Scope: HelperMethod (MessageParserTests.cpp:20)
+Error: Verify: AreEqual(0, i) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::CheckIfZero, Line: 15]
+End of scope: HelperMethod
+Error: Verify: AreEqual(0, 1) - Values (0, 1) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\MessageParserTests.cpp, Function: TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod, Line: 104]
+End of scope: TestMethod
+EndGroup: TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod [Failed]
+
+StartGroup: TaefSamples::MessageParserTests::LogErrorWithSourceInfo
+Error: Log::Error with source information [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\Helpers.cpp, Function: TaefSamples::LogErrorWithSourceInfoInOtherFile, Line: 14]
+Error: Log::Error without source information
+EndGroup: TaefSamples::MessageParserTests::LogErrorWithSourceInfo [Failed]
+[Tests] module cleanup
+
+Summary of Errors Outside of Tests:
+    Error: Verify: AreEqual(5, 6): VERIFY failing in TEST_CLASS_SETUP - Values (5, 6) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::VerifyInClassSetup::ClassSetup, Line: 143]
+    Error: TAEF: Setup fixture 'TaefSamples::VerifyInClassSetup::ClassSetup' for the scope 'TaefSamples::VerifyInClassSetup' failed.
+    Error: Verify: AreEqual(7, 8): VERIFY failing in TEST_METHOD_SETUP - Values (7, 8) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::VerifyInMethodSetup::MethodSetup, Line: 160]
+    Error: TAEF: Setup fixture 'TaefSamples::VerifyInMethodSetup::MethodSetup' for the scope 'TaefSamples::VerifyInMethodSetup::Test' failed.
+
+Summary of Non-passing Tests (showing 20 of 72):
+    TaefSamples::TestMath::AddFails [Failed]
+    TaefSamples::OutputHandling::Output_ManyLinesWithNewlines [Failed]
+    TaefSamples::OutputHandling::Output_OneLineWithNewlines [Failed]
+    TaefSamples::OutputHandling::Output_OneLine [Failed]
+    TaefSamples::OutputHandling::ManyLinesWithNewlines [Failed]
+    TaefSamples::OutputHandling::OneLineWithNewlines [Failed]
+    TaefSamples::OutputHandling::OneLine [Failed]
+    TaefSamples::Exceptions::ThrowsStdException [Failed]
+    TaefSamples::Exceptions::ThrowsInt [Failed]
+    TaefSamples::Exceptions::ThrowsWexException [Failed]
+    TaefSamples::Exceptions::VerifyNoThrowFails [Failed]
+    TaefSamples::ExplicitResults::FailedByLogResult [Failed]
+    TaefSamples::ExplicitResults::FailedByLogError [Failed]
+    TaefSamples::LongRunning::Sleeps2SecondsAndFails [Failed]
+    TaefSamples::RuntimeParameterTests::TestDirectoryIsSet [Failed]
+    TaefSamples::WorkingDir::IsSolutionDirectory [Failed]
+    TaefSamples::EnvironmentVariable::IsSet [Failed]
+    TaefSamples::ClassWithFixtures::AddFails [Failed]
+    TaefSamples::VerifyInClassSetup::Test [Failed]
+    TaefSamples::VerifyInMethodSetup::Test [Failed]
+
+Summary: Total=138, Passed=66, Failed=65, Blocked=5, Not Run=1, Skipped=1

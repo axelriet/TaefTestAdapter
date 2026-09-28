@@ -1,0 +1,35 @@
+# PICT model of the end-to-end tests of VsPackage.Tests.Generated (see GenerateCSV.bat, TAEF_Console.csv and ConsoleTests.tt).
+# TAEF_Console.csv is a hand-picked subset of the combinations (about 30 of the about 55 test cases PICT needs for pairwise
+# coverage, to keep the run time of the end-to-end tests low); GenerateCSV.bat keeps these test cases and adds the missing
+# combinations (golden files of new test cases are created by their first run and must be checked).
+#
+# TestFile: key of a sample test DLL (see ConsoleTestDlls.GetTestDll in Tests.Common): SampleTests = Tests_taef.dll (Debug x86),
+#   SampleTestsX64 = Tests_taef.dll (Release x64), HardCrashingSampleTests = CrashingTests_taef.dll (Debug x86),
+#   HardCrashingSampleTestsX64 = CrashingTests_taef.dll (Release x64), DllTests = DllTests_taef.dll (Release x86)
+# Settings: fallback settings file of the adapter (false: none, true: Project.runsettings, Solution: Solution.runsettings,
+#   SolutionProject: SolutionProject.runsettings, all in Tests.Common\Resources\TestData)
+# TestCaseFilter: vstest.console /TestCaseFilter (none: no filter; a leading * marks a negative test: the filter uses a
+#   property which does not exist)
+# EnableCodeCoverage, InIsolation: vstest.console /EnableCodeCoverage, /InIsolation
+# RunInProcess, RunIgnoredTests, IsolationLevel, NrOfTestRepetitions: adapter settings which override the settings file
+#   (RunInProcess false, RunIgnoredTests default, IsolationLevel Default and NrOfTestRepetitions 1: not overridden)
+
+TestFile: SampleTests, SampleTestsX64, HardCrashingSampleTests, HardCrashingSampleTestsX64, DllTests
+Settings: false, true, Solution, SolutionProject
+TestCaseFilter: none, DisplayName=TaefSamples::TestMath::AddPassesWithTraits, FullyQualifiedName=TaefSamples.TestMath.AddPassesWithTraits, Type=Small, DisplayName=TaefSamples::TestMath::AddPassesWithTraits|Type=Small, TestCategory=Integration&Type=Medium, Ignore=true, FullyQualifiedName~NamedRows, TestCategory=NotExisting, *NotExisting=Foo
+EnableCodeCoverage: true, false
+InIsolation: true, false
+RunInProcess: true, false
+RunIgnoredTests: default, true, false
+IsolationLevel: Default, Class, Method
+NrOfTestRepetitions: 1, 2
+
+# only the tests of Tests_taef.dll have traits (and interesting names)
+IF [TestCaseFilter] <> "none" THEN [TestFile] IN {"SampleTests", "SampleTestsX64"};
+
+# only Tests_taef.dll has ignored tests
+IF NOT [TestFile] IN {"SampleTests", "SampleTestsX64"} THEN [RunIgnoredTests] = "default";
+
+# keep the run time low: repetitions and a test host per test only for small selections of tests
+IF [NrOfTestRepetitions] = 2 THEN [TestCaseFilter] <> "none";
+IF [IsolationLevel] = "Method" THEN [TestCaseFilter] <> "none";

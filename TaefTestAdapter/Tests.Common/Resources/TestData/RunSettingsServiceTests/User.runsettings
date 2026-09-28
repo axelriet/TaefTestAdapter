@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <TaefTestAdapterSettings>
+    <SolutionSettings>
+      <Settings>
+        <RunIgnoredTests>true</RunIgnoredTests>
+        <MaxNrOfThreads>3</MaxNrOfThreads>
+        <TestTimeout>0:0:3</TestTimeout>
+        <TraitsRegexesBefore>User///A,B</TraitsRegexesBefore>
+        <SkipOriginCheck>true</SkipOriginCheck> <!-- ignored in settings files - only for testing -->
+      </Settings>
+    </SolutionSettings>
+    <ProjectSettings>
+      <Settings ProjectRegex="LoadTests_taef\.dll|CrashingTests_taef\.dll">
+        <MaxNrOfThreads>4</MaxNrOfThreads>
+        <SkipOriginCheck>true</SkipOriginCheck> <!-- ignored in settings files - only for testing -->
+      </Settings>
+    </ProjectSettings>
+  </TaefTestAdapterSettings>
+</RunSettings>

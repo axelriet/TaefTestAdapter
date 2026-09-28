@@ -1,0 +1,25 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+StartGroup: TaefSamples::MissingDataSource::Test#error
+TestBlocked: TAEF: [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.
+EndGroup: TaefSamples::MissingDataSource::Test#error [Blocked]
+[Tests] module setup
+
+StartGroup: TaefSamples::ClassAndMethodProperties::IgnoredTest
+IgnoredTest is only executed with /runIgnoredTests
+EndGroup: TaefSamples::ClassAndMethodProperties::IgnoredTest [Passed]
+
+StartGroup: TaefSamples::IgnoredClass::IgnoredPassing
+Verify: IsTrue(true): IgnoredPassing
+EndGroup: TaefSamples::IgnoredClass::IgnoredPassing [Passed]
+
+StartGroup: TaefSamples::IgnoredClass::IgnoredFailing
+Error: Verify: IsTrue(false): IgnoredFailing [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\TraitsTests.cpp, Function: TaefSamples::IgnoredClass::IgnoredFailing, Line: 220]
+EndGroup: TaefSamples::IgnoredClass::IgnoredFailing [Failed]
+[Tests] module cleanup
+
+Summary of Non-passing Tests:
+    TaefSamples::IgnoredClass::IgnoredFailing [Failed]
+    TaefSamples::MissingDataSource::Test#error [Blocked]
+
+Summary: Total=4, Passed=2, Failed=1, Blocked=1, Not Run=0, Skipped=0

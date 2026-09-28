@@ -1,0 +1,1 @@
+std::cerr output (visible with /inproc only)

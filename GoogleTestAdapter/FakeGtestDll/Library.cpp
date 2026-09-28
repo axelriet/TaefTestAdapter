@@ -1,1 +1,0 @@
-__declspec(dllexport) void FakeGtestDllLibrary_ExportedFunction() {}

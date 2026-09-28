@@ -1,23 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildThisFileDirectory)\TestAdapterFlavor.props" />
     <PropertyGroup>
         <EnlistmentRoot>$(MSBuildThisFileDirectory)</EnlistmentRoot>
         <NuGetPackages>$(EnlistmentRoot)NuGetPackages\</NuGetPackages>
 
-        <OutDir>$(EnlistmentRoot)out\binaries\$(SolutionName)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
+        <!-- Root of all build outputs; can be overridden (e.g. /p:OutRoot=C:\tmp\out\) to build in isolation. -->
+        <OutRoot Condition="'$(OutRoot)' == ''">$(EnlistmentRoot)out\</OutRoot>
+
+        <OutDir>$(OutRoot)binaries\$(SolutionName)\$(Configuration)\$(MSBuildProjectName)\</OutDir>
         <OutputPath>$(OutDir)</OutputPath>
 
-        <IntDir>$(EnlistmentRoot)out\intermediate\$(SolutionName)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+        <IntDir>$(OutRoot)intermediate\$(SolutionName)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+        <!-- C++ projects are built for several platforms: keep their intermediate files apart -->
+        <IntDir Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">$(OutRoot)intermediate\$(SolutionName)\$(Configuration)\$(Platform)\$(MSBuildProjectName)\</IntDir>
         <IntermediateOutputPath>$(IntDir)</IntermediateOutputPath>
         <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
-    </PropertyGroup>
-
-    <!-- Commonly used test adapter-flavored properties. -->
-    <PropertyGroup Condition="'$(TestAdapterFlavor)' == 'GTA'">
-        <FlavoredTargetFrameworkVersion>v4.5</FlavoredTargetFrameworkVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(TestAdapterFlavor)' == 'TAfGT'">
-        <FlavoredTargetFrameworkVersion>v4.6</FlavoredTargetFrameworkVersion>
     </PropertyGroup>
 </Project>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Table data sources of DataDrivenTests.cpp. The file is embedded into Tests_taef.dll as resource
+  "DataDrivenTests.xml" of type DATASOURCE_XML (see Tests.rc): TAEF looks for a file of that name next to the
+  test DLL first and then for a resource, so the test DLL also works when it is copied somewhere else.
+
+  Test names: unnamed rows get the suffix #<row index>, named rows #<Name>. Row attributes other than Name are
+  row level metadata (they override the method's properties).
+-->
+<Data>
+  <Table Id="SimpleTable">
+    <ParameterTypes>
+      <ParameterType Name="i">int</ParameterType>
+      <ParameterType Name="s">String</ParameterType>
+    </ParameterTypes>
+    <Row>
+      <Parameter Name="i">1</Parameter>
+      <Parameter Name="s"></Parameter>
+    </Row>
+    <Row>
+      <Parameter Name="i">1</Parameter>
+      <Parameter Name="s">!</Parameter>
+    </Row>
+    <Row>
+      <Parameter Name="i">-1</Parameter>
+      <Parameter Name="s"></Parameter>
+    </Row>
+    <Row Name="Underscore">
+      <Parameter Name="i">0</Parameter>
+      <Parameter Name="s">_</Parameter>
+    </Row>
+  </Table>
+
+  <Table Id="StringLengths">
+    <ParameterTypes>
+      <ParameterType Name="Length">int</ParameterType>
+    </ParameterTypes>
+    <Row>
+      <Parameter Name="Text"></Parameter>
+      <Parameter Name="Length">0</Parameter>
+    </Row>
+    <Row>
+      <Parameter Name="Text">Test</Parameter>
+      <Parameter Name="Length">4</Parameter>
+    </Row>
+    <Row>
+      <Parameter Name="Text">ooops</Parameter>
+      <Parameter Name="Length">23</Parameter>
+    </Row>
+  </Table>
+
+  <Table Id="AllowedCharacters">
+    <Row Name="FunctorName">
+      <Parameter Name="Characters">FunctorName</Parameter>
+    </Row>
+    <Row Name="abcdefghijklmnopqrstuvwxyz">
+      <Parameter Name="Characters">abcdefghijklmnopqrstuvwxyz</Parameter>
+    </Row>
+    <Row Name="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
+      <Parameter Name="Characters">ABCDEFGHIJKLMNOPQRSTUVWXYZ</Parameter>
+    </Row>
+    <Row Name="01234567890_">
+      <Parameter Name="Characters">01234567890_</Parameter>
+    </Row>
+  </Table>
+
+  <!-- Row names with characters which need care in /select queries and in the adapter's name handling -->
+  <Table Id="SpecialCharacters">
+    <ParameterTypes>
+      <ParameterType Name="Number">int</ParameterType>
+    </ParameterTypes>
+    <Row Name="with space">
+      <Parameter Name="Number">1</Parameter>
+    </Row>
+    <Row Name="with'quote" Priority="1">
+      <Parameter Name="Number">2</Parameter>
+    </Row>
+    <Row Name="with#hash">
+      <Parameter Name="Number">3</Parameter>
+    </Row>
+    <Row Name="with::colons [x]" Owner="RowOwner">
+      <Parameter Name="Number">4</Parameter>
+    </Row>
+    <Row Name="back\slash">
+      <Parameter Name="Number">5</Parameter>
+    </Row>
+    <Row Name="Ünïcødé 名前">
+      <Parameter Name="Number">6</Parameter>
+    </Row>
+  </Table>
+</Data>

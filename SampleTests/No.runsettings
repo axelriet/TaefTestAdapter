@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- User settings without any Test Adapter for TAEF settings (the solution settings and defaults apply) -->
 <RunSettings>
-  <GoogleTestAdapterSettings>
+  <TaefTestAdapterSettings>
     <SolutionSettings>
     </SolutionSettings>
     <ProjectSettings>
     </ProjectSettings>
-  </GoogleTestAdapterSettings>
+  </TaefTestAdapterSettings>
 </RunSettings>

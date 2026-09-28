@@ -1,0 +1,17 @@
+Test Authoring and Execution Framework v10.104k for x64
+Error: TAEF: [HRESULT: 0x8007007E] A failure occurred while preparing to run tests in 'DllTests_taef.dll'. (Failed to load "C:\src\TAEF-Test-Adapter\out\TaefOutputCapture\DllTests_taef.dll" or one of its dependencies. Try running TE.exe with the /reportLoadingIssue switch to get more details. If that doesn't help, use gflags.exe to enable loader snaps for TE.ProcessHost.exe (gflags -i TE.ProcessHost.exe +sls). Then run your tests under a debugger so you can view the loader snaps output while TAEF loads your test DLL.)
+
+StartGroup: TaefSamples::Passing::InvokeFunction
+EndGroup: TaefSamples::Passing::InvokeFunction [Blocked]
+
+StartGroup: TaefSamples::Failing::InvokeFunction
+EndGroup: TaefSamples::Failing::InvokeFunction [Blocked]
+
+Summary of Errors Outside of Tests:
+    Error: TAEF: [HRESULT: 0x8007007E] A failure occurred while preparing to run tests in 'DllTests_taef.dll'. (Failed to load "C:\src\TAEF-Test-Adapter\out\TaefOutputCapture\DllTests_taef.dll" or one of its dependencies. Try running TE.exe with the /reportLoadingIssue switch to get more details. If that doesn't help, use gflags.exe to enable loader snaps for TE.ProcessHost.exe (gflags -i TE.ProcessHost.exe +sls). Then run your tests under a debugger so you can view the loader snaps output while TAEF loads your test DLL.)
+
+Summary of Non-passing Tests:
+    TaefSamples::Passing::InvokeFunction [Blocked]
+    TaefSamples::Failing::InvokeFunction [Blocked]
+
+Summary: Total=2, Passed=0, Failed=0, Blocked=2, Not Run=0, Skipped=0

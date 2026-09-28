@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Solution settings of the Test Adapter for TAEF for SampleTests.sln (the adapter picks up <SolutionName>.taef.runsettings
+  next to the solution automatically). Some sample tests only pass with these settings, see README.md.
+-->
+<RunSettings>
+	<TaefTestAdapterSettings>
+		<SolutionSettings>
+			<Settings>
+				<!-- TE.exe runtime parameter, read by TaefSamples::RuntimeParameterTests::TestDirectoryIsSet -->
+				<AdditionalTestExecutionParam>/p:"TestDirectory=$(TestDir)"</AdditionalTestExecutionParam>
+				<BatchForTestSetup>$(SolutionDir)Tests\Returns0.bat</BatchForTestSetup>
+				<BatchForTestTeardown>$(SolutionDir)Tests\Returns1.bat</BatchForTestTeardown>
+				<!-- working directory of TE.exe (and of the tests), checked by TaefSamples::WorkingDir::IsSolutionDirectory -->
+				<WorkingDir>$(SolutionDir)</WorkingDir>
+			</Settings>
+		</SolutionSettings>
+		<ProjectSettings>
+			<Settings ProjectRegex="LoadTests_taef\.dll|CrashingTests_taef\.dll">
+				<TestDiscoveryRegex>.*Tests.*_taef\.dll</TestDiscoveryRegex>
+			</Settings>
+			<Settings ProjectRegex=".*\\Tests_taef\.dll">
+				<TestDiscoveryTimeoutInSeconds>60</TestDiscoveryTimeoutInSeconds>
+				<!-- checked by TaefSamples::EnvironmentVariable::IsSet -->
+				<EnvironmentVariables>MYENVVAR=MyValue</EnvironmentVariables>
+			</Settings>
+			<Settings ProjectRegex=".*\\HelperFileTests_taef\.dll">
+				<!-- $(TheTarget) is defined by HelperFileTests_taef.dll.taef_settings_helper (written by the project's post-build step) -->
+				<AdditionalTestExecutionParam>/p:"TheTarget=$(TheTarget)"</AdditionalTestExecutionParam>
+			</Settings>
+		</ProjectSettings>
+	</TaefTestAdapterSettings>
+</RunSettings>

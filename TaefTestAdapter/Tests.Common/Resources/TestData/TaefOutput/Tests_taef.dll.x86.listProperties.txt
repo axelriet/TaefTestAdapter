@@ -1,0 +1,589 @@
+Test Authoring and Execution Framework v10.103k for x86
+
+
+        C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug\Tests_taef.dll
+                Setup: TestsModuleSetup
+                Teardown: TestsModuleCleanup
+                Property[Architecture] =  x86
+                Property[Component] =  SampleTests
+                Property[Owner] =  ModuleOwner
+                Property[TaefTestType] =  Native
+
+            TaefSamples::TestMath
+                TaefSamples::TestMath::AddFails
+                TaefSamples::TestMath::AddPasses
+                TaefSamples::TestMath::AddPassesWithTraits
+                        Property[Type] =  Medium
+
+            TaefSamples::OutputHandling
+                TaefSamples::OutputHandling::Output_ManyLinesWithNewlines
+                TaefSamples::OutputHandling::Output_OneLineWithNewlines
+                TaefSamples::OutputHandling::Output_OneLine
+                TaefSamples::OutputHandling::ManyLinesWithNewlines
+                TaefSamples::OutputHandling::OneLineWithNewlines
+                TaefSamples::OutputHandling::OneLine
+                TaefSamples::OutputHandling::OutputOfPassingTest
+            TaefSamples::abcd
+                TaefSamples::abcd::t
+            TaefSamples::bbcd
+                TaefSamples::bbcd::t
+            TaefSamples::bcd
+                TaefSamples::bcd::t
+            TaefSamples::Exceptions
+                TaefSamples::Exceptions::ThrowsStdException
+                TaefSamples::Exceptions::ThrowsInt
+                TaefSamples::Exceptions::ThrowsWexException
+                TaefSamples::Exceptions::VerifyThrowsPasses
+                TaefSamples::Exceptions::VerifyNoThrowFails
+            TaefSamples::ExplicitResults
+                TaefSamples::ExplicitResults::SkippedByTest
+                TaefSamples::ExplicitResults::BlockedByTest
+                TaefSamples::ExplicitResults::NotRunByTest
+                TaefSamples::ExplicitResults::FailedByLogResult
+                TaefSamples::ExplicitResults::FailedByLogError
+                TaefSamples::ExplicitResults::PassedWithWarning
+            TaefSamples::LongRunning
+                TaefSamples::LongRunning::Sleeps1Second
+                TaefSamples::LongRunning::Sleeps2SecondsAndFails
+            TaefSamples::RuntimeParameterTests
+                TaefSamples::RuntimeParameterTests::TestDirectoryIsSet
+                TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable
+            TaefSamples::WorkingDir
+                TaefSamples::WorkingDir::IsSolutionDirectory
+            TaefSamples::EnvironmentVariable
+                TaefSamples::EnvironmentVariable::IsSet
+            TaefSamples::ClassWithFixtures
+                    Setup: ClassSetup
+                    Teardown: ClassCleanup
+
+                TaefSamples::ClassWithFixtures::AddFails
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+
+                TaefSamples::ClassWithFixtures::AddPasses
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+
+                TaefSamples::ClassWithFixtures::AddPassesWithTraits
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+                        Property[Type] =  Small
+
+                TaefSamples::ClassWithFixtures::AddPassesWithTraits2
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+                        Property[Author] =  Alice
+                        Property[Type] =  Small
+
+                TaefSamples::ClassWithFixtures::AddPassesWithTraits3
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+                        Property[Author] =  Alice
+                        Property[TestCategory] =  Integration
+                        Property[Type] =  Small
+
+                TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest
+                        Setup: MethodSetup
+                        Teardown: MethodCleanup
+
+            TaefSamples::FailingClassSetup
+                    Setup: ClassSetup
+
+                TaefSamples::FailingClassSetup::FirstTest
+                TaefSamples::FailingClassSetup::SecondTest
+            TaefSamples::FailingMethodSetup
+                TaefSamples::FailingMethodSetup::Test
+                        Setup: MethodSetup
+
+            TaefSamples::VerifyInClassSetup
+                    Setup: ClassSetup
+
+                TaefSamples::VerifyInClassSetup::Test
+            TaefSamples::VerifyInMethodSetup
+                TaefSamples::VerifyInMethodSetup::Test
+                        Setup: MethodSetup
+
+            TaefSamples::FailingMethodCleanup
+                TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails
+                        Teardown: MethodCleanup
+
+            TaefSamples::TableDataTests
+                TaefSamples::TableDataTests::Simple#0
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+
+                        Data[i] = 1
+                        Data[Index] = 0
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::Simple#1
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+
+                        Data[i] = 1
+                        Data[Index] = 1
+                        Data[s] = !
+
+                TaefSamples::TableDataTests::Simple#2
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+
+                        Data[i] = -1
+                        Data[Index] = 2
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::Simple#Underscore
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+
+                        Data[i] = 0
+                        Data[Index] = 3
+                        Data[s] = _
+
+                TaefSamples::TableDataTests::SimpleTraits#0
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 1
+                        Data[Index] = 0
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits#1
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 1
+                        Data[Index] = 1
+                        Data[s] = !
+
+                TaefSamples::TableDataTests::SimpleTraits#2
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = -1
+                        Data[Index] = 2
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits#Underscore
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 0
+                        Data[Index] = 3
+                        Data[s] = _
+
+                TaefSamples::TableDataTests::SimpleTraits2#0
+                        Property[Author] =  Alice
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 1
+                        Data[Index] = 0
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits2#1
+                        Property[Author] =  Alice
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 1
+                        Data[Index] = 1
+                        Data[s] = !
+
+                TaefSamples::TableDataTests::SimpleTraits2#2
+                        Property[Author] =  Alice
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = -1
+                        Data[Index] = 2
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits2#Underscore
+                        Property[Author] =  Alice
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[Type] =  Small
+
+                        Data[i] = 0
+                        Data[Index] = 3
+                        Data[s] = _
+
+                TaefSamples::TableDataTests::SimpleTraits3#0
+                        Property[Author] =  Carol
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[TestCategory] =  Integration
+                        Property[Type] =  Medium
+
+                        Data[i] = 1
+                        Data[Index] = 0
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits3#1
+                        Property[Author] =  Carol
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[TestCategory] =  Integration
+                        Property[Type] =  Medium
+
+                        Data[i] = 1
+                        Data[Index] = 1
+                        Data[s] = !
+
+                TaefSamples::TableDataTests::SimpleTraits3#2
+                        Property[Author] =  Carol
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[TestCategory] =  Integration
+                        Property[Type] =  Medium
+
+                        Data[i] = -1
+                        Data[Index] = 2
+                        Data[s] = 
+
+                TaefSamples::TableDataTests::SimpleTraits3#Underscore
+                        Property[Author] =  Carol
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SimpleTable
+                        Property[TestCategory] =  Integration
+                        Property[Type] =  Medium
+
+                        Data[i] = 0
+                        Data[Index] = 3
+                        Data[s] = _
+
+            TaefSamples::LightweightDataTests
+                TaefSamples::LightweightDataTests::SingleValue#metadataSet0
+                        Property[Data:Value] =  {1, 2, 3}
+                        Property[Metadata:Index] =  0
+
+                        Data[Value] = 1
+
+                TaefSamples::LightweightDataTests::SingleValue#metadataSet1
+                        Property[Data:Value] =  {1, 2, 3}
+                        Property[Metadata:Index] =  1
+
+                        Data[Value] = 2
+
+                TaefSamples::LightweightDataTests::SingleValue#metadataSet2
+                        Property[Data:Value] =  {1, 2, 3}
+                        Property[Metadata:Index] =  2
+
+                        Data[Value] = 3
+
+                TaefSamples::LightweightDataTests::TwoValues#metadataSet0
+                        Property[Data:Color] =  {Red, Blue}
+                        Property[Data:Size] =  {10, 20}
+                        Property[Metadata:Index] =  0
+
+                        Data[Color] = Red
+                        Data[Size] = 10
+
+                TaefSamples::LightweightDataTests::TwoValues#metadataSet1
+                        Property[Data:Color] =  {Red, Blue}
+                        Property[Data:Size] =  {10, 20}
+                        Property[Metadata:Index] =  1
+
+                        Data[Color] = Blue
+                        Data[Size] = 10
+
+                TaefSamples::LightweightDataTests::TwoValues#metadataSet2
+                        Property[Data:Color] =  {Red, Blue}
+                        Property[Data:Size] =  {10, 20}
+                        Property[Metadata:Index] =  2
+
+                        Data[Color] = Red
+                        Data[Size] = 20
+
+                TaefSamples::LightweightDataTests::TwoValues#metadataSet3
+                        Property[Data:Color] =  {Red, Blue}
+                        Property[Data:Size] =  {10, 20}
+                        Property[Metadata:Index] =  3
+
+                        Data[Color] = Blue
+                        Data[Size] = 20
+
+            TaefSamples::StringTableDataTests
+                TaefSamples::StringTableDataTests::CheckStringLength#0
+                        Property[DataSource] =  Table:DataDrivenTests.xml#StringLengths
+
+                        Data[Index] = 0
+                        Data[Length] = 0
+                        Data[Text] = 
+
+                TaefSamples::StringTableDataTests::CheckStringLength#1
+                        Property[DataSource] =  Table:DataDrivenTests.xml#StringLengths
+
+                        Data[Index] = 1
+                        Data[Length] = 4
+                        Data[Text] = Test
+
+                TaefSamples::StringTableDataTests::CheckStringLength#2
+                        Property[DataSource] =  Table:DataDrivenTests.xml#StringLengths
+
+                        Data[Index] = 2
+                        Data[Length] = 23
+                        Data[Text] = ooops
+
+            TaefSamples::NamedRows
+                TaefSamples::NamedRows::AllowedCharacters#FunctorName
+                        Property[DataSource] =  Table:DataDrivenTests.xml#AllowedCharacters
+
+                        Data[Characters] = FunctorName
+                        Data[Index] = 0
+
+                TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz
+                        Property[DataSource] =  Table:DataDrivenTests.xml#AllowedCharacters
+
+                        Data[Characters] = abcdefghijklmnopqrstuvwxyz
+                        Data[Index] = 1
+
+                TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                        Property[DataSource] =  Table:DataDrivenTests.xml#AllowedCharacters
+
+                        Data[Characters] = ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                        Data[Index] = 2
+
+                TaefSamples::NamedRows::AllowedCharacters#01234567890_
+                        Property[DataSource] =  Table:DataDrivenTests.xml#AllowedCharacters
+
+                        Data[Characters] = 01234567890_
+                        Data[Index] = 3
+
+                TaefSamples::NamedRows::SpecialCharacters#with space
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+
+                        Data[Index] = 0
+                        Data[Number] = 1
+
+                TaefSamples::NamedRows::SpecialCharacters#with'quote
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+                        Property[Priority] =  1
+
+                        Data[Index] = 1
+                        Data[Number] = 2
+
+                TaefSamples::NamedRows::SpecialCharacters#with#hash
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+
+                        Data[Index] = 2
+                        Data[Number] = 3
+
+                TaefSamples::NamedRows::SpecialCharacters#with::colons [x]
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+                        Property[Owner] =  RowOwner
+
+                        Data[Index] = 3
+                        Data[Number] = 4
+
+                TaefSamples::NamedRows::SpecialCharacters#back\slash
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+
+                        Data[Index] = 4
+                        Data[Number] = 5
+
+                TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前
+                        Property[DataSource] =  Table:DataDrivenTests.xml#SpecialCharacters
+
+                        Data[Index] = 5
+                        Data[Number] = 6
+
+            TaefSamples::MissingDataSource
+                TaefSamples::MissingDataSource::Test#error [Blocked]
+                    [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.
+                        Property[DataSource] =  Table:MissingDataSource.xml#Table
+
+            TaefSamples::ClassTemplates::NumberTemplateTests<long>
+                TaefSamples::ClassTemplates::NumberTemplateTests<long>::CanHoldLargeSum
+            TaefSamples::ClassTemplates::NumberTemplateTests<int>
+                TaefSamples::ClassTemplates::NumberTemplateTests<int>::CanHoldLargeSum
+            TaefSamples::ClassTemplates::NumberTemplateTests<signed char>
+                TaefSamples::ClassTemplates::NumberTemplateTests<signed char>::CanHoldLargeSum
+            TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>
+                TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanIterate
+                        Property[Author] =  Bob
+
+                TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::CanDefeatMath
+                TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::TwoTraits
+                        Property[Author] =  Dave
+                        Property[TestCategory] =  Integration
+
+                TaefSamples::TemplateTests<struct TaefSamples::ReversedArray>::ThreeTraits
+                        Property[Author] =  Dave
+                        Property[Class] =  Simple
+                        Property[TestCategory] =  Integration
+
+            TaefSamples::TemplateTests<class std::array<int,3> >
+                TaefSamples::TemplateTests<class std::array<int,3> >::CanIterate
+                        Property[Author] =  Bob
+
+                TaefSamples::TemplateTests<class std::array<int,3> >::CanDefeatMath
+                TaefSamples::TemplateTests<class std::array<int,3> >::TwoTraits
+                        Property[Author] =  Dave
+                        Property[TestCategory] =  Integration
+
+                TaefSamples::TemplateTests<class std::array<int,3> >::ThreeTraits
+                        Property[Author] =  Dave
+                        Property[Class] =  Simple
+                        Property[TestCategory] =  Integration
+
+            TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >
+                TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanIterate
+                        Property[Author] =  Bob
+
+                TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::CanDefeatMath
+                TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::TwoTraits
+                        Property[Author] =  Dave
+                        Property[TestCategory] =  Integration
+
+                TaefSamples::TemplateTests<class std::vector<int,class std::allocator<int> > >::ThreeTraits
+                        Property[Author] =  Dave
+                        Property[Class] =  Simple
+                        Property[TestCategory] =  Integration
+
+            TaefSamples::Namespace_1::Namespace_Named
+                TaefSamples::Namespace_1::Namespace_Named::Test
+            TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named
+                TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test
+            TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep
+                TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails
+            TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon
+                TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon::Test
+            TaefSamples::`anonymous-namespace'::Namespace_Anon
+                TaefSamples::`anonymous-namespace'::Namespace_Anon::Test
+            TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon
+                TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon::Test
+            TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named
+                TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named::Test
+            TaefSamples::Namespace_Root
+                TaefSamples::Namespace_Root::Test
+            TaefSamples::Traits
+                TaefSamples::Traits::With8Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+                        Property[Trait4] =  Equals4
+                        Property[Trait5] =  Equals5
+                        Property[Trait6] =  Equals6
+                        Property[Trait7] =  Equals7
+                        Property[Trait8] =  Equals8
+
+                TaefSamples::Traits::With7Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+                        Property[Trait4] =  Equals4
+                        Property[Trait5] =  Equals5
+                        Property[Trait6] =  Equals6
+                        Property[Trait7] =  Equals7
+
+                TaefSamples::Traits::With6Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+                        Property[Trait4] =  Equals4
+                        Property[Trait5] =  Equals5
+                        Property[Trait6] =  Equals6
+
+                TaefSamples::Traits::With5Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+                        Property[Trait4] =  Equals4
+                        Property[Trait5] =  Equals5
+
+                TaefSamples::Traits::With4Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+                        Property[Trait4] =  Equals4
+
+                TaefSamples::Traits::With3Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+                        Property[Trait3] =  Equals3
+
+                TaefSamples::Traits::With2Traits
+                        Property[Trait1] =  Equals1
+                        Property[Trait2] =  Equals2
+
+                TaefSamples::Traits::With1Traits
+                        Property[Trait1] =  Equals1
+
+                TaefSamples::Traits::WithEqualTraits
+                        Property[Author] =  Alice Bob
+
+            TaefSamples::ClassAndMethodProperties
+                    Property[Category] =  ClassCategory
+                    Property[ClassTrait] =  ClassValue
+                    Property[Owner] =  ClassOwner
+
+                TaefSamples::ClassAndMethodProperties::InheritsClassProperties
+                TaefSamples::ClassAndMethodProperties::OverridesClassProperties
+                        Property[Category] =  MethodCategory
+                        Property[Owner] =  MethodOwner
+
+                TaefSamples::ClassAndMethodProperties::WithPriority1
+                        Property[Priority] =  1
+
+                TaefSamples::ClassAndMethodProperties::WithPriority2AndFails
+                        Property[Priority] =  2
+
+                TaefSamples::ClassAndMethodProperties::WithMultipleValues
+                        Property[Category] =  Smoke Nightly
+
+                TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails
+                        Property[Area] =  Area with spaces
+                        Property[BugId] =  12345
+                        Property[Description] =  A test with custom properties
+
+                TaefSamples::ClassAndMethodProperties::IgnoredTest
+                        Property[Ignore] =  true
+                        Property[Priority] =  1
+
+            TaefSamples::IgnoredClass
+                    Property[Ignore] =  true
+
+                TaefSamples::IgnoredClass::IgnoredPassing
+                TaefSamples::IgnoredClass::IgnoredFailing
+            TaefSamples::Ümlautß
+                TaefSamples::Ümlautß::Täst
+                TaefSamples::Ümlautß::Träits
+                        Property[Träit1] =  Völue1a Völue1b
+                        Property[Träit2] =  Völue2
+
+            TaefSamples::Nämespace::KlässWithSetüp
+                TaefSamples::Nämespace::KlässWithSetüp::Täst
+                        Setup: Setüp
+
+                TaefSamples::Nämespace::KlässWithSetüp::Träits
+                        Setup: Setüp
+                        Property[Träit1] =  Völue1a Völue1b
+                        Property[Träit2] =  Völue2
+
+            TaefSamples::DataDrivenTästs
+                TaefSamples::DataDrivenTästs::Täst#metadataSet0
+                        Property[Data:Päräm] =  {ÄÖÜäöüß}
+                        Property[Metadata:Index] =  0
+
+                        Data[Päräm] = ÄÖÜäöüß
+
+                TaefSamples::DataDrivenTästs::Träits#metadataSet0
+                        Property[Data:Päräm] =  {ÄÖÜäöüß}
+                        Property[Metadata:Index] =  0
+                        Property[Träit1] =  Völue1a Völue1b
+                        Property[Träit2] =  Völue2
+
+                        Data[Päräm] = ÄÖÜäöüß
+
+            TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationB>
+                TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationB>::Täst
+            TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationA>
+                TaefSamples::ÜmlautTemplateTests<class TaefSamples::ImplementationA>::Täst
+            TaefSamples::MessageParserTests
+                TaefSamples::MessageParserTests::VerifyThrows
+                TaefSamples::MessageParserTests::VerifyWithoutExceptions
+                TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions
+                TaefSamples::MessageParserTests::VerifyInOtherMethod
+                TaefSamples::MessageParserTests::VerifyInOtherFile
+                TaefSamples::MessageParserTests::VerifyInHeader
+                TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile
+                TaefSamples::MessageParserTests::LogScopeInTestMethod
+                TaefSamples::MessageParserTests::TwoLogScopesInTestMethod
+                TaefSamples::MessageParserTests::LogScopeInHelperMethod
+                TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethod
+                TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod
+                TaefSamples::MessageParserTests::LogErrorWithSourceInfo
+

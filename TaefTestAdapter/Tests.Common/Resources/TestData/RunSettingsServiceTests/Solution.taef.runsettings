@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <TaefTestAdapterSettings>
+    <SolutionSettings>
+      <Settings>
+        <BatchForTestSetup>Solution</BatchForTestSetup>
+        <NrOfTestRepetitions>2</NrOfTestRepetitions>
+        <IsolationLevel>Class</IsolationLevel>
+        <TraitsRegexesBefore>Solution///A,B</TraitsRegexesBefore>
+      </Settings>
+    </SolutionSettings>
+    <ProjectSettings>
+    </ProjectSettings>
+  </TaefTestAdapterSettings>
+</RunSettings>

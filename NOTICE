@@ -1,0 +1,65 @@
+Test Adapter for TAEF
+=====================
+
+Test Adapter for TAEF is a modified version of Google Test Adapter
+(https://github.com/csoltenborn/GoogleTestAdapter):
+
+    Google Test Adapter
+    Copyright 2015-2019 Christian Soltenborn and contributors
+    Licensed under the Apache License, Version 2.0
+
+Google Test Adapter has been converted into a Visual Studio 2026/2022 test adapter for
+native test DLLs of the Test Authoring and Execution Framework (TAEF). Any file taken
+from Google Test Adapter may have been changed; see LICENSE.md (LICENSE.txt in the VSIX and
+the NuGet package) for the license and the notice of modification, which applies to all of
+these files. In addition, most changed C# source files carry the note "This file has been
+modified for TAEF support.", and source files that were modified by Microsoft as part of
+Google Test Adapter carry a notice to that effect.
+
+
+Files under the MIT license
+---------------------------
+
+The following source files were contributed to Google Test Adapter under the MIT license
+and are part of the Test Adapter for TAEF, some of them in modified form:
+TaefTestAdapter/Common/DebuggerAttacherServiceConfiguration.cs,
+TaefTestAdapter/Common/IDebuggerAttacherService.cs, TaefTestAdapter/Common/IStrings.cs,
+TaefTestAdapter/Common/Strings.cs, TaefTestAdapter/DiaResolver/DiaFactory.cs,
+TaefTestAdapter/DiaResolver/IClassFactory.cs and
+TaefTestAdapter/Packaging/Properties/AssemblyInfo.cs.
+
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this
+    software and associated documentation files (the "Software"), to deal in the Software
+    without restriction, including without limitation the rights to use, copy, modify,
+    merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies
+    or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+    CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+    THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+Third-party components
+----------------------
+
+The binary packages of the Test Adapter for TAEF contain the following third-party
+component:
+
+1. msdia140.dll of the Microsoft Debug Interface Access (DIA) SDK (VSIX and NuGet
+   package), which is part of Visual Studio and is subject to the Visual Studio license
+   terms (https://visualstudio.microsoft.com/license-terms/).
+
+TAEF itself (TE.exe, its runtime, headers and libraries) is not part of the Test Adapter
+for TAEF; it is provided by the Windows Kits (e.g. the Windows Driver Kit) or by the
+Microsoft.Taef NuGet package under their own license terms.

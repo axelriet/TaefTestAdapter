@@ -1,0 +1,24 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>TAEF Test Project</Name>
+    <Description>A TAEF based C++ unit testing project (native test DLL). Requires the TAEF development files, which are installed with the Windows Driver Kit (WDK).</Description>
+    <ProjectType>VC</ProjectType>
+    <TemplateID>TaefTestAdapter.VisualC.Project.TaefTest</TemplateID>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <CreateInPlace>true</CreateInPlace>
+    <DefaultName>TaefTests</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>Icon.ico</Icon>
+    <LanguageTag>cpp</LanguageTag>
+    <PlatformTag>windows</PlatformTag>
+    <ProjectTypeTag>test</ProjectTypeTag>
+  </TemplateData>
+  <TemplateContent PreferedSolutionConfiguration="Debug|x64">
+    <Project TargetFileName="$projectname$.vcxproj" File="TaefTest.vcxproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="Tests.cpp" OpenInEditor="true">test.cpp</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

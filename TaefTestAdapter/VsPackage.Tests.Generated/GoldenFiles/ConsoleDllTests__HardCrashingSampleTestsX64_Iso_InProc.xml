@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun>
+  <Results>
+    <UnitTestResult testName="TaefSamples::Crashing::AddFailsAfterCrash" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddFailsBeforeCrash" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20)</Message>
+          <StackTrace>at taefsamples::crashing::addfailsbeforecrash in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 50</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesAfterAllCrashes" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesAfterCrash" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesBeforeCrash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::LongRunning" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheAbort" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheCrash" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>!! This test has probably CRASHED !! (TE.exe terminated with exit code 0xC0000005)
+Test output:
+
+About to dereference a null pointer</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheStackOverflow" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>reason is probably a crash of test TaefSamples::Crashing::TheCrash</Message>
+          <StackTrace>at crash suspect in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 60</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TaefSamples::Crashing::AddFailsAfterCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddFailsAfterCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddFailsBeforeCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddFailsBeforeCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesAfterAllCrashes" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesAfterAllCrashes" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesAfterCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesAfterCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesBeforeCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesBeforeCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::LongRunning" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="LongRunning" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheAbort" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheAbort" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheStackOverflow" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheStackOverflow" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary outcome="Failed">
+    <Counters total="9" executed="3" passed="1" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output />
+  </ResultSummary>
+</TestRun>

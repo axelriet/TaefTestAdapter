@@ -1,4 +1,4 @@
-// dllmain.cpp : Definiert den Einstiegspunkt für die DLL-Anwendung.
+// dllmain.cpp: entry point of the DLL.
 #include "stdafx.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -16,4 +16,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	}
 	return TRUE;
 }
-

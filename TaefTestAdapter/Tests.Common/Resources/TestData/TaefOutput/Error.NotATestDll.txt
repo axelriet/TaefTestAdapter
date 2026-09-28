@@ -1,0 +1,7 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+Error: TAEF: [HRESULT 0x80004005] Failed to load 'C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64\DllProject.dll'. (The file was not recognized to be a TAEF test.)
+
+Summary of Errors Outside of Tests:
+    Error: TAEF: [HRESULT 0x80004005] Failed to load 'C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64\DllProject.dll'. (The file was not recognized to be a TAEF test.)
+

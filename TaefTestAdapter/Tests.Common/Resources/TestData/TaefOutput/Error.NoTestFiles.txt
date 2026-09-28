@@ -1,0 +1,11 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+Warning: TAEF: The test file "C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64\DoesNotExist_taef.dll" does not exist.
+Error: TAEF: None of the specified test files were found.
+
+Summary of TAEF Warnings:
+    Warning: TAEF: The test file "C:\src\TAEF-Test-Adapter\out\binaries\SampleTests\Debug-x64\DoesNotExist_taef.dll" does not exist.
+
+Summary of Errors Outside of Tests:
+    Error: TAEF: None of the specified test files were found.
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata minClientVersion="5.3">
+    <id>TaefTestAdapter</id>
+    <version>1.0.0.0</version>
+    <title>Test Adapter for TAEF</title>
+    <authors>TAEF Test Adapter Contributors</authors>
+    <description>Enables Visual Studio's testing tools (Test Explorer, vstest.console.exe) with native C++ tests written for the Test Authoring and Execution Framework (TAEF). Use the NuGet package on build servers or without the Visual Studio extension; the extension additionally provides options, a toolbar and debugging with the native debugger engines.</description>
+    <summary>Runs TAEF tests (TE.exe) from the Test Explorer of Visual Studio 2026 and Visual Studio 2022 and from vstest.console.exe; configured with .runsettings files.</summary>
+    <language>en-US</language>
+    <icon>taef-logo.png</icon>
+    <license type="expression">Apache-2.0</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <developmentDependency>true</developmentDependency>
+    <copyright>Copyright 2015-2019 Christian Soltenborn and contributors. Modified for TAEF support by Axel Rietschin and Claude Code.</copyright>
+    <tags>native TAEF TE.exe WEX test adapter C++ unit integration automated testing</tags>
+    <dependencies>
+      <group targetFramework="native0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="TaefTestAdapter.Common.dll" target="build\_common\" />
+    <file src="TaefTestAdapter.Core.dll" target="build\_common\" />
+    <file src="TaefTestAdapter.DiaResolver.dll" target="build\_common\" />
+    <file src="TaefTestAdapter.TestAdapter.dll" target="build\_common\" />
+
+    <file src="x86\msdia140.dll" target="build\_common\x86\" />
+    <file src="x64\msdia140.dll" target="build\_common\x64\" />
+
+    <file src="LICENSE.txt" target="" />
+    <file src="NOTICE.txt" target="" />
+    <file src="Resources\taef-logo.png" target="" />
+    <file src="_.txt" target="lib\native\" />
+  </files>
+</package>

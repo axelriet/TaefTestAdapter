@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), Common.props))\Common.props" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2F0E4458-6C1C-461F-A60A-B731AD97E839}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaefTestAdapter.Tests.Common</RootNamespace>
+    <AssemblyName>TaefTestAdapter.Tests.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">17.0</VisualStudioVersion>
+    <SignAssembly>false</SignAssembly>
+    <!-- MSTest v1 (Microsoft.VisualStudio.QualityTools.UnitTestFramework) is not available as NuGet package; it is taken
+         from the Visual Studio installation that builds the project (VS 2026/2022: Common7\IDE\PublicAssemblies) -->
+    <MSTestV1AssemblyPath Condition="'$(MSTestV1AssemblyPath)' == '' and '$(VsInstallRoot)' != ''">$(VsInstallRoot)\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</MSTestV1AssemblyPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=5.6.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)FluentAssertions.5.6.0\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(MSTestV1AssemblyPath)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)Microsoft.TestPlatform.ObjectModel.11.0.0\lib\net35\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)Moq.4.10.1\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)System.Threading.Tasks.Extensions.4.5.2\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>$(NuGetPackages)System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="XmlDiffPatch, Version=1.0.8.28, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>$(NuGetPackages)XMLDiffPatch.1.0.8.28\lib\net\XmlDiffPatch.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XmlDiffPatch.View, Version=1.0.1493.40755, Culture=neutral">
+      <HintPath>$(NuGetPackages)XMLDiffPatch.1.0.8.28\lib\net\XmlDiffPatch.View.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- all C# files of the project folder are compiled: add or delete files without editing this project file -->
+    <Compile Include="**\*.cs" Exclude="bin\**;obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{bc05d210-68cd-47d0-ae8c-0f3168d1be73}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{7f4372da-70e2-48d0-bee2-8043528428d0}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiaResolver\DiaResolver.csproj">
+      <Project>{fdc95d92-5e1e-4bdf-aa35-181851fce755}</Project>
+      <Name>DiaResolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestAdapter\TestAdapter.csproj">
+      <Project>{44c04e51-d543-4155-a57e-bbeb73d3f8e5}</Project>
+      <Name>TestAdapter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- test data files (runsettings, captured TE.exe outputs, ...) are copied to the output folder of every test project
+         referencing Tests.Common (TestResources.TestdataDir) -->
+    <Content Include="Resources\TestData\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Resources\Trx2TestRun.xslt" />
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <!--
+    Build information used by TestResources to find the enlistment, the adapter's build output and the sample test DLLs
+    independently of the current directory and of an isolated OutRoot (see TestResources.cs): the values are embedded as
+    [assembly: AssemblyMetadata("TaefTestAdapter.Tests.<Key>", "<value>")] attributes.
+  -->
+  <PropertyGroup>
+    <TestsCommonBuildInfoFile>$(IntermediateOutputPath)TestsCommonBuildInfo.g.cs</TestsCommonBuildInfoFile>
+  </PropertyGroup>
+  <Target Name="GenerateTestsCommonBuildInfo" BeforeTargets="CoreCompile" DependsOnTargets="PrepareForBuild">
+    <ItemGroup>
+      <_TestsCommonBuildInfo Include="System.Reflection.AssemblyMetadataAttribute">
+        <_Parameter1>TaefTestAdapter.Tests.EnlistmentRoot</_Parameter1>
+        <_Parameter2>$([System.IO.Path]::GetFullPath('$(EnlistmentRoot)'))</_Parameter2>
+      </_TestsCommonBuildInfo>
+      <_TestsCommonBuildInfo Include="System.Reflection.AssemblyMetadataAttribute">
+        <_Parameter1>TaefTestAdapter.Tests.OutRoot</_Parameter1>
+        <_Parameter2>$([System.IO.Path]::GetFullPath('$(OutRoot)'))</_Parameter2>
+      </_TestsCommonBuildInfo>
+      <_TestsCommonBuildInfo Include="System.Reflection.AssemblyMetadataAttribute">
+        <_Parameter1>TaefTestAdapter.Tests.TestsCommonOutDir</_Parameter1>
+        <_Parameter2>$([System.IO.Path]::GetFullPath('$(OutDir)'))</_Parameter2>
+      </_TestsCommonBuildInfo>
+      <_TestsCommonBuildInfo Include="System.Reflection.AssemblyMetadataAttribute">
+        <_Parameter1>TaefTestAdapter.Tests.Configuration</_Parameter1>
+        <_Parameter2>$(Configuration)</_Parameter2>
+      </_TestsCommonBuildInfo>
+      <_TestsCommonBuildInfo Include="System.Reflection.AssemblyMetadataAttribute">
+        <_Parameter1>TaefTestAdapter.Tests.SolutionName</_Parameter1>
+        <_Parameter2>$(SolutionName)</_Parameter2>
+      </_TestsCommonBuildInfo>
+    </ItemGroup>
+    <!-- only replace the generated file if its content changes (avoids recompiling Tests.Common and its dependents) -->
+    <WriteCodeFragment Language="C#" OutputFile="$(TestsCommonBuildInfoFile).tmp" AssemblyAttributes="@(_TestsCommonBuildInfo)" />
+    <PropertyGroup>
+      <_TestsCommonBuildInfoChanged>true</_TestsCommonBuildInfoChanged>
+      <_TestsCommonBuildInfoChanged Condition="Exists('$(TestsCommonBuildInfoFile)') and '$([System.String]::Equals($([System.IO.File]::ReadAllText($(TestsCommonBuildInfoFile))), $([System.IO.File]::ReadAllText($(TestsCommonBuildInfoFile).tmp))))' == 'True'">false</_TestsCommonBuildInfoChanged>
+    </PropertyGroup>
+    <Copy Condition="'$(_TestsCommonBuildInfoChanged)' == 'true'" SourceFiles="$(TestsCommonBuildInfoFile).tmp" DestinationFiles="$(TestsCommonBuildInfoFile)" />
+    <Delete Files="$(TestsCommonBuildInfoFile).tmp" />
+    <ItemGroup>
+      <Compile Include="$(TestsCommonBuildInfoFile)" />
+      <FileWrites Include="$(TestsCommonBuildInfoFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

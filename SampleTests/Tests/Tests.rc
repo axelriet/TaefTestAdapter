@@ -1,0 +1,2 @@
+// Table data sources of the data-driven tests, embedded so that Tests_taef.dll does not depend on files next to it
+DataDrivenTests.xml DATASOURCE_XML "DataDrivenTests.xml"

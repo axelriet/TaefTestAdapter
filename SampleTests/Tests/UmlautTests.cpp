@@ -1,95 +1,129 @@
-#include <windows.h>
-#include <string>
-#include "gtest/gtest.h"
-#include "gtest_wrapper.h"
+Ôªø// Non-ASCII test, class and namespace names, properties and data (the source is UTF-8, compiled with /utf-8).
+#include "WexTestClass.h"
 
+using namespace WEX::Logging;
+using namespace WEX::TestExecution;
+using WEX::Common::String;
 
-TEST(‹mlautﬂ, T‰st)
+namespace TaefSamples
 {
-	ASSERT_EQ(1, 2);
-}
+    class √úmlaut√ü
+    {
+        TEST_CLASS(√úmlaut√ü)
 
-TEST_TRAITS(‹mlautﬂ, Tr‰its, Tr‰it1, Vˆlue1a, Tr‰it1, Vˆlue1b, Tr‰it2, Vˆlue2)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(T√§st)
+        {
+            VERIFY_ARE_EQUAL(1, 2, L"√úmlaut√ü::T√§st");
+        }
 
+        BEGIN_TEST_METHOD(Tr√§its)
+            TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1a")
+            TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1b")
+            TEST_METHOD_PROPERTY(L"Tr√§it2", L"V√∂lue2")
+        END_TEST_METHOD()
+    };
 
-
-class TheFixt¸re : public testing::Test
-{
-};
-
-TEST_F(TheFixt¸re, T‰st)
-{
-	EXPECT_EQ(1, 2);
-}
-
-TEST_F_TRAITS(TheFixt¸re, Tr‰its, Tr‰it1, Vˆlue1a, Tr‰it1, Vˆlue1b, Tr‰it2, Vˆlue2)
-{
-	EXPECT_EQ(1, 1);
-}
+    void √úmlaut√ü::Tr√§its()
+    {
+        Log::Comment(L"√úmlaut output: √§√∂√º √Ñ√ñ√ú √ü ÂêçÂâç ‚úì");
+    }
 
 
+    namespace N√§mespace
+    {
+        class Kl√§ssWithSet√ºp
+        {
+            TEST_CLASS(Kl√§ssWithSet√ºp)
 
-class MyP‰r‰m
-{
-public:
-	MyP‰r‰m(std::string s, int i) : s(s), i(i) {}
-	int i;
-	std::string s;
-};
+            int m_v√§lue = 0;
 
-void PrintTo(const MyP‰r‰m& param, ::std::ostream* os) {
-	*os << "(" << param.i << "," << param.s << ")";
-}
+            TEST_METHOD_SETUP(Set√ºp)
+            {
+                m_v√§lue = 1;
+                return true;
+            }
 
-class ParameterizedT‰sts : public testing::TestWithParam<MyP‰r‰m>
-{
-};
+            TEST_METHOD(T√§st)
+            {
+                VERIFY_ARE_EQUAL(2, m_v√§lue, L"TaefSamples::N√§mespace::Kl√§ssWithSet√ºp::T√§st");
+            }
 
-TEST_P(ParameterizedT‰sts, T‰st) {
-	EXPECT_EQ(1, GetParam().i);
-	EXPECT_EQ("ƒ÷‹‰ˆ¸ﬂ", GetParam().s);
-}
+            BEGIN_TEST_METHOD(Tr√§its)
+                TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1a")
+                TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1b")
+                TEST_METHOD_PROPERTY(L"Tr√§it2", L"V√∂lue2")
+            END_TEST_METHOD()
+        };
 
-TEST_P_TRAITS(ParameterizedT‰sts, Tr‰its, Tr‰it1, Vˆlue1a, Tr‰it1, Vˆlue1b, Tr‰it2, Vˆlue2) {
-	EXPECT_EQ(1, GetParam().i);
-	EXPECT_EQ("‰ˆ¸ﬂƒ÷‹", GetParam().s);
-}
-
-INSTANTIATE_TEST_CASE_P(‹nstanceName,
-	ParameterizedT‰sts,
-	testing::Values(MyP‰r‰m("ƒ÷‹‰ˆ¸ﬂ", 1))
-);
+        void Kl√§ssWithSet√ºp::Tr√§its()
+        {
+            VERIFY_ARE_EQUAL(1, m_v√§lue, L"TaefSamples::N√§mespace::Kl√§ssWithSet√ºp::Tr√§its");
+        }
+    }
 
 
+    class DataDrivenT√§sts
+    {
+        TEST_CLASS(DataDrivenT√§sts)
 
-class TheInterface {
-public:
-	virtual int GetValue(int i) = 0;
-};
+        BEGIN_TEST_METHOD(T√§st)
+            TEST_METHOD_PROPERTY(L"Data:P√§r√§m", L"{√Ñ√ñ√ú√§√∂√º√ü}")
+        END_TEST_METHOD()
 
-class ImplementationA : public TheInterface
-{
-public:
-	int GetValue(int i) override { return i + 1; }
-};
+        BEGIN_TEST_METHOD(Tr√§its)
+            TEST_METHOD_PROPERTY(L"Data:P√§r√§m", L"{√Ñ√ñ√ú√§√∂√º√ü}")
+            TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1a")
+            TEST_METHOD_PROPERTY(L"Tr√§it1", L"V√∂lue1b")
+            TEST_METHOD_PROPERTY(L"Tr√§it2", L"V√∂lue2")
+        END_TEST_METHOD()
+    };
 
-class ImplementationB : public TheInterface
-{
-public:
-	int GetValue(int i) override { return i + 2; }
-};
+    void DataDrivenT√§sts::T√§st()
+    {
+        String p√§r√§m;
+        VERIFY_SUCCEEDED(TestData::TryGetValue(L"P√§r√§m", p√§r√§m));
+        VERIFY_ARE_EQUAL(String(L"√Ñ√ñ√ú√§√∂√º√ü"), p√§r√§m);
+    }
 
-template< typename type >
-class ‹mlautTypedTests : public ::testing::Test {
-};
+    void DataDrivenT√§sts::Tr√§its()
+    {
+        String p√§r√§m;
+        VERIFY_SUCCEEDED(TestData::TryGetValue(L"P√§r√§m", p√§r√§m));
+        VERIFY_ARE_EQUAL(String(L"√§√∂√º√ü√Ñ√ñ√ú"), p√§r√§m);
+    }
 
-typedef ::testing::Types<ImplementationA, ImplementationB> ImplementationTypes;
-TYPED_TEST_CASE(‹mlautTypedTests, ImplementationTypes);
 
-TYPED_TEST(‹mlautTypedTests, T‰st) {
-	TypeParam theInstance;
-	EXPECT_EQ(2, theInstance.GetValue(1));
+    class TheInterface
+    {
+    public:
+        virtual ~TheInterface() = default;
+        virtual int GetValue(int i) = 0;
+    };
+
+    class ImplementationA : public TheInterface
+    {
+    public:
+        int GetValue(int i) override { return i + 1; }
+    };
+
+    class ImplementationB : public TheInterface
+    {
+    public:
+        int GetValue(int i) override { return i + 2; }
+    };
+
+    template <typename TImplementation>
+    class √úmlautTemplateTests
+    {
+        TEST_CLASS(√úmlautTemplateTests)
+
+        TEST_METHOD(T√§st)
+        {
+            TImplementation theInstance;
+            VERIFY_ARE_EQUAL(2, theInstance.GetValue(1));
+        }
+    };
+
+    template class √úmlautTemplateTests<ImplementationA>;
+    template class √úmlautTemplateTests<ImplementationB>;
 }

@@ -1,0 +1,73 @@
+Test Authoring and Execution Framework v10.104k for x64
+[Tests] module setup
+
+StartGroup: TaefSamples::TestMath::AddPasses
+Verify: AreEqual(20, Add(10, 10))
+EndGroup: TaefSamples::TestMath::AddPasses [Passed]
+[ClassWithFixtures] class setup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddFails
+Error: Verify: AreEqual(1000, Add(m_summand, 10)) - Values (1000, 20) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\FixtureTests.cpp, Function: TaefSamples::ClassWithFixtures::AddFails, Line: 52]
+EndGroup: TaefSamples::ClassWithFixtures::AddFails [Failed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPasses
+Verify: AreEqual(20, Add(m_summand, 10))
+EndGroup: TaefSamples::ClassWithFixtures::AddPasses [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits2
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits2
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits2 [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits3
+Verify: AreEqual(20, Add(m_summand, 10)): AddPassesWithTraits3
+EndGroup: TaefSamples::ClassWithFixtures::AddPassesWithTraits3 [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] method setup
+
+StartGroup: TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest
+Verify: AreEqual(10, m_summand): method setup resets the state
+Verify: AreEqual(1, m_classSetupCalls): class setup runs once
+EndGroup: TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest [Passed]
+[ClassWithFixtures] method cleanup
+[ClassWithFixtures] class cleanup
+
+StartGroup: TaefSamples::NamedRows::SpecialCharacters#with'quote
+TAEF: Data[Index]: 1
+TAEF: Data[Number]: 2
+Verify: SUCCEEDED(TestData::TryGetValue(L"Number", number))
+Error: Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\DataDrivenTests.cpp, Function: TaefSamples::NamedRows::SpecialCharacters, Line: 155]
+EndGroup: TaefSamples::NamedRows::SpecialCharacters#with'quote [Failed]
+
+StartGroup: TaefSamples::MissingDataSource::Test#error
+TestBlocked: TAEF: [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.
+EndGroup: TaefSamples::MissingDataSource::Test#error [Blocked]
+
+StartGroup: TaefSamples::Ümlautß::Täst
+Error: Verify: AreEqual(1, 2): Ümlautß::Täst - Values (1, 2) [File: C:\src\TAEF-Test-Adapter\SampleTests\Tests\UmlautTests.cpp, Function: TaefSamples::Ümlautß::Täst, Line: 16]
+EndGroup: TaefSamples::Ümlautß::Täst [Failed]
+
+StartGroup: TaefSamples::Ümlautß::Träits
+Ümlaut output: äöü ÄÖÜ ß 名前 ✓
+EndGroup: TaefSamples::Ümlautß::Träits [Passed]
+[Tests] module cleanup
+
+Summary of Non-passing Tests:
+    TaefSamples::ClassWithFixtures::AddFails [Failed]
+    TaefSamples::NamedRows::SpecialCharacters#with'quote [Failed]
+    TaefSamples::Ümlautß::Täst [Failed]
+    TaefSamples::MissingDataSource::Test#error [Blocked]
+
+Summary: Total=11, Passed=7, Failed=3, Blocked=1, Not Run=0, Skipped=0

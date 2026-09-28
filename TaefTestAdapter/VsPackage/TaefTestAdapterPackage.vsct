@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- The toolbar of the Test Adapter for TAEF: buttons switching boolean options of the adapter.
+       GUIDs and ids must match TaefTestAdapterPackage.PackageGuidString, AbstractSwitchBooleanOptionCommand.CommandSet
+       and the CommandId constants of the Switch*OptionCommand classes. -->
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidTaefTestAdapterPackage">
+    <Menus>
+      <Menu guid="guidTaefTestAdapterPackageCmdSet" id="Toolbar" type="Toolbar">
+        <CommandFlag>DefaultDocked</CommandFlag>
+        <Strings>
+          <ButtonText>Test Adapter for TAEF</ButtonText>
+          <CommandName>Test Adapter for TAEF</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <Groups>
+      <Group guid="guidTaefTestAdapterPackageCmdSet" id="ToolbarGroup" priority="0x0000">
+        <Parent guid="guidTaefTestAdapterPackageCmdSet" id="Toolbar"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+
+      <Button guid="guidTaefTestAdapterPackageCmdSet" id="SwitchRunInProcessOptionCommandId" priority="0x0102" type="Button">
+        <Parent guid="guidTaefTestAdapterPackageCmdSet" id="ToolbarGroup" />
+        <Icon guid="toolbaricons" id="run_in_process" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Run tests in process (/inproc)</ButtonText>
+          <ToolTipText>Run tests in process (TE.exe /inproc): makes the tests' console output visible, but a crashing test aborts the remaining tests of its test DLL</ToolTipText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidTaefTestAdapterPackageCmdSet" id="SwitchBreakOnErrorOptionCommandId" priority="0x0101" type="Button">
+        <Parent guid="guidTaefTestAdapterPackageCmdSet" id="ToolbarGroup" />
+        <Icon guid="toolbaricons" id="break_on_error" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Break on error</ButtonText>
+          <ToolTipText>Break on error: while debugging, break into the debugger as soon as a test logs an error (TE.exe /breakOnError)</ToolTipText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidTaefTestAdapterPackageCmdSet" id="SwitchParallelExecutionOptionCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidTaefTestAdapterPackageCmdSet" id="ToolbarGroup" />
+        <Icon guid="toolbaricons" id="parallel_test_execution" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Parallel test execution</ButtonText>
+          <ToolTipText>Parallel test execution: split the tests among several threads, each of which runs TE.exe for its share of the tests (option Maximum number of threads)</ToolTipText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidTaefTestAdapterPackageCmdSet" id="SwitchPrintTestOutputOptionCommandId" priority="0x0104" type="Button">
+        <Parent guid="guidTaefTestAdapterPackageCmdSet" id="ToolbarGroup" />
+        <Icon guid="toolbaricons" id="print_test_output" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Print test output</ButtonText>
+          <ToolTipText>Print test output: echo the console output of TE.exe to the Tests output window</ToolTipText>
+        </Strings>
+      </Button>
+
+    </Buttons>
+
+    <Bitmaps>
+      <!-- the order of the images in toolbaricons.png is documented in Resources\Icons\README.md -->
+      <Bitmap guid="toolbaricons" href="..\Resources\Icons\toolbaricons.png"
+              usedList="run_in_process, parallel_test_execution, break_on_error, print_test_output"/>
+    </Bitmaps>
+  </Commands>
+
+  <!-- the buttons are visible if a solution with at least one project or a folder is open -->
+  <VisibilityConstraints>
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchRunInProcessOptionCommandId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchRunInProcessOptionCommandId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchRunInProcessOptionCommandId" context="UICONTEXT_FolderOpened" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchBreakOnErrorOptionCommandId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchBreakOnErrorOptionCommandId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchBreakOnErrorOptionCommandId" context="UICONTEXT_FolderOpened" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchParallelExecutionOptionCommandId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchParallelExecutionOptionCommandId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchParallelExecutionOptionCommandId" context="UICONTEXT_FolderOpened" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchPrintTestOutputOptionCommandId" context="UICONTEXT_SolutionHasSingleProject" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchPrintTestOutputOptionCommandId" context="UICONTEXT_SolutionHasMultipleProjects" />
+    <VisibilityItem guid="guidTaefTestAdapterPackageCmdSet" id="SwitchPrintTestOutputOptionCommandId" context="UICONTEXT_FolderOpened" />
+  </VisibilityConstraints>
+
+  <Symbols>
+    <GuidSymbol name="guidTaefTestAdapterPackage" value="{62ca60da-de1d-4838-9730-5bc75b592f7c}" />
+
+    <GuidSymbol name="guidTaefTestAdapterPackageCmdSet" value="{e36b8b2e-66df-4a55-b356-3b08793b9b02}">
+      <IDSymbol name="SwitchRunInProcessOptionCommandId" value="0x0100" />
+      <IDSymbol name="SwitchBreakOnErrorOptionCommandId" value="0x0101" />
+      <IDSymbol name="SwitchParallelExecutionOptionCommandId" value="0x0102" />
+      <IDSymbol name="SwitchPrintTestOutputOptionCommandId" value="0x0103" />
+      <IDSymbol name="Toolbar" value="0x1000" />
+      <IDSymbol name="ToolbarGroup" value="0x1050" />
+    </GuidSymbol>
+
+    <GuidSymbol name="toolbaricons" value="{f27c226f-8c88-453d-91af-5fb9b7208f41}" >
+      <IDSymbol name="run_in_process" value="1" />
+      <IDSymbol name="parallel_test_execution" value="2" />
+      <IDSymbol name="break_on_error" value="3" />
+      <IDSymbol name="print_test_output" value="4" />
+    </GuidSymbol>
+
+    <!-- VSConstants.UICONTEXT.FolderOpened (not defined in vsshlids.h) -->
+    <GuidSymbol name="UICONTEXT_FolderOpened" value="{4646B819-1AE0-4E79-97F4-8A8176FDD664}" />
+
+  </Symbols>
+</CommandTable>

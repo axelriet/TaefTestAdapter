@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun>
+  <Results>
+    <UnitTestResult testName="TaefSamples::Crashing::AddFailsAfterCrash" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20)</Message>
+          <StackTrace>at taefsamples::crashing::addfailsaftercrash in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 69</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddFailsBeforeCrash" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20)</Message>
+          <StackTrace>at taefsamples::crashing::addfailsbeforecrash in $(directory)\sampletests\crashingtests\crashingtests.cpp:line 50</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesAfterAllCrashes" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesAfterCrash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::AddPassesBeforeCrash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::LongRunning" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheAbort" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheAbort'. (The test host process was unexpectedly terminated with exit code 0x00000003 while invoking a test operation. (An RPC call failed.))</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheCrash" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheCrash'. (The test host process was unexpectedly terminated with exit code 0xC0000005 while invoking a test operation. (An RPC call failed.))</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Crashing::TheStackOverflow" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>TAEF: [HRESULT 0x800706BE] A failure occurred while running a test operation: 'TaefSamples::Crashing::TheStackOverflow'. (The test host process was unexpectedly terminated with exit code 0xC00000FD while invoking a test operation. (An RPC call failed.))</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TaefSamples::Crashing::AddFailsAfterCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddFailsAfterCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddFailsBeforeCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddFailsBeforeCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesAfterAllCrashes" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesAfterAllCrashes" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesAfterCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesAfterCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::AddPassesBeforeCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="AddPassesBeforeCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::LongRunning" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="LongRunning" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheAbort" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheAbort" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheCrash" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheCrash" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Crashing::TheStackOverflow" storage="$(Directory)\sampletests\release-x64\crashingtests_taef.dll">
+      <TestMethod name="TheStackOverflow" className="TaefSamples.Crashing" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\Release-x64\CrashingTests_taef.dll" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary outcome="Failed">
+    <Counters total="9" executed="9" passed="4" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output />
+  </ResultSummary>
+</TestRun>

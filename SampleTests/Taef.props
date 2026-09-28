@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared settings of all TAEF test DLL projects of the sample solution.
+
+  Import this file after Microsoft.Cpp.props (e.g. in the "PropertySheets" import group) of a DynamicLibrary project.
+  It adds the TAEF headers and libraries of the Windows Kits (installed with the WDK) and names the test DLL
+  <ProjectName>_taef.dll.
+
+  Override TaefDevelopmentDir (e.g. /p:TaefDevelopmentDir=D:\Kits\10\Testing\Development\) to use another TAEF
+  installation; it must contain inc\WexTestClass.h and lib\<x86|x64|arm64>\*.lib.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <TaefDevelopmentDir Condition="'$(TaefDevelopmentDir)' == '' and '$(WindowsSdkDir)' != '' and Exists('$(WindowsSdkDir)Testing\Development\inc\WexTestClass.h')">$(WindowsSdkDir)Testing\Development\</TaefDevelopmentDir>
+    <TaefDevelopmentDir Condition="'$(TaefDevelopmentDir)' == ''">$(MSBuildProgramFiles32)\Windows Kits\10\Testing\Development\</TaefDevelopmentDir>
+    <!-- normalized copy (a TaefDevelopmentDir given on the command line cannot be changed by the project) -->
+    <_TaefDevelopmentDir>$([MSBuild]::EnsureTrailingSlash('$(TaefDevelopmentDir)'))</_TaefDevelopmentDir>
+
+    <!-- TAEF library folder: lib\x86, lib\x64 or lib\arm64 -->
+    <TaefArchitecture Condition="'$(TaefArchitecture)' == '' and ('$(Platform)' == 'Win32' or '$(Platform)' == 'x86')">x86</TaefArchitecture>
+    <TaefArchitecture Condition="'$(TaefArchitecture)' == '' and '$(Platform)' == 'x64'">x64</TaefArchitecture>
+    <TaefArchitecture Condition="'$(TaefArchitecture)' == '' and ('$(Platform)' == 'ARM64' or '$(Platform)' == 'arm64')">arm64</TaefArchitecture>
+    <TaefArchitecture Condition="'$(TaefArchitecture)' == '' and '$(PlatformTarget)' != ''">$(PlatformTarget.ToLowerInvariant())</TaefArchitecture>
+
+    <!-- Test DLLs of the samples are named <ProjectName>_taef.dll -->
+    <TargetName>$(ProjectName)_taef</TargetName>
+
+    <!-- No incremental linking: keeps the PDB/symbol layout simple and deterministic for the adapter's source lookup -->
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(_TaefDevelopmentDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!-- INLINE_TEST_METHOD_MARKUP: TEST_METHOD(Name) { ... } bodies can be written inline -->
+      <PreprocessorDefinitions>INLINE_TEST_METHOD_MARKUP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!-- sources are UTF-8 (non-ASCII test names, properties and data) -->
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(_TaefDevelopmentDir)lib\$(TaefArchitecture);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TE.Common.lib;Wex.Common.lib;Wex.Logger.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- full PDBs in Debug AND Release: the adapter reads source locations from them -->
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <!-- no identical COMDAT folding (/OPT:ICF) in Release: test methods whose optimized code is identical would be
+           merged into one function, and their source locations could not be told apart any more -->
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <Target Name="TaefCheckDevelopmentDir" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(_TaefDevelopmentDir)inc\WexTestClass.h')"
+           Text="TAEF headers not found: '$(_TaefDevelopmentDir)inc\WexTestClass.h' does not exist. Install the Windows Driver Kit (WDK), which installs TAEF, or set the MSBuild property TaefDevelopmentDir." />
+    <Error Condition="!Exists('$(_TaefDevelopmentDir)lib\$(TaefArchitecture)\Wex.Logger.lib')"
+           Text="TAEF libraries for architecture '$(TaefArchitecture)' not found in '$(_TaefDevelopmentDir)lib\$(TaefArchitecture)\'." />
+  </Target>
+
+</Project>

@@ -3,12 +3,24 @@
     <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory)..\, Common.props))\Common.props" />
     <PropertyGroup>
 
+        <!-- Name of the output folder below out\binaries\ (SampleTests when a project is built without a solution) -->
+        <SampleTestsFolderName>$(SolutionName)</SampleTestsFolderName>
+        <SampleTestsFolderName Condition="'$(SampleTestsFolderName)' == '' or '$(SampleTestsFolderName)' == '*Undefined*'">SampleTests</SampleTestsFolderName>
+
         <PlatformSuffix Condition="'$(Platform)' == 'Win32'" />
         <PlatformSuffix Condition="'$(Platform)' != 'Win32'">-$(Platform)</PlatformSuffix>
 
-        <!-- All test binaries should be placed in the same directory -->
-        <OutDir>$(EnlistmentRoot)out\binaries\$(SolutionName)\$(Configuration)$(PlatformSuffix)\</OutDir>
+        <!-- All test binaries should be placed in the same directory: Debug, Release, Debug-x64, Release-x64 -->
+        <OutDir>$(OutRoot)binaries\$(SampleTestsFolderName)\$(Configuration)$(PlatformSuffix)\</OutDir>
         <OutputPath>$(OutDir)</OutputPath>
+
+        <!-- Intermediate files per configuration AND platform (Win32 and x64 builds must not share them) -->
+        <IntDir>$(OutRoot)intermediate\$(SampleTestsFolderName)\$(Configuration)$(PlatformSuffix)\$(MSBuildProjectName)\</IntDir>
+        <IntermediateOutputPath>$(IntDir)</IntermediateOutputPath>
+        <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
+
+        <!-- Output folder of the managed (AnyCPU) sample projects of the same configuration -->
+        <ManagedSampleOutDir>$(OutRoot)binaries\$(SampleTestsFolderName)\$(Configuration)-AnyCPU\</ManagedSampleOutDir>
 
     </PropertyGroup>
 </Project>

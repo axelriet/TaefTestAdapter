@@ -1,0 +1,1236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun>
+  <Results>
+    <UnitTestResult testName="TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::`anonymous-namespace'::Namespace_Anon::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::abcd::t" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::bbcd::t" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::bcd::t" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::IgnoredTest" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>Test is marked Ignore=true - enable option 'Also run ignored tests' to run it.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::InheritsClassProperties" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::OverridesClassProperties" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: IsTrue(false): WithCustomPropertiesAndFails</Message>
+          <StackTrace>at taefsamples::classandmethodproperties::withcustompropertiesandfails in $(directory)\sampletests\tests\traitstests.cpp:line 197</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::WithMultipleValues" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::WithPriority1" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassAndMethodProperties::WithPriority2AndFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: IsTrue(false): WithPriority2AndFails</Message>
+          <StackTrace>at taefsamples::classandmethodproperties::withpriority2andfails in $(directory)\sampletests\tests\traitstests.cpp:line 187</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassTemplates::NumberTemplateTests&lt;int&gt;::CanHoldLargeSum" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassTemplates::NumberTemplateTests&lt;long&gt;::CanHoldLargeSum" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassTemplates::NumberTemplateTests&lt;signed char&gt;::CanHoldLargeSum" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(130, static_cast&lt;int&gt;(sum)) - Values (130, -126)</Message>
+          <StackTrace>at taefsamples::classtemplates::numbertemplatetests&lt;signed char&gt;::canholdlargesum in $(directory)\sampletests\tests\classtemplatetests.cpp:line 100</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::AddFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1000, Add(m_summand, 10)) - Values (1000, 20)</Message>
+          <StackTrace>at taefsamples::classwithfixtures::addfails in $(directory)\sampletests\tests\fixturetests.cpp:line 52</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::AddPasses" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::AddPassesWithTraits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::AddPassesWithTraits2" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::AddPassesWithTraits3" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::DataDrivenTästs::Täst#metadataSet0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::DataDrivenTästs::Träits#metadataSet0" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(String(L"äöüßÄÖÜ"), päräm) - Values (äöüßÄÖÜ, ÄÖÜäöüß)</Message>
+          <StackTrace>at taefsamples::datadriventästs::träits in $(directory)\sampletests\tests\umlauttests.cpp:line 92</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::EnvironmentVariable::IsSet" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: IsNotNull(value): environment variable MYENVVAR is not set (adapter setting EnvironmentVariables: MYENVVAR=MyValue) - Value ()</Message>
+          <StackTrace>at taefsamples::environmentvariable::isset in $(directory)\sampletests\tests\environmenttests.cpp:line 79</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Exceptions::ThrowsInt" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Caught an unidentified C++ exception</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Exceptions::ThrowsStdException" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Caught std::exception: std::runtime_error thrown by the test</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Exceptions::ThrowsWexException" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Caught WEX::Common::Exception: WEX::Common::Exception thrown by the test [HRESULT: 0x80070057]</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Exceptions::VerifyNoThrowFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: Caught std::exception: index out of range during (ThrowOutOfRange())</Message>
+          <StackTrace>at taefsamples::exceptions::verifynothrowfails in $(directory)\sampletests\tests\basictests.cpp:line 179</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Exceptions::VerifyThrowsPasses" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::BlockedByTest" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Blocked: Blocked by the test: a prerequisite is missing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::FailedByLogError" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Log::Error marks the test as failed</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::FailedByLogResult" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Failed set by the test</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::NotRunByTest" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>NotRun set by the test</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::PassedWithWarning" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ExplicitResults::SkippedByTest" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>Skipped by the test</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::FailingClassSetup::FirstTest" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Blocked: TAEF: Setup fixture 'TaefSamples::FailingClassSetup::ClassSetup' for the scope 'TaefSamples::FailingClassSetup' returned 'false'.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::FailingClassSetup::SecondTest" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Blocked: TAEF: Setup fixture 'TaefSamples::FailingClassSetup::ClassSetup' for the scope 'TaefSamples::FailingClassSetup' returned 'false'.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::FailingMethodSetup::Test" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Blocked: TAEF: Setup fixture 'TaefSamples::FailingMethodSetup::MethodSetup' for the scope 'TaefSamples::FailingMethodSetup::Test' returned 'false'.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::IgnoredClass::IgnoredFailing" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>Test is marked Ignore=true - enable option 'Also run ignored tests' to run it.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::IgnoredClass::IgnoredPassing" outcome="NotExecuted">
+      <Output>
+        <ErrorInfo>
+          <Message>Test is marked Ignore=true - enable option 'Also run ignored tests' to run it.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::SingleValue#metadataSet0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::SingleValue#metadataSet1" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(2, value): the data set with Value 2 is designed to fail - Values (2, 2)</Message>
+          <StackTrace>at taefsamples::lightweightdatatests::singlevalue in $(directory)\sampletests\tests\datadriventests.cpp:line 96</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::SingleValue#metadataSet2" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::TwoValues#metadataSet0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::TwoValues#metadataSet1" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::TwoValues#metadataSet2" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LightweightDataTests::TwoValues#metadataSet3" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: IsFalse(size == 20 &amp;&amp; color == L"Blue"): the data set (20, Blue) is designed to fail</Message>
+          <StackTrace>at taefsamples::lightweightdatatests::twovalues in $(directory)\sampletests\tests\datadriventests.cpp:line 106</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LongRunning::Sleeps1Second" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::LongRunning::Sleeps2SecondsAndFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): Sleeps2SecondsAndFails - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::longrunning::sleeps2secondsandfails in $(directory)\sampletests\tests\basictests.cpp:line 236</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::LogErrorWithSourceInfo" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Log::Error with source information
+#2 - Log::Error without source information</Message>
+          <StackTrace>at #1 - taefsamples::logerrorwithsourceinfoinotherfile in $(directory)\sampletests\tests\helpers.cpp:line 14</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::LogScopeInHelperMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i) - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::LogScopeInTestMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i) - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i) - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(0, i) - Values (0, 1)
+#2 - Verify: AreEqual(0, 1) - Values (0, 1)</Message>
+          <StackTrace>at #1 - taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15
+at #2 - taefsamples::messageparsertests::logscopeintestmethodandhelpermethodandverifyintestmethod in $(directory)\sampletests\tests\messageparsertests.cpp:line 104</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::TwoLogScopesInTestMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i) - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyInHeader" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i): CheckIfZeroInHeader - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzeroinheader in $(directory)\sampletests\tests\helpers.h:line 19</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyInOtherFile" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i): CheckIfZeroInOtherFile - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzeroinotherfile in $(directory)\sampletests\tests\helpers.cpp:line 9</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyInOtherMethod" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(0, i) - Values (0, 1)</Message>
+          <StackTrace>at taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(5, 6) - Values (5, 6)
+#2 - Verify: AreEqual(0, i) - Values (0, 1)
+#3 - Verify: AreEqual(0, i): CheckIfZeroInOtherFile - Values (0, 1)</Message>
+          <StackTrace>at #1 - taefsamples::messageparsertests::verifyintestandmethodandotherfile in $(directory)\sampletests\tests\messageparsertests.cpp:line 68
+at #2 - taefsamples::checkifzero in $(directory)\sampletests\tests\messageparsertests.cpp:line 15
+at #3 - taefsamples::checkifzeroinotherfile in $(directory)\sampletests\tests\helpers.cpp:line 9</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyThrows" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2) - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::messageparsertests::verifythrows in $(directory)\sampletests\tests\messageparsertests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(3, 4) - Values (3, 4)
+#2 - Verify: AreEqual(4, 5) - Values (4, 5)</Message>
+          <StackTrace>at #1 - taefsamples::messageparsertests::verifywithoutandwithexceptions in $(directory)\sampletests\tests\messageparsertests.cpp:line 45
+at #2 - taefsamples::messageparsertests::verifywithoutandwithexceptions in $(directory)\sampletests\tests\messageparsertests.cpp:line 47</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MessageParserTests::VerifyWithoutExceptions" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(2, 3) - Values (2, 3)</Message>
+          <StackTrace>at taefsamples::messageparsertests::verifywithoutexceptions in $(directory)\sampletests\tests\messageparsertests.cpp:line 38</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::MissingDataSource::Test#error" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Blocked: TAEF: [HRESULT: 0x80070002] Failed to find the data source: MissingDataSource.xml. Confirm that the file exists. If specified as a resource, check the resource. If specified as a file path, confirm that the path is relative to the test module location.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#01234567890_" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::AllowedCharacters#FunctorName" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#back\slash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with space" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with#hash" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with::colons [x]" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::NamedRows::SpecialCharacters#with'quote" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, number % 2): rows with an even Number are designed to fail - Values (1, 0)</Message>
+          <StackTrace>at taefsamples::namedrows::specialcharacters in $(directory)\sampletests\tests\datadriventests.cpp:line 155</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Nämespace::KlässWithSetüp::Täst" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(2, m_välue): TaefSamples::Nämespace::KlässWithSetüp::Täst - Values (2, 1)</Message>
+          <StackTrace>at taefsamples::nämespace::klässwithsetüp::täst in $(directory)\sampletests\tests\umlauttests.cpp:line 48</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Nämespace::KlässWithSetüp::Träits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::namespace_1::namespace_2_nested::namespace_3_deeply::nested::namespace_deep::fails in $(directory)\sampletests\tests\namespacetests.cpp:line 43</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Namespace_1::Namespace_Named::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Namespace_Root::Test" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::ManyLinesWithNewlines" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2) - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::manylineswithnewlines in $(directory)\sampletests\tests\basictests.cpp:line 81</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::OneLine" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2) - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::oneline in $(directory)\sampletests\tests\basictests.cpp:line 97</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::OneLineWithNewlines" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2) - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::onelinewithnewlines in $(directory)\sampletests\tests\basictests.cpp:line 89</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::Output_ManyLinesWithNewlines" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): test output - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::output_manylineswithnewlines in $(directory)\sampletests\tests\basictests.cpp:line 54</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::Output_OneLine" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): test output - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::output_oneline in $(directory)\sampletests\tests\basictests.cpp:line 73</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::Output_OneLineWithNewlines" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): test output - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::outputhandling::output_onelinewithnewlines in $(directory)\sampletests\tests\basictests.cpp:line 63</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::OutputHandling::OutputOfPassingTest" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::RuntimeParameterTests::TestDirectoryIsSet" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: Runtime parameter 'TestDirectory' is not set: pass /p:"TestDirectory=$(TestDir)" to TE.exe (adapter setting AdditionalTestExecutionParam, see SampleTests.taef.runsettings)</Message>
+          <StackTrace>at taefsamples::runtimeparametertests::testdirectoryisset in $(directory)\sampletests\tests\environmenttests.cpp:line 28</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::StringTableDataTests::CheckStringLength#0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::StringTableDataTests::CheckStringLength#1" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::StringTableDataTests::CheckStringLength#2" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(length, text.GetLength()) - Values (23, 5)</Message>
+          <StackTrace>at taefsamples::stringtabledatatests::checkstringlength in $(directory)\sampletests\tests\datadriventests.cpp:line 125</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::Simple#0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::Simple#1" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(String(L""), s) - Values (, !)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::Simple#2" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, i) - Values (1, -1)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::Simple#Underscore" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(1, i) - Values (1, 0)
+#2 - Verify: AreEqual(String(L""), s) - Values (, _)</Message>
+          <StackTrace>at #1 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29
+at #2 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits#0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits#1" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(String(L""), s) - Values (, !)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits#2" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, i) - Values (1, -1)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits#Underscore" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(1, i) - Values (1, 0)
+#2 - Verify: AreEqual(String(L""), s) - Values (, _)</Message>
+          <StackTrace>at #1 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29
+at #2 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits2#0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits2#1" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(String(L""), s) - Values (, !)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits2#2" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, i) - Values (1, -1)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits2#Underscore" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(1, i) - Values (1, 0)
+#2 - Verify: AreEqual(String(L""), s) - Values (, _)</Message>
+          <StackTrace>at #1 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29
+at #2 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits3#0" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits3#1" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(String(L""), s) - Values (, !)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits3#2" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, i) - Values (1, -1)</Message>
+          <StackTrace>at taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TableDataTests::SimpleTraits3#Underscore" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(1, i) - Values (1, 0)
+#2 - Verify: AreEqual(String(L""), s) - Values (, _)</Message>
+          <StackTrace>at #1 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 29
+at #2 - taefsamples::tabledatatests::checkparameters in $(directory)\sampletests\tests\datadriventests.cpp:line 30</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::CanDefeatMath" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): CanDefeatMath - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::array&lt;int,3&gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::CanIterate" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::ThreeTraits" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): ThreeTraits - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::array&lt;int,3&gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::TwoTraits" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): TwoTraits - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::array&lt;int,3&gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::CanDefeatMath" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): CanDefeatMath - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::CanIterate" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::ThreeTraits" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): ThreeTraits - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::TwoTraits" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreNotEqual(m_container[0] + m_container[1], m_container[2]): TwoTraits - Values (3, 3)</Message>
+          <StackTrace>at taefsamples::templatetests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::checkcandefeatmath in $(directory)\sampletests\tests\classtemplatetests.cpp:line 31</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::CanDefeatMath" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::CanIterate" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::ThreeTraits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::TwoTraits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TestMath::AddFails" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1000, Add(10, 10)) - Values (1000, 20)</Message>
+          <StackTrace>at taefsamples::testmath::addfails in $(directory)\sampletests\tests\basictests.cpp:line 22</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TestMath::AddPasses" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::TestMath::AddPassesWithTraits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With1Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With2Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With3Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With4Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With5Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With6Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With7Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::With8Traits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Traits::WithEqualTraits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Ümlautß::Täst" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(1, 2): Ümlautß::Täst - Values (1, 2)</Message>
+          <StackTrace>at taefsamples::ümlautß::täst in $(directory)\sampletests\tests\umlauttests.cpp:line 16</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::Ümlautß::Träits" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ÜmlautTemplateTests&lt;class TaefSamples::ImplementationA&gt;::Täst" outcome="Passed">
+      <Output />
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::ÜmlautTemplateTests&lt;class TaefSamples::ImplementationB&gt;::Täst" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: AreEqual(2, theInstance.GetValue(1)) - Values (2, 3)</Message>
+          <StackTrace>at taefsamples::ümlauttemplatetests&lt;class taefsamples::implementationb&gt;::täst in $(directory)\sampletests\tests\umlauttests.cpp:line 123</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::VerifyInClassSetup::Test" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(5, 6): VERIFY failing in TEST_CLASS_SETUP - Values (5, 6)
+#2 - TAEF: Setup fixture 'TaefSamples::VerifyInClassSetup::ClassSetup' for the scope 'TaefSamples::VerifyInClassSetup' failed.</Message>
+          <StackTrace>at #1 - taefsamples::verifyinclasssetup::classsetup in $(directory)\sampletests\tests\fixturetests.cpp:line 143</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::VerifyInMethodSetup::Test" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>#1 - Verify: AreEqual(7, 8): VERIFY failing in TEST_METHOD_SETUP - Values (7, 8)
+#2 - TAEF: Setup fixture 'TaefSamples::VerifyInMethodSetup::MethodSetup' for the scope 'TaefSamples::VerifyInMethodSetup::Test' failed.</Message>
+          <StackTrace>at #1 - taefsamples::verifyinmethodsetup::methodsetup in $(directory)\sampletests\tests\fixturetests.cpp:line 160</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="TaefSamples::WorkingDir::IsSolutionDirectory" outcome="Failed">
+      <Output>
+        <ErrorInfo>
+          <Message>Verify: IsTrue(endsWithSampleTests): working directory is $(Directory)\SampleTests\Debug</Message>
+          <StackTrace>at taefsamples::workingdir::issolutiondirectory in $(directory)\sampletests\tests\environmenttests.cpp:line 64</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TaefSamples::`anonymous-namespace'::`anonymous-namespace'::Namespace_Anon_Anon::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.`anonymous-namespace'.`anonymous-namespace'.Namespace_Anon_Anon" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::`anonymous-namespace'::Anon_Nested::Namespace_Anon_Named::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.`anonymous-namespace'.Anon_Nested.Namespace_Anon_Named" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::`anonymous-namespace'::Namespace_Anon::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.`anonymous-namespace'.Namespace_Anon" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::abcd::t" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="t" className="TaefSamples.abcd" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::bbcd::t" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="t" className="TaefSamples.bbcd" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::bcd::t" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="t" className="TaefSamples.bcd" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::IgnoredTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="IgnoredTest" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::InheritsClassProperties" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="InheritsClassProperties" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::OverridesClassProperties" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="OverridesClassProperties" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::WithCustomPropertiesAndFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="WithCustomPropertiesAndFails" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::WithMultipleValues" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="WithMultipleValues" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::WithPriority1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="WithPriority1" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassAndMethodProperties::WithPriority2AndFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="WithPriority2AndFails" className="TaefSamples.ClassAndMethodProperties" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassTemplates::NumberTemplateTests&lt;int&gt;::CanHoldLargeSum" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanHoldLargeSum" className="TaefSamples.ClassTemplates.NumberTemplateTests&lt;int&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassTemplates::NumberTemplateTests&lt;long&gt;::CanHoldLargeSum" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanHoldLargeSum" className="TaefSamples.ClassTemplates.NumberTemplateTests&lt;long&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassTemplates::NumberTemplateTests&lt;signed char&gt;::CanHoldLargeSum" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanHoldLargeSum" className="TaefSamples.ClassTemplates.NumberTemplateTests&lt;signed char&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::AddFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddFails" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::AddPasses" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPasses" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::AddPassesWithTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPassesWithTraits" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::AddPassesWithTraits2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPassesWithTraits2" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::AddPassesWithTraits3" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPassesWithTraits3" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ClassWithFixtures::SetupRunsBeforeEachTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SetupRunsBeforeEachTest" className="TaefSamples.ClassWithFixtures" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::DataDrivenTästs::Täst#metadataSet0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Täst#metadataSet0" className="TaefSamples.DataDrivenTästs" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::DataDrivenTästs::Träits#metadataSet0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Träits#metadataSet0" className="TaefSamples.DataDrivenTästs" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::EnvironmentVariable::IsSet" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="IsSet" className="TaefSamples.EnvironmentVariable" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Exceptions::ThrowsInt" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThrowsInt" className="TaefSamples.Exceptions" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Exceptions::ThrowsStdException" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThrowsStdException" className="TaefSamples.Exceptions" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Exceptions::ThrowsWexException" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThrowsWexException" className="TaefSamples.Exceptions" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Exceptions::VerifyNoThrowFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyNoThrowFails" className="TaefSamples.Exceptions" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Exceptions::VerifyThrowsPasses" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyThrowsPasses" className="TaefSamples.Exceptions" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::BlockedByTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="BlockedByTest" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::FailedByLogError" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="FailedByLogError" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::FailedByLogResult" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="FailedByLogResult" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::NotRunByTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="NotRunByTest" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::PassedWithWarning" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="PassedWithWarning" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ExplicitResults::SkippedByTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SkippedByTest" className="TaefSamples.ExplicitResults" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::FailingClassSetup::FirstTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="FirstTest" className="TaefSamples.FailingClassSetup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::FailingClassSetup::SecondTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SecondTest" className="TaefSamples.FailingClassSetup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::FailingMethodCleanup::TestPassesAlthoughCleanupFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TestPassesAlthoughCleanupFails" className="TaefSamples.FailingMethodCleanup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::FailingMethodSetup::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.FailingMethodSetup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::IgnoredClass::IgnoredFailing" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="IgnoredFailing" className="TaefSamples.IgnoredClass" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::IgnoredClass::IgnoredPassing" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="IgnoredPassing" className="TaefSamples.IgnoredClass" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::SingleValue#metadataSet0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SingleValue#metadataSet0" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::SingleValue#metadataSet1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SingleValue#metadataSet1" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::SingleValue#metadataSet2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SingleValue#metadataSet2" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::TwoValues#metadataSet0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoValues#metadataSet0" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::TwoValues#metadataSet1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoValues#metadataSet1" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::TwoValues#metadataSet2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoValues#metadataSet2" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LightweightDataTests::TwoValues#metadataSet3" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoValues#metadataSet3" className="TaefSamples.LightweightDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LongRunning::Sleeps1Second" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Sleeps1Second" className="TaefSamples.LongRunning" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::LongRunning::Sleeps2SecondsAndFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Sleeps2SecondsAndFails" className="TaefSamples.LongRunning" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::LogErrorWithSourceInfo" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="LogErrorWithSourceInfo" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::LogScopeInHelperMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="LogScopeInHelperMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::LogScopeInTestMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="LogScopeInTestMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="LogScopeInTestMethodAndHelperMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="LogScopeInTestMethodAndHelperMethodAndVerifyInTestMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::TwoLogScopesInTestMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoLogScopesInTestMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyInHeader" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyInHeader" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyInOtherFile" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyInOtherFile" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyInOtherMethod" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyInOtherMethod" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyInTestAndMethodAndOtherFile" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyInTestAndMethodAndOtherFile" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyThrows" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyThrows" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyWithoutAndWithExceptions" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyWithoutAndWithExceptions" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MessageParserTests::VerifyWithoutExceptions" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="VerifyWithoutExceptions" className="TaefSamples.MessageParserTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::MissingDataSource::Test#error" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test#error" className="TaefSamples.MissingDataSource" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#01234567890_" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#01234567890_" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#abcdefghijklmnopqrstuvwxyz" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#abcdefghijklmnopqrstuvwxyz" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#ABCDEFGHIJKLMNOPQRSTUVWXYZ" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::AllowedCharacters#FunctorName" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AllowedCharacters#FunctorName" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#back\slash" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#back\slash" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#Ünïcødé 名前" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#Ünïcødé 名前" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with space" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with space" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with#hash" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with#hash" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with::colons [x]" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with::colons [x]" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::NamedRows::SpecialCharacters#with'quote" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SpecialCharacters#with'quote" className="TaefSamples.NamedRows" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Nämespace::KlässWithSetüp::Täst" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Täst" className="TaefSamples.Nämespace.KlässWithSetüp" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Nämespace::KlässWithSetüp::Träits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Träits" className="TaefSamples.Nämespace.KlässWithSetüp" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Namespace_1::`anonymous-namespace'::Namespace_Named_Anon::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.Namespace_1.`anonymous-namespace'.Namespace_Named_Anon" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_3_Deeply::Nested::Namespace_Deep::Fails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Fails" className="TaefSamples.Namespace_1.Namespace_2_Nested.Namespace_3_Deeply.Nested.Namespace_Deep" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Namespace_1::Namespace_2_Nested::Namespace_Named_Named::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.Namespace_1.Namespace_2_Nested.Namespace_Named_Named" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Namespace_1::Namespace_Named::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.Namespace_1.Namespace_Named" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Namespace_Root::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.Namespace_Root" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::ManyLinesWithNewlines" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ManyLinesWithNewlines" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::OneLine" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="OneLine" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::OneLineWithNewlines" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="OneLineWithNewlines" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::Output_ManyLinesWithNewlines" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Output_ManyLinesWithNewlines" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::Output_OneLine" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Output_OneLine" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::Output_OneLineWithNewlines" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Output_OneLineWithNewlines" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::OutputHandling::OutputOfPassingTest" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="OutputOfPassingTest" className="TaefSamples.OutputHandling" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::RuntimeParameterTests::BuiltInParametersAreAvailable" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="BuiltInParametersAreAvailable" className="TaefSamples.RuntimeParameterTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::RuntimeParameterTests::TestDirectoryIsSet" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TestDirectoryIsSet" className="TaefSamples.RuntimeParameterTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::StringTableDataTests::CheckStringLength#0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CheckStringLength#0" className="TaefSamples.StringTableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::StringTableDataTests::CheckStringLength#1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CheckStringLength#1" className="TaefSamples.StringTableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::StringTableDataTests::CheckStringLength#2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CheckStringLength#2" className="TaefSamples.StringTableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::Simple#0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Simple#0" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::Simple#1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Simple#1" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::Simple#2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Simple#2" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::Simple#Underscore" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Simple#Underscore" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits#0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits#0" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits#1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits#1" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits#2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits#2" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits#Underscore" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits#Underscore" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits2#0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits2#0" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits2#1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits2#1" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits2#2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits2#2" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits2#Underscore" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits2#Underscore" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits3#0" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits3#0" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits3#1" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits3#1" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits3#2" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits3#2" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TableDataTests::SimpleTraits3#Underscore" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="SimpleTraits3#Underscore" className="TaefSamples.TableDataTests" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::CanDefeatMath" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanDefeatMath" className="TaefSamples.TemplateTests&lt;class std::array&lt;int,3&gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::CanIterate" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanIterate" className="TaefSamples.TemplateTests&lt;class std::array&lt;int,3&gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::ThreeTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThreeTraits" className="TaefSamples.TemplateTests&lt;class std::array&lt;int,3&gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::array&lt;int,3&gt; &gt;::TwoTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoTraits" className="TaefSamples.TemplateTests&lt;class std::array&lt;int,3&gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::CanDefeatMath" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanDefeatMath" className="TaefSamples.TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::CanIterate" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanIterate" className="TaefSamples.TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::ThreeTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThreeTraits" className="TaefSamples.TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;::TwoTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoTraits" className="TaefSamples.TemplateTests&lt;class std::vector&lt;int,class std::allocator&lt;int&gt; &gt; &gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::CanDefeatMath" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanDefeatMath" className="TaefSamples.TemplateTests&lt;struct TaefSamples::ReversedArray&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::CanIterate" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="CanIterate" className="TaefSamples.TemplateTests&lt;struct TaefSamples::ReversedArray&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::ThreeTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="ThreeTraits" className="TaefSamples.TemplateTests&lt;struct TaefSamples::ReversedArray&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TemplateTests&lt;struct TaefSamples::ReversedArray&gt;::TwoTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="TwoTraits" className="TaefSamples.TemplateTests&lt;struct TaefSamples::ReversedArray&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TestMath::AddFails" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddFails" className="TaefSamples.TestMath" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TestMath::AddPasses" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPasses" className="TaefSamples.TestMath" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::TestMath::AddPassesWithTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="AddPassesWithTraits" className="TaefSamples.TestMath" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With1Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With1Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With2Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With2Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With3Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With3Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With4Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With4Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With5Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With5Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With6Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With6Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With7Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With7Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::With8Traits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="With8Traits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Traits::WithEqualTraits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="WithEqualTraits" className="TaefSamples.Traits" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Ümlautß::Täst" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Täst" className="TaefSamples.Ümlautß" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::Ümlautß::Träits" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Träits" className="TaefSamples.Ümlautß" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ÜmlautTemplateTests&lt;class TaefSamples::ImplementationA&gt;::Täst" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Täst" className="TaefSamples.ÜmlautTemplateTests&lt;class TaefSamples::ImplementationA&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::ÜmlautTemplateTests&lt;class TaefSamples::ImplementationB&gt;::Täst" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Täst" className="TaefSamples.ÜmlautTemplateTests&lt;class TaefSamples::ImplementationB&gt;" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::VerifyInClassSetup::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.VerifyInClassSetup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::VerifyInMethodSetup::Test" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="Test" className="TaefSamples.VerifyInMethodSetup" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+    <UnitTest name="TaefSamples::WorkingDir::IsSolutionDirectory" storage="$(Directory)\sampletests\${ConfigurationName}\tests_taef.dll">
+      <TestMethod name="IsSolutionDirectory" className="TaefSamples.WorkingDir" adapterTypeName="executor://testadapterfortaef/v1" codeBase="$(Directory)\SampleTests\${ConfigurationName}\Tests_taef.dll" />
+    </UnitTest>
+  </TestDefinitions>
+  <ResultSummary outcome="Failed">
+    <Counters total="141" executed="136" passed="66" failed="70" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output />
+  </ResultSummary>
+</TestRun>

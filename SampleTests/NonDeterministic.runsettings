@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  User settings for manual/end-to-end tests of the Test Adapter for TAEF with SampleTests.sln which make the order of
+  test results non-deterministic: tests are repeated (TE.exe /testmode:Loop) and executed by several TE.exe
+  processes in parallel.
+-->
 <RunSettings>
-  <GoogleTestAdapterSettings>
+  <TaefTestAdapterSettings>
     <SolutionSettings>
       <Settings>
-        <ShuffleTests>true</ShuffleTests>
         <NrOfTestRepetitions>3</NrOfTestRepetitions>
+        <ParallelTestExecution>true</ParallelTestExecution>
+        <MaxNrOfThreads>4</MaxNrOfThreads>
         <BatchForTestTeardown>$(SolutionDir)Tests\Returns0.bat</BatchForTestTeardown>
-        <DebugMode>true</DebugMode>
+        <OutputMode>Debug</OutputMode>
       </Settings>
     </SolutionSettings>
     <ProjectSettings>
-      <Settings ProjectRegex=".*\\CrashingTests_gta\.exe">
-        <ShuffleTestsSeed>3</ShuffleTestsSeed>
+      <Settings ProjectRegex=".*\\CrashingTests_taef\.dll">
+        <NrOfTestRepetitions>2</NrOfTestRepetitions>
       </Settings>
-      <Settings ProjectRegex=".*\\Tests_gta\.exe">
-        <ShuffleTestsSeed>4</ShuffleTestsSeed>
+      <Settings ProjectRegex=".*\\Tests_taef\.dll">
+        <IsolationLevel>Class</IsolationLevel>
       </Settings>
     </ProjectSettings>
-  </GoogleTestAdapterSettings>
+  </TaefTestAdapterSettings>
 </RunSettings>

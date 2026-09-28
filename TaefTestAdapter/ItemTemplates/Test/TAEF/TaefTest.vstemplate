@@ -1,0 +1,16 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <Name>TAEF Test</Name>
+    <Description>A TAEF based C++ unit test class, with fixtures, test methods, test properties and a data-driven test.</Description>
+    <ProjectType>VC</ProjectType>
+    <TemplateID>TaefTestAdapter.VisualC.Item.TaefTest</TemplateID>
+    <SortOrder>10</SortOrder>
+    <DefaultName>TaefTest.cpp</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <Icon>Icon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$.cpp">test.cpp</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

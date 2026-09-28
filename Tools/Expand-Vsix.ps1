@@ -1,6 +1,10 @@
 <#
+.SYNOPSIS
+Expands a VSIX file into <repo>\out\vsix\<VSIX name> for inspection.
+
 .PARAMETER VsixPath
-Path to the VSIX file to be expanded.
+Path to the VSIX file to be expanded, e.g. out\binaries\TaefTestAdapter\Release\Packaging\TaefTestAdapter.vsix
+(expanded into out\vsix\TaefTestAdapter).
 #>
 
 #requires -Version 3.0
@@ -11,9 +15,11 @@ Set-StrictMode -Version Latest
 $WarningPreference = "Stop"
 $ErrorActionPreference = "Stop"
 
+$VsixPath = (Resolve-Path $VsixPath).ProviderPath
 $VsixName = [IO.Path]::GetFileNameWithoutExtension($VsixPath)
-$OutPath = "out\vsix\$VsixName"
-$VsixZipPath = "out\vsix\$VsixName.zip"
+$VsixRoot = Join-Path $PSScriptRoot "..\out\vsix"
+$OutPath = Join-Path $VsixRoot $VsixName
+$VsixZipPath = Join-Path $VsixRoot "$VsixName.zip"
 
 & "$PSScriptRoot\New-CleanDirectory" $OutPath | Out-Null
 Copy-Item $VsixPath $VsixZipPath

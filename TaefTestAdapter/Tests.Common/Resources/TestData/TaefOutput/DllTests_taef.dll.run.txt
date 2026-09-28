@@ -1,0 +1,14 @@
+Test Authoring and Execution Framework v10.104k for x64
+
+StartGroup: TaefSamples::Passing::InvokeFunction
+Verify: AreEqual(0, ReturnZero())
+EndGroup: TaefSamples::Passing::InvokeFunction [Passed]
+
+StartGroup: TaefSamples::Failing::InvokeFunction
+Error: Verify: AreEqual(1, ReturnZero()) - Values (1, 0) [File: C:\src\TAEF-Test-Adapter\SampleTests\DllDependentProject\DllTests.cpp, Function: TaefSamples::Failing::InvokeFunction, Line: 24]
+EndGroup: TaefSamples::Failing::InvokeFunction [Failed]
+
+Summary of Non-passing Tests:
+    TaefSamples::Failing::InvokeFunction [Failed]
+
+Summary: Total=2, Passed=1, Failed=1, Blocked=0, Not Run=0, Skipped=0

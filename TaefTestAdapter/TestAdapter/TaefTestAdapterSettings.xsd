@@ -1,0 +1,194 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Settings of the Test Adapter for TAEF (element <TaefTestAdapterSettings> below <RunSettings>). -->
+  <xsd:element name="TaefTestAdapterSettings" type="TaefTestAdapterSettingsType" />
+
+  <xsd:complexType name="TaefTestAdapterSettingsType">
+    <xsd:all>
+      <xsd:element name="SolutionSettings" minOccurs="0" type="SolutionSettingsType" />
+      <xsd:element name="ProjectSettings"  minOccurs="0" type="ProjectSettingsType"  />
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="SolutionSettingsType">
+    <xsd:all>
+      <xsd:element name="Settings" minOccurs="0" type="SettingsType" />
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="ProjectSettingsType">
+    <xsd:sequence>
+      <xsd:element name="Settings" minOccurs="0" maxOccurs="unbounded" type="SettingsType" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SettingsType">
+    <xsd:all>
+      <!-- General -->
+      <xsd:element name="PrintTestOutput"              minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="OutputMode"                   minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="None"/>
+            <xsd:enumeration value="Info"/>
+            <xsd:enumeration value="Debug"/>
+            <xsd:enumeration value="Verbose"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="TimestampMode"                minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Automatic"/>
+            <xsd:enumeration value="PrintTimestamp"/>
+            <xsd:enumeration value="DoNotPrintTimestamp"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="SeverityMode"                 minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Automatic"/>
+            <xsd:enumeration value="PrintSeverity"/>
+            <xsd:enumeration value="DoNotPrintSeverity"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="SummaryMode"                  minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Never"/>
+            <xsd:enumeration value="Error"/>
+            <xsd:enumeration value="WarningOrError"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="PrefixOutputWithTaef"         minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="SkipOriginCheck"              minOccurs="0" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:documentation>Skip the check whether test DLLs originate from this computer. Ignored in settings files if the Visual Studio extension is installed (set it in the Visual Studio options instead); read from the settings file with the NuGet package only or vstest.console.exe.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <!-- Test discovery -->
+      <xsd:element name="TestDiscoveryRegex"           minOccurs="0" type="xsd:string"  />
+      <xsd:element name="TestDiscoveryTimeoutInSeconds" minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="ParseSymbolInformation"       minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="TraitsRegexesBefore"          minOccurs="0" type="xsd:string"  />
+      <xsd:element name="TraitsRegexesAfter"           minOccurs="0" type="xsd:string"  />
+
+      <!-- Test execution -->
+      <xsd:element name="AdditionalPdbs"               minOccurs="0" type="xsd:string"  />
+      <xsd:element name="WorkingDir"                   minOccurs="0" type="xsd:string"  />
+      <xsd:element name="PathExtension"                minOccurs="0" type="xsd:string"  />
+      <xsd:element name="EnvironmentVariables"         minOccurs="0" type="xsd:string"  />
+      <xsd:element name="AdditionalTestExecutionParam" minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Additional TE.exe arguments (used for test discovery and execution)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="BatchForTestSetup"            minOccurs="0" type="xsd:string"  />
+      <xsd:element name="BatchForTestTeardown"         minOccurs="0" type="xsd:string"  />
+      <xsd:element name="KillProcessesOnCancel"        minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="DebuggerKind"                 minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="VsTestFramework"/>
+            <xsd:enumeration value="Native"/>
+            <xsd:enumeration value="ManagedAndNative"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="ParallelTestExecution"        minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="MaxNrOfThreads"               minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="0" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="MissingTestsReportMode"       minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="DoNotReport"/>
+            <xsd:enumeration value="ReportAsNotFound"/>
+            <xsd:enumeration value="ReportAsSkipped"/>
+            <xsd:enumeration value="ReportAsFailed"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+
+      <!-- TAEF -->
+      <xsd:element name="TeExecutable"                 minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Path of TE.exe or of a folder containing &lt;arch&gt;\TE.exe or TE.exe; empty: automatic detection</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="RunIgnoredTests"              minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="BreakOnError"                 minOccurs="0" type="xsd:boolean" />
+      <xsd:element name="NrOfTestRepetitions"          minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:int">
+            <xsd:minInclusive value="1" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="TestTimeout"                  minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>[Day.]Hour[:Minute[:Second[.FractionalSeconds]]] (hours 0-23, minutes and seconds 0-59), or empty</xsd:documentation>
+        </xsd:annotation>
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\s*(([0-9]{1,8}\.)?[0-9]{1,2}(:[0-9]{1,2}(:[0-9]{1,2}(\.[0-9]{1,7})?)?)?)?\s*" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="IsolationLevel"               minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Default"/>
+            <xsd:enumeration value="Test"/>
+            <xsd:enumeration value="Method"/>
+            <xsd:enumeration value="Class"/>
+            <xsd:enumeration value="Module"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="RunInProcess"                 minOccurs="0" type="xsd:boolean" />
+
+      <!-- internal -->
+      <xsd:element name="DebuggingNamedPipeId"         minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Only for internal use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="SolutionDir"                  minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Only for internal use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="PlatformName"                 minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Only for internal use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ConfigurationName"            minOccurs="0" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>Only for internal use</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="ProjectRegex" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Regex matched against the full paths of the test DLLs the project settings apply to; required for the Settings elements of ProjectSettings (checked by the adapter since the type is shared with SolutionSettings, where it has no effect).</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+</xsd:schema>

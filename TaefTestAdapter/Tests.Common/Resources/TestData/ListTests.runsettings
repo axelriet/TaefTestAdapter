@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings of the generated end-to-end tests listing the tests of sample test DLLs (AbstractConsoleTests.ListTestsOf) -->
+<RunSettings>
+  <TaefTestAdapterSettings>
+    <SolutionSettings>
+      <Settings>
+        <TestDiscoveryRegex>.*Tests.*_taef\.dll</TestDiscoveryRegex>
+      </Settings>
+    </SolutionSettings>
+    <ProjectSettings>
+    </ProjectSettings>
+  </TaefTestAdapterSettings>
+</RunSettings>

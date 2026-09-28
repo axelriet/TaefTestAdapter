@@ -1,0 +1,2 @@
+TaefSamples.Passing.InvokeFunction
+TaefSamples.Failing.InvokeFunction

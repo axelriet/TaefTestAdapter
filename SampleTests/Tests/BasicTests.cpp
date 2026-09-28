@@ -1,179 +1,239 @@
+// Basic TAEF tests: passing and failing VERIFY_* macros, test output, exceptions, explicit test results
+// (Skipped/Blocked/NotRun via Log::Result), long running tests and a static library dependency (LibProject).
 #include <windows.h>
-#include <string>
-#include "gtest/gtest.h"
+#include <cstdio>
+#include <iostream>
+#include <stdexcept>
+#include "WexTestClass.h"
 #include "../LibProject/Lib.h"
-#include "gtest_wrapper.h"
 
-extern std::string TEST_DIRECTORY;
+using namespace WEX::Logging;
+using namespace WEX::TestExecution;
+using WEX::Common::String;
 
-// http://stackoverflow.com/questions/8233842/how-to-check-if-directory-exist-using-c-and-winapi
-bool DirExists(const std::string& dirName_in)
+namespace TaefSamples
 {
-	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
-	if (ftyp == INVALID_FILE_ATTRIBUTES)
-		return false;  //something is wrong with your path!
+    class TestMath
+    {
+        TEST_CLASS(TestMath)
 
-	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
-		return true;   // this is a directory!
+        TEST_METHOD(AddFails)
+        {
+            VERIFY_ARE_EQUAL(1000, Add(10, 10));
+        }
 
-	return false;    // this is not a directory!
-}
+        TEST_METHOD(AddPasses)
+        {
+            VERIFY_ARE_EQUAL(20, Add(10, 10));
+        }
 
-TEST(CommandArgs, TestDirectoryIsSet)
-{
-	ASSERT_STRNE("", TEST_DIRECTORY.c_str());
-	ASSERT_TRUE(DirExists(TEST_DIRECTORY));
-}
+        BEGIN_TEST_METHOD(AddPassesWithTraits)
+            TEST_METHOD_PROPERTY(L"Type", L"Medium")
+        END_TEST_METHOD()
+    };
 
-inline bool ends_with(std::string const & value, std::string const & ending)
-{
-	if (ending.size() > value.size()) return false;
-	return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
-}
-
-TEST(WorkingDir, IsSolutionDirectory)
-{
-	char _working_directory[MAX_PATH + 1];
-	GetCurrentDirectoryA(sizeof(_working_directory), _working_directory);
-	std::string working_directory(_working_directory);
-
-	ASSERT_TRUE(ends_with(working_directory, "SampleTests")) << "working_directory is " << working_directory;
-}
-
-TEST(EnvironmentVariable, IsSet)
-{
-	char* buf = nullptr;
-	size_t sz = 0;
-	ASSERT_EQ(0, _dupenv_s(&buf, &sz, "MYENVVAR"));
-	ASSERT_TRUE(buf != nullptr);
-    ASSERT_EQ(std::string(buf), "MyValue");
-	free(buf);
-}
+    void TestMath::AddPassesWithTraits()
+    {
+        VERIFY_ARE_EQUAL(20, Add(10, 10), L"AddPassesWithTraits");
+    }
 
 
-TEST(TestMath, AddFails)
-{
-	EXPECT_EQ(1000, Add(10, 10));
-}
+    // Output of a test: out of process (TE.exe's default) only WEX::Logging output (Log::Comment, Log::Warning,
+    // Log::Error, VERIFY_* messages) reaches TE.exe's console. printf/std::cout output of the test is only
+    // visible if TE.exe runs the tests in its own process (/inproc).
+    // DisableVerifyExceptions keeps failing VERIFY_* macros from throwing, so the test continues after a failure.
+    class OutputHandling
+    {
+        TEST_CLASS(OutputHandling)
 
-TEST(TestMath, AddPasses)
-{
-	EXPECT_EQ(20, Add(10, 10));
-}
+        TEST_METHOD(Output_ManyLinesWithNewlines)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test 1\nbefore test 2\n");
+            std::cout << "std::cout before test (visible with /inproc only)" << std::endl;
+            VERIFY_ARE_EQUAL(1, 2, L"test output");
+            Log::Comment(L"after test 1\nafter test 2\n");
+            std::cout << "std::cout after test (visible with /inproc only)" << std::endl;
+        }
 
-TEST(TestMath, Crash)
-{
-	int* pInt = NULL;
-	EXPECT_EQ(20, Add(*pInt, 10));
-}
+        TEST_METHOD(Output_OneLineWithNewlines)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test\n");
+            VERIFY_ARE_EQUAL(1, 2, L"test output");
+            Log::Comment(L"after test\n");
+        }
 
-TEST_TRAITS(TestMath, AddPassesWithTraits, Type, Medium)
-{
-	EXPECT_EQ(20, Add(10, 10));
-}
+        TEST_METHOD(Output_OneLine)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test");
+            printf("printf before test without newline (visible with /inproc only)");
+            fflush(stdout);
+            VERIFY_ARE_EQUAL(1, 2, L"test output");
+            Log::Comment(L"after test");
+        }
 
-TEST_TRAITS(Traits, With8Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3, Trait4, Equals4, Trait5, Equals5, Trait6, Equals6, Trait7, Equals7, Trait8, Equals8)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(ManyLinesWithNewlines)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test 1\nbefore test 2\n");
+            VERIFY_ARE_EQUAL(1, 2);
+            Log::Comment(L"after test 1\nafter test 2\n");
+        }
 
-TEST_TRAITS(Traits, With7Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3, Trait4, Equals4, Trait5, Equals5, Trait6, Equals6, Trait7, Equals7)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(OneLineWithNewlines)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test\n");
+            VERIFY_ARE_EQUAL(1, 2);
+            Log::Comment(L"after test\n");
+        }
 
-TEST_TRAITS(Traits, With6Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3, Trait4, Equals4, Trait5, Equals5, Trait6, Equals6)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(OneLine)
+        {
+            DisableVerifyExceptions continueOnFailure;
+            Log::Comment(L"before test");
+            VERIFY_ARE_EQUAL(1, 2);
+            Log::Comment(L"after test");
+        }
 
-TEST_TRAITS(Traits, With5Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3, Trait4, Equals4, Trait5, Equals5)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(OutputOfPassingTest)
+        {
+            Log::Comment(L"Log::Comment output");
+            Log::Comment(L"Log::Comment output with a context", L"MyContext");
+            Log::Warning(L"Log::Warning output (does not fail the test)");
+            printf("printf output (visible with /inproc only)\n");
+            fflush(stdout);
+            std::cerr << "std::cerr output (visible with /inproc only)" << std::endl;
+            VERIFY_IS_TRUE(true, L"OutputOfPassingTest");
+        }
+    };
 
-TEST_TRAITS(Traits, With4Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3, Trait4, Equals4)
-{
-	EXPECT_EQ(1, 1);
-}
 
-TEST_TRAITS(Traits, With3Traits, Trait1, Equals1, Trait2, Equals2, Trait3, Equals3)
-{
-	EXPECT_EQ(1, 1);
-}
+    // Class names which are suffixes of each other: selecting class bcd ('TaefSamples::bcd::*') must not select
+    // abcd::t or bbcd::t
+    class abcd
+    {
+        TEST_CLASS(abcd)
 
-TEST_TRAITS(Traits, With2Traits, Trait1, Equals1, Trait2, Equals2)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(t)
+        {
+            VERIFY_ARE_EQUAL(1, 1, L"abcd::t");
+        }
+    };
 
-TEST_TRAITS(Traits, With1Traits, Trait1, Equals1)
-{
-	EXPECT_EQ(1, 1);
-}
+    class bbcd
+    {
+        TEST_CLASS(bbcd)
 
-TEST_TRAITS(Traits, WithEqualTraits, Author, CSO, Author, JOG)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(t)
+        {
+            VERIFY_ARE_EQUAL(1, 1, L"bbcd::t");
+        }
+    };
 
-TEST(OutputHandling, Output_ManyLinesWithNewlines)
-{
-	std::cout << "before test 1\n";
-	std::cout << "before test 2\n";
-	EXPECT_EQ(1, 2) << "test output";
-	std::cout << "after test 1\n";
-	std::cout << "after test 2\n";
-}
+    class bcd
+    {
+        TEST_CLASS(bcd)
 
-TEST(OutputHandling, Output_OneLineWithNewlines)
-{
-	std::cout << "before test\n";
-	EXPECT_EQ(1, 2) << "test output";
-	std::cout << "after test\n";
-}
+        TEST_METHOD(t)
+        {
+            VERIFY_ARE_EQUAL(1, 1, L"bcd::t");
+        }
+    };
 
-TEST(OutputHandling, Output_OneLine)
-{
-	std::cout << "before test";
-	EXPECT_EQ(1, 2) << "test output";
-	std::cout << "after test";
-}
 
-TEST(OutputHandling, ManyLinesWithNewlines)
-{
-	std::cout << "before test 1\n";
-	std::cout << "before test 2\n";
-	EXPECT_EQ(1, 2);
-	std::cout << "after test 1\n";
-	std::cout << "after test 2\n";
-}
+    // TAEF catches C++ exceptions thrown by a test and reports the test as Failed ("Error: Caught ...")
+    class Exceptions
+    {
+        TEST_CLASS(Exceptions)
 
-TEST(OutputHandling, OneLineWithNewlines)
-{
-	std::cout << "before test\n";
-	EXPECT_EQ(1, 2);
-	std::cout << "after test\n";
-}
+        static void ThrowOutOfRange()
+        {
+            throw std::out_of_range("index out of range");
+        }
 
-TEST(OutputHandling, OneLine)
-{
-	std::cout << "before test";
-	EXPECT_EQ(1, 2);
-	std::cout << "after test";
-}
+        TEST_METHOD(ThrowsStdException)
+        {
+            throw std::runtime_error("std::runtime_error thrown by the test");
+        }
 
-TEST(abcd, t)
-{
-	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(ThrowsInt)
+        {
+            throw 42;
+        }
 
-TEST(bbcd, t)
-{
-   	EXPECT_EQ(1, 1);
-}
+        TEST_METHOD(ThrowsWexException)
+        {
+            WEX::Common::Throw::Exception(E_INVALIDARG, L"WEX::Common::Exception thrown by the test");
+        }
 
-TEST(bcd, t)
-{
-   	EXPECT_EQ(1, 1);
+        TEST_METHOD(VerifyThrowsPasses)
+        {
+            VERIFY_THROWS(ThrowOutOfRange(), std::out_of_range);
+        }
+
+        TEST_METHOD(VerifyNoThrowFails)
+        {
+            VERIFY_NO_THROW(ThrowOutOfRange());
+        }
+    };
+
+
+    // Test results set explicitly by the test (Log::Result); Log::Error and failing VERIFYs result in Failed
+    class ExplicitResults
+    {
+        TEST_CLASS(ExplicitResults)
+
+        TEST_METHOD(SkippedByTest)
+        {
+            Log::Comment(L"This test decides at runtime that it cannot run on this machine");
+            Log::Result(TestResults::Skipped, L"Skipped by the test");
+        }
+
+        TEST_METHOD(BlockedByTest)
+        {
+            Log::Result(TestResults::Blocked, L"Blocked by the test: a prerequisite is missing");
+        }
+
+        TEST_METHOD(NotRunByTest)
+        {
+            Log::Result(TestResults::NotRun, L"NotRun set by the test");
+        }
+
+        TEST_METHOD(FailedByLogResult)
+        {
+            Log::Result(TestResults::Failed, L"Failed set by the test");
+        }
+
+        TEST_METHOD(FailedByLogError)
+        {
+            Log::Error(L"Log::Error marks the test as failed");
+        }
+
+        TEST_METHOD(PassedWithWarning)
+        {
+            Log::Warning(L"Only a warning - the test passes");
+        }
+    };
+
+
+    // Long running tests (e.g. for cancellation, test durations and parallel execution)
+    class LongRunning
+    {
+        TEST_CLASS(LongRunning)
+
+        TEST_METHOD(Sleeps1Second)
+        {
+            Sleep(1000);
+            VERIFY_IS_TRUE(true, L"Sleeps1Second");
+        }
+
+        TEST_METHOD(Sleeps2SecondsAndFails)
+        {
+            Sleep(2000);
+            VERIFY_ARE_EQUAL(1, 2, L"Sleeps2SecondsAndFails");
+        }
+    };
 }

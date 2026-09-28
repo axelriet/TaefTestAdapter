@@ -40,9 +40,10 @@
 #
 # image files are treated as binary by default.
 ###############################################################################
-#*.jpg   binary
-#*.png   binary
-#*.gif   binary
+*.jpg   binary
+*.png   binary
+*.gif   binary
+*.ico   binary
 
 ###############################################################################
 # diff behavior for common document formats
@@ -63,15 +64,28 @@
 #*.RTF   diff=astextplain
 
 ###############################################################################
-# Disable merging files for GTA<->TAfGT integrations.
+# Make sure batch files are always checked out with Windows line endings
+# (cmd.exe may misinterpret labels in LF-only batch files).
 ###############################################################################
-CONTRIBUTING.md          merge=ours
-LICENSE.md               merge=ours
-TestAdapterFlavor.props  merge=ours
-ThirdPartyNotices.txt    merge=ours
+*.bat text eol=crlf
+*.cmd text eol=crlf
 
 ###############################################################################
 # Make sure T4 scripts are always checked out with Windows line endings.
 # See https://stackoverflow.com/questions/10478763/t4-templates-avoid-empty-lines-from-included-files
 ###############################################################################
 *.tt text eol=crlf
+
+###############################################################################
+# The project and item templates are zipped into the VSIX as they are in the
+# working tree: check them out with Windows line endings, so that the files
+# they create in users' projects have Windows line endings, whoever builds.
+###############################################################################
+TaefTestAdapter/ProjectTemplates/**/*.cpp text eol=crlf
+TaefTestAdapter/ProjectTemplates/**/*.h text eol=crlf
+TaefTestAdapter/ProjectTemplates/**/*.vstemplate text eol=crlf
+TaefTestAdapter/ProjectTemplates/**/*.vcxproj text eol=crlf
+TaefTestAdapter/ProjectTemplates/**/*.filters text eol=crlf
+TaefTestAdapter/ItemTemplates/**/*.cpp text eol=crlf
+TaefTestAdapter/ItemTemplates/**/*.h text eol=crlf
+TaefTestAdapter/ItemTemplates/**/*.vstemplate text eol=crlf
