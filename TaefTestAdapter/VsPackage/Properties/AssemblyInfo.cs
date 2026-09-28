@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TaefTestAdapter.VsPackage")]
-[assembly: AssemblyDescription("Visual Studio integration (options, toolbar, debugger attaching) of the Test Adapter for TAEF.")]
+[assembly: AssemblyDescription("Visual Studio integration (options, toolbar, debugger attaching, template wizard) of the Test Adapter for TAEF.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TAEF Test Adapter Contributors")]
 [assembly: AssemblyProduct("Test Adapter for TAEF")]

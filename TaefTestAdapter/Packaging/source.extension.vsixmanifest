@@ -30,6 +30,7 @@
         <Asset Type="UnitTestExtension" d:Source="Project" d:ProjectName="TestAdapter" Path="|TestAdapter|" />
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage;PkgdefProjectOutputGroup|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage|" AssemblyName="|VsPackage;AssemblyName|" />
         <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" d:TargetPath="ProjectTemplates\Test\TaefTestPT.zip" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="File" Path="ItemTemplates" d:TargetPath="ItemTemplates\Test\TaefTestIT.zip" />
     </Assets>

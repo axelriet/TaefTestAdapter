@@ -40,6 +40,8 @@ namespace TaefTestAdapter.VsPackage
     /// <see cref="TaefTestAdapter.ProcessExecution.DebuggerKind.ManagedAndNative"/> debugger engine.</item>
     /// </list>
     /// The package is loaded in the background as soon as a solution or folder is opened.
+    /// The wizard of the project and item templates (<see cref="Templates.TaefTemplateWizard"/>) is part of the package's
+    /// assembly, but Visual Studio loads it without the package.
     /// </summary>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About

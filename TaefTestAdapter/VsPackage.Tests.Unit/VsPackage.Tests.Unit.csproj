@@ -69,6 +69,8 @@
          the generated binding redirects (AutoGenerateBindingRedirects) redirect VsPackage's references to these versions,
          as Visual Studio does. -->
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" />
+    <!-- the interface of the templates' wizard (VsPackage references it without its runtime assets, as Visual Studio provides it) -->
+    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" Version="17.0.31902.203" />
     <PackageReference Include="Microsoft.VisualStudio.TestWindow.Interfaces" Version="11.0.61030" />
     <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" />
     <PackageReference Include="FluentAssertions" Version="5.6.0" />

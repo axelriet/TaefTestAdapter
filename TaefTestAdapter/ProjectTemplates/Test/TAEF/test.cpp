@@ -16,7 +16,7 @@ using namespace WEX::Common;
 using namespace WEX::Logging;
 using namespace WEX::TestExecution;
 
-namespace $safeprojectname$
+namespace $taefnamespace$
 {
     class SampleTests
     {
@@ -64,7 +64,7 @@ namespace $safeprojectname$
         END_TEST_METHOD()
 
         // A lightweight data-driven test: it is run once per value, as
-        // $safeprojectname$::SampleTests::DataDriven#metadataSet0, #metadataSet1 and #metadataSet2.
+        // $taefnamespace$::SampleTests::DataDriven#metadataSet0, #metadataSet1 and #metadataSet2.
         BEGIN_TEST_METHOD(DataDriven)
             TEST_METHOD_PROPERTY(L"Data:Value", L"{1, 2, 3}")
         END_TEST_METHOD()

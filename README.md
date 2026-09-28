@@ -80,6 +80,8 @@ Visual Studio, and run the same test DLLs in your build pipeline, in your labs a
   arm64) is used; you can configure another TAEF.
 * Setup and teardown batch files, additional `TE.exe` arguments (for example, runtime parameters `/p:"Name=Value"`),
   working directory, `PATH` extension and environment variables.
+* **Project and item templates** for TAEF test DLLs and test classes, whose wizard derives TitleCase C++ namespace and
+  class names from the project and file names (see [Write TAEF tests](#write_tests)).
 * Support for `vstest.console.exe`, including test case filters.
 
 ## <a name="prerequisites"></a>Prerequisites
@@ -120,12 +122,24 @@ If no or not all tests show up, see [Troubleshoot](#troubleshooting).
 
 If the extension is installed, create a project with the **TAEF Test Project** template (*File > New > Project*, search for
 "TAEF") and add further test classes with the **TAEF Test** item template (*Add > New Item*). Both templates declare the test
-classes in the project's root namespace (by default, the project name): Test Explorer groups tests by namespace and class and
-puts test classes of the global namespace under a placeholder node, so declare your own test classes in a namespace, too.
-Visual Studio makes the root namespace of the C++ projects it creates a valid C++ identifier; if the `RootNamespace` of a
-project file created otherwise (or, without one, the project name) contains characters such as `.`, correct the `namespace`
-line of the new file. The project template is set up as follows; an existing project needs at least steps 1 and 2 (and step
-4 for source locations):
+classes in a namespace derived from the project's name or root namespace (see below): Test Explorer groups tests by
+namespace and class and puts test classes of the global namespace under a placeholder node, so declare your own test classes
+in a namespace, too.
+
+The templates come with a wizard (part of the extension) that turns names into C++ identifiers in TitleCase without
+underscores, as usual in Windows code: every character other than a letter or digit separates words, the first character
+of each word is made uppercase and the others are kept as typed, and a name that starts with a digit gets the prefix
+`Taef`. For example, the project "Contoso.Unit Tests" gets the root namespace `ContosoUnitTests`, and the item
+"My New-Tests.cpp" declares the class `MyNewTests` (Visual Studio's own template parameters would give `Contoso_Unit_Tests`
+and `My_New_Tests`). The item template derives the namespace in the same way from the project's `RootNamespace` (or,
+without one, the project name), whether or not it is a valid identifier: `Contoso.Unit-Tests` (written into a project file
+by hand) and `Contoso_Unit_Tests` both become `ContosoUnitTests`. The wizard appends `Tests` to a name that would clash
+with the templates' code or with the headers they include, for example the class `AdditionTests` for the item
+"Addition.cpp" (the item template's class has a test method `Addition`) or the namespace `LogTests` for the project "Log"
+(the templates use `Log::Comment`).
+
+The project template is set up as follows; an existing project needs at least steps 1 and 2 (and step 4 for source
+locations):
 
 1. The project is a **DLL** (*Configuration Type: Dynamic Library*).
 2. **Include directory** `$(WindowsSdkDir)Testing\Development\inc`, **library directory**
@@ -594,6 +608,7 @@ test DLLs.
 | Placeholder `$(SolutionDir)` | yes | with [helper files](#settings_helper_files)<sup>1, 3</sup> | with helper files<sup>3</sup> |
 | Placeholders `$(PlatformName)`, `$(ConfigurationName)` | yes | with helper files<sup>3</sup> | with helper files<sup>3</sup> |
 | Placeholders `$(TestDll)`, `$(TestDllDir)`, `$(TestDir)`, `$(ThreadId)`, environment variables, helper file keys | yes | yes | yes |
+| Project and item templates (with the wizard for C++ names) | yes | no | - |
 
 <sup>1</sup> During test execution, `$(SolutionDir)` is also available without helper files.  
 <sup>2</sup> Set in a `.runsettings` file; the default engines `Native` and `ManagedAndNative` need the extension. See
@@ -897,8 +912,10 @@ Outputs:
 Other tools:
 
 * `TaefTestAdapter\SetVersion.bat <major>.<minor>.<revision>.<build>` sets the version of all assemblies of the C# projects
-  in `TaefTestAdapter` (adapter, tests and helper tools), the VSIX manifest and the NuGet package. The changes of each version are listed in [CHANGELOG.md](CHANGELOG.md), which the VSIX contains as
-  its release notes.
+  in `TaefTestAdapter` (adapter, tests and helper tools), the VSIX manifest, the NuGet package and the assembly version in
+  the `WizardExtension` of the project and item templates (Visual Studio loads the templates' wizard from
+  `TaefTestAdapter.VsPackage` by the full name of this assembly). The changes of each version are listed in
+  [CHANGELOG.md](CHANGELOG.md), which the VSIX contains as its release notes.
 * You can debug the VS package in the experimental instance of Visual Studio (`devenv /rootsuffix Exp`);
   [TaefTestAdapter.ChildProcessDbgSettings](TaefTestAdapter/TaefTestAdapter.ChildProcessDbgSettings) contains settings for the
   *Microsoft Child Process Debugging Power Tool* to automatically attach to the test host processes and `TE.exe`.
