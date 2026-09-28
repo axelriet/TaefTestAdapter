@@ -204,6 +204,8 @@ namespace TaefTestAdapter.VsPackage.Templates
             string rootNamespace = Regex.Match(project, "<RootNamespace>(?<value>[^<]*)</RootNamespace>").Groups["value"].Value;
             Dictionary<string, string> parameters = TaefTemplateWizardTests.NewItemParameters(rootNamespace, itemName);
             TaefTemplateWizardTests.RunStarted(parameters, WizardRunKind.AsNewItem);
+            // added by Visual Studio after RunStarted
+            parameters["$fileinputname$"] = itemName;
 
             string content = ReplaceParameters(File.ReadAllText(Path.Combine(ItemTemplateDir, "test.cpp")), parameters);
             File.WriteAllText(Path.Combine(Path.GetDirectoryName(projectFile) ?? "", itemName + ".cpp"), content, Encoding.UTF8);

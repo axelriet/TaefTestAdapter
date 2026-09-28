@@ -41,8 +41,10 @@ $vsix_manifest = "Packaging\source.extension.vsixmanifest"
 $nuspec = "Packaging\VsPackage.nuspec"
 $templates = @("ProjectTemplates\Test\TAEF\TaefTest.vstemplate", "ItemTemplates\Test\TAEF\TaefTest.vstemplate")
 
-# the version in an assembly's full name always has four parts (AssemblyVersion("1.0.0") is 1.0.0.0)
-$assembly_version = if ($version -match '^\d+\.\d+\.\d+$') { "$version.0" } else { $version }
+# the version in an assembly's full name always has four parts and no leading zeros (AssemblyVersion("1.0.0") is
+# 1.0.0.0, AssemblyVersion("1.0.0.042") is 1.0.0.42)
+$parsed_version = [Version] $version
+$assembly_version = if ($parsed_version.Revision -lt 0) { "$parsed_version.0" } else { "$parsed_version" }
 
 function Update-File([string] $relativePath, [string] $pattern, [string] $newVersion = $version) {
     $path = Join-Path $PSScriptRoot $relativePath

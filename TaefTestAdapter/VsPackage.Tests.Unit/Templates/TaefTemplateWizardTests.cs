@@ -138,10 +138,37 @@ namespace TaefTestAdapter.VsPackage.Templates
 
         [TestMethod]
         [TestCategory(Unit)]
-        public void RunStarted_NewItemWithoutFileInputName_ClassNameFromSafeItemName()
+        public void RunStarted_NewItemWithNonSpacingMarks_ClassNameKeepsThem()
+        {
+            // Visual Studio's $safeitemname$ has lost the non-spacing marks ("cafe_tests"; the Hindi name loses its virama)
+            Dictionary<string, string> parameters = NewItemParameters("ContosoTests", "cafe\u0301 tests");
+            RunStarted(parameters, WizardRunKind.AsNewItem);
+            parameters[ClassNameParameter].Should().Be("Cafe\u0301Tests");
+
+            parameters = NewItemParameters("ContosoTests", "\u092A\u0930\u0940\u0915\u094D\u0937\u0923");
+            RunStarted(parameters, WizardRunKind.AsNewItem);
+            parameters[ClassNameParameter].Should().Be("\u092A\u0930\u0940\u0915\u094D\u0937\u0923");
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void RunStarted_NewItemWithFileInputName_ClassNameFromFileInputName()
+        {
+            // hosts which pass $fileinputname$ to RunStarted (Visual Studio adds it later)
+            Dictionary<string, string> parameters = NewItemParameters("ContosoTests", "Other");
+            parameters["$fileinputname$"] = "My New-Tests";
+
+            RunStarted(parameters, WizardRunKind.AsNewItem);
+
+            parameters[ClassNameParameter].Should().Be("MyNewTests");
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void RunStarted_NewItemWithoutRootName_ClassNameFromSafeItemName()
         {
             Dictionary<string, string> parameters = NewItemParameters("ContosoTests", "My New-Tests");
-            parameters.Remove("$fileinputname$");
+            parameters.Remove("$rootname$");
 
             RunStarted(parameters, WizardRunKind.AsNewItem);
 
@@ -177,8 +204,9 @@ namespace TaefTestAdapter.VsPackage.Templates
 
         [TestMethod]
         [TestCategory(Unit)]
-        public void RunStarted_ExceptionWhileComputingTheNamespaceOfAProject_SafeProjectNameIsUsed()
+        public void RunStarted_ExceptionWhileComputingTheNamespaceOfAProject_DefaultNamespaceIsUsed()
         {
+            // $safeprojectname$ is still the project name as typed when RunStarted is called, so it is not used
             var comparer = new ThrowingComparer("$projectname$");
             var parameters = new Dictionary<string, string>(NewProjectParameters("Contoso.Unit Tests"), comparer);
             comparer.IsArmed = true;
@@ -186,7 +214,7 @@ namespace TaefTestAdapter.VsPackage.Templates
             RunStarted(parameters, WizardRunKind.AsNewProject);
 
             comparer.HasThrown.Should().BeTrue();
-            parameters[NamespaceParameter].Should().Be("Contoso_Unit_Tests");
+            parameters[NamespaceParameter].Should().Be(TemplateNames.DefaultNamespace);
         }
 
         [TestMethod]
@@ -303,24 +331,29 @@ namespace TaefTestAdapter.VsPackage.Templates
         }
 
         /// <returns>
-        /// (Some of) the parameters Visual Studio passes when an item is created from the item template:
-        /// <c>$rootnamespace$</c> is the RootNamespace of the project, <c>$fileinputname$</c> the file name without extension.
+        /// (Some of) the parameters Visual Studio passes to <c>RunStarted</c> when an item is created from the item template:
+        /// <c>$rootnamespace$</c> is the RootNamespace of the project, <c>$rootname$</c> the file name as typed, with
+        /// extension. Visual Studio adds <c>$fileinputname$</c> (the file name without extension) only after
+        /// <c>RunStarted</c>.
         /// </returns>
-        internal static Dictionary<string, string> NewItemParameters(string rootNamespace, string fileInputName)
+        internal static Dictionary<string, string> NewItemParameters(string rootNamespace, string fileName)
         {
             return new Dictionary<string, string>
             {
                 ["$rootnamespace$"] = rootNamespace,
-                ["$fileinputname$"] = fileInputName,
-                ["$itemname$"] = fileInputName + ".cpp",
-                ["$safeitemname$"] = ToVisualStudioSafeName(fileInputName)
+                ["$defaultnamespace$"] = rootNamespace,
+                ["$rootname$"] = fileName + ".cpp",
+                ["$safeitemname$"] = ToVisualStudioSafeName(fileName)
             };
         }
 
-        /// <returns>The name made an identifier as Visual Studio does for $safeprojectname$ and $safeitemname$.</returns>
+        /// <returns>
+        /// The name made an identifier as Visual Studio does for $safeitemname$ (non-spacing marks are removed, other
+        /// characters which are not valid in identifiers replaced by <c>_</c>).
+        /// </returns>
         internal static string ToVisualStudioSafeName(string name)
         {
-            string safeName = Regex.Replace(name ?? "", @"[^\p{L}\p{Nd}_]", "_");
+            string safeName = Regex.Replace(Regex.Replace(name ?? "", @"\p{Mn}", ""), @"[^\p{L}\p{Nd}_]", "_");
             return safeName.Length > 0 && char.IsDigit(safeName[0]) ? "_" + safeName : safeName;
         }
 

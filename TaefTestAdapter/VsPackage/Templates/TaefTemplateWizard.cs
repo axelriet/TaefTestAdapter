@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using EnvDTE;
 using Microsoft.VisualStudio.TemplateWizard;
 
@@ -12,9 +13,9 @@ namespace TaefTestAdapter.VsPackage.Templates
     /// and <c>ItemTemplates\Test\TAEF</c>): adds the template parameters <c>$taefnamespace$</c> (the namespace of the test
     /// classes and the RootNamespace of a new project) and, for items, <c>$taefclassname$</c> (the name of the test class),
     /// see <see cref="TemplateNames"/>. It has no UI. It never throws, since an exception would abort the creation of the
-    /// project or item: if the names cannot be computed, Visual Studio's own values are used (<c>$safeprojectname$</c> and
-    /// <c>$safeitemname$</c>, in which characters that are not valid in identifiers are replaced by <c>_</c>, and
-    /// <c>$rootnamespace$</c>).
+    /// project or item: if the names cannot be computed, a project gets the namespace <see cref="TemplateNames.DefaultNamespace"/>
+    /// and an item Visual Studio's own values (<c>$rootnamespace$</c> and <c>$safeitemname$</c>, in which characters that are
+    /// not valid in identifiers are replaced by <c>_</c>).
     /// </summary>
     public sealed class TaefTemplateWizard : IWizard
     {
@@ -33,11 +34,19 @@ namespace TaefTestAdapter.VsPackage.Templates
                 if (isItem)
                 {
                     // $rootnamespace$ is the RootNamespace of the project the item is added to, as written in its project
-                    // file; $fileinputname$ is the file name without extension, as typed
+                    // file; $rootname$ is the file name as typed, with extension (Visual Studio adds $fileinputname$ only
+                    // after RunStarted, and $safeitemname$ has lost characters such as non-spacing marks)
                     string namespaceName = TemplateNames.GetNamespace(
                         GetFirstValue(replacementsDictionary, "$rootnamespace$", "$safeprojectname$", "$projectname$"));
+                    string fileName = GetFirstValue(replacementsDictionary, "$fileinputname$");
+                    if (fileName == null)
+                    {
+                        string rootName = GetFirstValue(replacementsDictionary, "$rootname$");
+                        if (rootName != null)
+                            fileName = Path.GetFileNameWithoutExtension(rootName);
+                    }
                     string className = TemplateNames.GetClassName(
-                        GetFirstValue(replacementsDictionary, "$fileinputname$", "$safeitemname$"));
+                        string.IsNullOrWhiteSpace(fileName) ? GetFirstValue(replacementsDictionary, "$safeitemname$") : fileName);
                     replacementsDictionary[NamespaceParameter] = namespaceName;
                     replacementsDictionary[ClassNameParameter] = className;
                 }
@@ -49,10 +58,16 @@ namespace TaefTestAdapter.VsPackage.Templates
             }
             catch (Exception)
             {
-                SetFallbackValue(replacementsDictionary, NamespaceParameter, isItem ? "$rootnamespace$" : "$safeprojectname$",
-                    TemplateNames.DefaultNamespace);
                 if (isItem)
+                {
+                    SetFallbackValue(replacementsDictionary, NamespaceParameter, "$rootnamespace$", TemplateNames.DefaultNamespace);
                     SetFallbackValue(replacementsDictionary, ClassNameParameter, "$safeitemname$", TemplateNames.DefaultClassName);
+                }
+                else
+                {
+                    // $safeprojectname$ is still the project name as typed when RunStarted is called: not an identifier
+                    SetFallbackValue(replacementsDictionary, NamespaceParameter, null, TemplateNames.DefaultNamespace);
+                }
             }
         }
 
@@ -94,7 +109,8 @@ namespace TaefTestAdapter.VsPackage.Templates
             try
             {
                 replacementsDictionary[parameter] =
-                    replacementsDictionary.TryGetValue(visualStudioParameter, out string value) && !string.IsNullOrWhiteSpace(value)
+                    visualStudioParameter != null && replacementsDictionary.TryGetValue(visualStudioParameter, out string value) &&
+                    !string.IsNullOrWhiteSpace(value)
                         ? value
                         : defaultValue;
             }
