@@ -5,7 +5,9 @@
 Test Adapter for TAEF enables Visual Studio's testing tools with native C++ unit tests written for the
 [Test Authoring and Execution Framework (TAEF)](https://learn.microsoft.com/windows-hardware/drivers/taef/). It discovers the
 tests of your TAEF test DLLs, shows them in Test Explorer, and runs and debugs them with TAEF's test runner `TE.exe`. It
-works in Visual Studio 2026 and Visual Studio 2022, and with `vstest.console.exe` (for example, on build servers).
+works in Visual Studio 2026 and Visual Studio 2022, and with `vstest.console.exe` (for example, on build servers). Get it
+from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) or as the
+[TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) NuGet package, see [Install](#install).
 
 In this article:
 
@@ -102,15 +104,19 @@ Visual Studio, and run the same test DLLs in your build pipeline, in your labs a
 
 You can use Test Adapter for TAEF in three ways:
 
-* **Visual Studio extension (VSIX)** - recommended: double-click the `.vsix` file (see [Build from source](#building)) and
-  select Visual Studio 2026 and/or Visual Studio 2022 in the installer. After you restart Visual Studio, Test Explorer shows
-  the tests of your TAEF test DLLs once they are built. This installation provides all features (debugging with all
-  debugger engines, options, toolbar, solution settings file).
+* **Visual Studio extension (VSIX)** - recommended: install
+  [Test Adapter for TAEF](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) from the Visual Studio
+  Marketplace, in Visual Studio with *Extensions > Manage Extensions* (search for "TAEF"). Alternatively, download
+  `TaefTestAdapter.vsix` from the [Releases](https://github.com/axelriet/TaefTestAdapter/releases) of this repository (or
+  build it, see [Build from source](#building)), double-click it and select Visual Studio 2026 and/or Visual Studio 2022
+  in the installer. After you restart Visual Studio, Test Explorer shows the tests of your TAEF test DLLs once they are
+  built. This installation provides all features (debugging with all debugger engines, options, toolbar, solution
+  settings file, project and item templates).
 * **vstest.console.exe**: pass the folder containing `TaefTestAdapter.TestAdapter.dll` (and its dependencies) with
   `/TestAdapterPath:<folder>`, see [Run tests from the command line](#vstest_console).
-* **NuGet package** `TaefTestAdapter` (built together with the VSIX, see [Build from source](#building); it is not on
-  nuget.org, so add its folder as a package source): a development dependency of your test projects that makes Visual
-  Studio find the adapter without installing the extension. Visual Studio integration is limited this way: tests can be
+* **NuGet package** [TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) (add it to your test projects with
+  *Manage NuGet Packages*): a development dependency of your test projects that makes Visual Studio find the adapter
+  without installing the extension. Visual Studio integration is limited this way: tests can be
   discovered and run, but they can only be debugged with the debugger engine `VsTestFramework` (option `DebuggerKind`,
   set in a `.runsettings` file, see [Debug tests](#debugging)), there is no options page and no toolbar, and the
   solution settings file is not used; you can provide settings with a `.runsettings` file (see
