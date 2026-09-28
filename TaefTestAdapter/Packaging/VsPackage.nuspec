@@ -4,7 +4,7 @@
     <id>TaefTestAdapter</id>
     <version>1.0.0.0</version>
     <title>Test Adapter for TAEF</title>
-    <authors>TAEF Test Adapter Contributors</authors>
+    <authors>Axel Rietschin Software Development LLC</authors>
     <description>Enables Visual Studio's testing tools (Test Explorer, vstest.console.exe) with native C++ tests written for the Test Authoring and Execution Framework (TAEF). Use the NuGet package on build servers or without the Visual Studio extension; the extension additionally provides options, a toolbar and debugging with the native debugger engines.</description>
     <summary>Runs TAEF tests (TE.exe) from the Test Explorer of Visual Studio 2026 and Visual Studio 2022 and from vstest.console.exe; configured with .runsettings files.</summary>
     <language>en-US</language>

@@ -1,37 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-    <Metadata>
-        <Identity Id="TaefTestAdapter.fda7711f-52ca-4dc5-8a15-7bc1bce56cae" Version="1.0.0.0" Language="en-US" Publisher="TAEF Test Adapter Contributors" />
-        <DisplayName>Test Adapter for TAEF</DisplayName>
-        <Description xml:space="preserve">Enables Visual Studio's testing tools with unit tests written for the Test Authoring and Execution Framework (TAEF).</Description>
-        <License>LICENSE.txt</License>
-        <ReleaseNotes>ReleaseNotes.txt</ReleaseNotes>
-        <Icon>Resources\taef-logo.ico</Icon>
-        <PreviewImage>Resources\Preview.png</PreviewImage>
-        <Tags>Unit Test, C++, TAEF, Test Authoring and Execution Framework, TE.exe, Test Explorer, Testing</Tags>
-    </Metadata>
-    <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,19.0)">
-            <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[17.0,19.0)">
-            <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[17.0,19.0)">
-            <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-    </Installation>
-    <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core" Version="[17.0,)" DisplayName="Visual Studio C++ core features" />
-    </Prerequisites>
-    <Assets>
-        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="TestAdapter" Path="|TestAdapter|" />
-        <Asset Type="UnitTestExtension" d:Source="Project" d:ProjectName="TestAdapter" Path="|TestAdapter|" />
-        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage;PkgdefProjectOutputGroup|" />
-        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage|" />
-        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="VsPackage" Path="|VsPackage|" AssemblyName="|VsPackage;AssemblyName|" />
-        <Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" d:TargetPath="ProjectTemplates\Test\TaefTestPT.zip" />
-        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="File" Path="ItemTemplates" d:TargetPath="ItemTemplates\Test\TaefTestIT.zip" />
-    </Assets>
+  <Metadata>
+    <Identity Id="TaefTestAdapter.fda7711f-52ca-4dc5-8a15-7bc1bce56cae" Version="1.0.0.0" Language="en-US" Publisher="Axel Rietschin Software Development LLC" />
+    <DisplayName>Test Adapter for TAEF</DisplayName>
+    <Description xml:space="preserve">Enables Visual Studio's testing tools with unit tests written for the Test Authoring and Execution Framework (TAEF).</Description>
+    <License>LICENSE.txt</License>
+    <ReleaseNotes>ReleaseNotes.txt</ReleaseNotes>
+    <Icon>Resources\taef-logo.ico</Icon>
+    <PreviewImage>Resources\Preview.png</PreviewImage>
+    <Tags>Unit Test, C++, TAEF, Test Authoring and Execution Framework, TE.exe, Test Explorer, Testing</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,19.0)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[17.0,19.0)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[17.0,19.0)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+  </Installation>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" DisplayName="Visual Studio core editor" Version="[17.0,)" />
+    <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core" DisplayName="Visual Studio C++ core features" Version="[17.0,)" />
+  </Prerequisites>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" Path="|TestAdapter|" d:Source="Project" d:ProjectName="TestAdapter" />
+    <Asset Type="UnitTestExtension" Path="|TestAdapter|" d:Source="Project" d:ProjectName="TestAdapter" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" Path="|VsPackage;PkgdefProjectOutputGroup|" d:Source="Project" d:ProjectName="VsPackage" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" Path="|VsPackage|" d:Source="Project" d:ProjectName="VsPackage" />
+    <Asset Type="Microsoft.VisualStudio.Assembly" Path="|VsPackage|" d:Source="Project" d:ProjectName="VsPackage" />
+    <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="ProjectTemplates" d:Source="File" d:TargetPath="ProjectTemplates\Test\TaefTestPT.zip" />
+    <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" d:Source="File" d:TargetPath="ItemTemplates\Test\TaefTestIT.zip" />
+  </Assets>
 </PackageManifest>
