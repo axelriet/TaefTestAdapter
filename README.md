@@ -1,5 +1,3 @@
-<img src="https://raw.githubusercontent.com/axelriet/TaefTestAdapter/main/TaefTestAdapter/Packaging/Resources/taef-logo.png" alt="Test Adapter for TAEF logo" width="64" align="right" />
-
 # Test Adapter for TAEF
 
 Test Adapter for TAEF enables Visual Studio's testing tools with native C++ unit tests written for the
