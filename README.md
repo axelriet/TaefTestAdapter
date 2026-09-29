@@ -594,19 +594,19 @@ test DLLs.
 | Feature | VS with VSIX | VS with NuGet package | vstest.console.exe |
 |---|:---:|:---:|:---:|
 | Test discovery and execution | yes | yes | yes |
-| Test debugging | yes | only with `DebuggerKind` `VsTestFramework`<sup>2</sup> | - |
+| Test debugging | yes | only with `DebuggerKind` `VsTestFramework` (2) | - |
 | Configuration: VS options, toolbar | yes | no | - |
 | Configuration: solution settings file | yes | no | no |
 | Configuration: user settings file | yes (*Test > Configure Run Settings*) | yes | yes (`/Settings`) |
-| Placeholder `$(SolutionDir)` | yes | with settings helper files<sup>1, 3</sup> | with helper files<sup>3</sup> |
-| Placeholders `$(PlatformName)`, `$(ConfigurationName)` | yes | with helper files<sup>3</sup> | with helper files<sup>3</sup> |
+| Placeholder `$(SolutionDir)` | yes | with settings helper files (1, 3) | with helper files (3) |
+| Placeholders `$(PlatformName)`, `$(ConfigurationName)` | yes | with helper files (3) | with helper files (3) |
 | Placeholders `$(TestDll)`, `$(TestDllDir)`, `$(TestDir)`, `$(ThreadId)`, environment variables, helper file keys | yes | yes | yes |
 | Project and item templates (with the wizard for C++ names) | yes | no | - |
 
-<sup>1</sup> During test execution, `$(SolutionDir)` is also available without helper files.  
-<sup>2</sup> Set in a `.runsettings` file; the default engines `Native` and `ManagedAndNative` need the extension. See
+(1) During test execution, `$(SolutionDir)` is also available without helper files.  
+(2) Set in a `.runsettings` file; the default engines `Native` and `ManagedAndNative` need the extension. See
 *Debug tests* for the restrictions of `VsTestFramework`.  
-<sup>3</sup> Not in `BatchForTestSetup`/`BatchForTestTeardown`, for which helper files are not used (see
+(3) Not in `BatchForTestSetup`/`BatchForTestTeardown`, for which helper files are not used (see
 *Placeholders*).
 
 ### Limitations
