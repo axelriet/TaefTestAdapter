@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="TaefTestAdapter.4e98a0c7-3e6f-4334-ae5e-02c4f970e7e0" Version="1.0.1.0" Language="en-US" Publisher="Axel Rietschin Software Development LLC" />
+    <Identity Id="TaefTestAdapter.4e98a0c7-3e6f-4334-ae5e-02c4f970e7e1" Version="1.0.1.0" Language="en-US" Publisher="Axel Rietschin Software Development LLC" />
     <DisplayName>Test Adapter for TAEF</DisplayName>
     <Description xml:space="preserve">Enables Visual Studio's testing tools with unit tests written for the Test Authoring and Execution Framework (TAEF).</Description>
     <MoreInfo>https://github.com/axelriet/TaefTestAdapter</MoreInfo>
@@ -31,7 +31,7 @@
     <Asset Type="UnitTestExtension" Path="|TestAdapter|" d:Source="Project" d:ProjectName="TestAdapter" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" Path="|VsPackage;PkgdefProjectOutputGroup|" d:Source="Project" d:ProjectName="VsPackage" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" Path="|VsPackage|" d:Source="Project" d:ProjectName="VsPackage" />
-    <Asset Type="Microsoft.VisualStudio.Assembly" Path="|VsPackage|" d:Source="Project" d:ProjectName="VsPackage" AssemblyName="|VsPackage;AssemblyName|" />
+    <Asset Type="Microsoft.VisualStudio.Assembly" Path="|VsPackage|" d:Source="Project" d:ProjectName="VsPackage" />
     <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="ProjectTemplates" d:Source="File" d:TargetPath="ProjectTemplates\Test\TaefTestPT.zip" />
     <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" d:Source="File" d:TargetPath="ItemTemplates\Test\TaefTestIT.zip" />
   </Assets>
