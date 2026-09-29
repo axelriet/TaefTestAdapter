@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="TaefTestAdapter.fda7711f-52ca-4dc5-8a15-7bc1bce56cae" Version="1.0.1.0" Language="en-US" Publisher="Axel Rietschin Software Development LLC" />
+    <Identity Id="TaefTestAdapter.4e98a0c7-3e6f-4334-ae5e-02c4f970e7e0" Version="1.0.1.0" Language="en-US" Publisher="Axel Rietschin Software Development LLC" />
     <DisplayName>Test Adapter for TAEF</DisplayName>
     <Description xml:space="preserve">Enables Visual Studio's testing tools with unit tests written for the Test Authoring and Execution Framework (TAEF).</Description>
     <MoreInfo>https://github.com/axelriet/TaefTestAdapter</MoreInfo>
