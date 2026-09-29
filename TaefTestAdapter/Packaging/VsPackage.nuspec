@@ -2,18 +2,23 @@
 <package>
   <metadata minClientVersion="5.3">
     <id>TaefTestAdapter</id>
-    <version>1.0.0.0</version>
+    <version>1.0.1.0</version>
     <title>Test Adapter for TAEF</title>
     <authors>Axel Rietschin Software Development LLC</authors>
     <description>Enables Visual Studio's testing tools (Test Explorer, vstest.console.exe) with native C++ tests written for the Test Authoring and Execution Framework (TAEF). Use the NuGet package on build servers or without the Visual Studio extension; the extension additionally provides options, a toolbar and debugging with the native debugger engines.</description>
     <summary>Runs TAEF tests (TE.exe) from the Test Explorer of Visual Studio 2026 and Visual Studio 2022 and from vstest.console.exe; configured with .runsettings files.</summary>
+    <releaseNotes>https://github.com/axelriet/TaefTestAdapter/blob/main/CHANGELOG.md</releaseNotes>
     <language>en-US</language>
+    <projectUrl>https://github.com/axelriet/TaefTestAdapter</projectUrl>
+    <!-- the attribute commit (the commit of the sources) is added when the package is built, see target GetRepositoryCommit in Packaging.csproj -->
+    <repository type="git" url="https://github.com/axelriet/TaefTestAdapter.git" branch="main" />
     <icon>taef-logo.png</icon>
+    <readme>README.md</readme>
     <license type="expression">Apache-2.0</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <developmentDependency>true</developmentDependency>
     <copyright>Copyright 2015-2019 Christian Soltenborn and contributors. Modified for TAEF support by Axel Rietschin and Claude Code.</copyright>
-    <tags>native TAEF TE.exe WEX test adapter C++ unit integration automated testing</tags>
+    <tags>TAEF C++ C native TE.exe WEX test adapter unit integration automated testing VisualStudio TestExplorer vstest</tags>
     <dependencies>
       <group targetFramework="native0.0" />
     </dependencies>
@@ -26,9 +31,12 @@
 
     <file src="x86\msdia140.dll" target="build\_common\x86\" />
     <file src="x64\msdia140.dll" target="build\_common\x64\" />
+    <!-- optional (see build.ps1), so taken with a wildcard, which matches nothing if the DLL is missing -->
+    <file src="arm64\*.dll" target="build\_common\arm64\" />
 
     <file src="LICENSE.txt" target="" />
     <file src="NOTICE.txt" target="" />
+    <file src="README.md" target="" />
     <file src="Resources\taef-logo.png" target="" />
     <file src="_.txt" target="lib\native\" />
   </files>

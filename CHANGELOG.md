@@ -2,6 +2,20 @@
 
 All notable changes to Test Adapter for TAEF are documented in this file.
 
+## [1.0.1.0] - 2026-09-29
+
+Bug fixes:
+
+* source locations of the tests were missing when the adapter ran in a native ARM64 process (for example, the ARM64 test host or `vstest.console.exe` on ARM64 Windows): the extension and the NuGet package now contain the arm64 `msdia140.dll`, which reads the PDBs in such processes
+* debugging tests from Test Explorer attached the Visual Studio debugger to the test host process of the test platform as well; now only `TE.exe`, which runs the tests, is debugged
+* test DLLs given with a root-relative or drive-relative path (for example, `\dir\tests.dll` or `D:tests.dll` on the command line of `vstest.console.exe`) could be ignored with the error that they came from another computer; downloaded test DLLs (mark of the web) are still blocked
+* the TAEF Test Project template had no ARM64 configurations; it now has `Debug|ARM64` and `Release|ARM64` like `Debug|x64` and `Release|x64` (building them requires the MSVC ARM64 build tools)
+* creating a project or a file from the TAEF templates failed with the error `this template attempted to load component assembly 'TaefTestAdapter.VsPackage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6dd9e1a7dfb9193e'`: the manifest of the extension did not declare the name of the templates' wizard assembly, by which Visual Studio finds it in the extension
+
+Other changes:
+
+* the NuGet package links to the project and to its source repository (with the commit it was built from) and contains the README, which nuget.org shows on the package page; the extension links to the project on GitHub
+
 ## [1.0.0.0] - 2026-09-27
 
 First release of Test Adapter for TAEF, which runs native C++ tests written with the

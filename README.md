@@ -1,4 +1,4 @@
-<img src="TaefTestAdapter/Packaging/Resources/taef-logo.png" alt="Test Adapter for TAEF logo" width="64" align="right" />
+<img src="https://raw.githubusercontent.com/axelriet/TaefTestAdapter/main/TaefTestAdapter/Packaging/Resources/taef-logo.png" alt="Test Adapter for TAEF logo" width="64" align="right" />
 
 # Test Adapter for TAEF
 
@@ -7,26 +7,9 @@ Test Adapter for TAEF enables Visual Studio's testing tools with native C++ unit
 tests of your TAEF test DLLs, shows them in Test Explorer, and runs and debugs them with TAEF's test runner `TE.exe`. It
 works in Visual Studio 2026 and Visual Studio 2022, and with `vstest.console.exe` (for example, on build servers). Get it
 from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) or as the
-[TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) NuGet package, see [Install](#install).
+[TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) NuGet package, see *Install* below.
 
-In this article:
-
-* [Why TAEF](#why_taef)
-* [Overview](#overview)
-* [Prerequisites](#prerequisites)
-* [Install](#install)
-* [Write TAEF tests](#write_tests)
-* [Run and debug tests](#run_and_debug)
-* [Configure](#configure)
-* [Reference](#reference)
-* [Run tests from the command line](#vstest_console)
-* [Troubleshoot](#troubleshooting)
-* [FAQ](#faq)
-* [Build from source](#building)
-* [Credits](#credits)
-* [License](#license)
-
-## <a name="why_taef"></a>Why TAEF
+## Why TAEF
 
 [TAEF](https://learn.microsoft.com/windows-hardware/drivers/taef/) is an industrial-grade test framework, fully supported by
 Microsoft for many years and heavily used internally: TAEF is what tests *Windows itself*, its components and its drivers,
@@ -56,7 +39,7 @@ share and run automated tests across teams and disciplines:
 Test Adapter for TAEF brings all of this into Visual Studio's Test Explorer. Write your tests once, run and debug them in
 Visual Studio, and run the same test DLLs in your build pipeline, in your labs and on your customers' machines.
 
-## <a name="overview"></a>Overview
+## Overview
 
 * **Test discovery without running test code**: TAEF test DLLs are recognized by their TAEF test metadata (a static check of
   the DLL file, no process is started for other DLLs). The tests are listed with `TE.exe <dll> /listProperties`, which reads
@@ -83,10 +66,10 @@ Visual Studio, and run the same test DLLs in your build pipeline, in your labs a
 * Setup and teardown batch files, additional `TE.exe` arguments (for example, runtime parameters `/p:"Name=Value"`),
   working directory, `PATH` extension and environment variables.
 * **Project and item templates** for TAEF test DLLs and test classes, whose wizard derives TitleCase C++ namespace and
-  class names from the project and file names (see [Write TAEF tests](#write_tests)).
+  class names from the project and file names (see *Write TAEF tests*).
 * Support for `vstest.console.exe`, including test case filters.
 
-## <a name="prerequisites"></a>Prerequisites
+## Prerequisites
 
 * Visual Studio 2026 (18.x) or Visual Studio 2022 (17.x), 64 bit, with the *Desktop development with C++* workload, or
   `vstest.console.exe` of these versions.
@@ -98,9 +81,9 @@ Visual Studio, and run the same test DLLs in your build pipeline, in your labs a
   * `Runtimes\TAEF\<x86|x64|arm64>\TE.exe` is the test runner used by the adapter.
 
   Alternatively, you can take TAEF from the `Microsoft.Taef` NuGet package (where available; it is not published on
-  nuget.org) or any other location; set the option [`TeExecutable`](#settings_reference) in that case.
+  nuget.org) or any other location; set the option `TeExecutable` in that case (see *Settings* in *Reference*).
 
-## <a name="install"></a>Install
+## Install
 
 You can use Test Adapter for TAEF in three ways:
 
@@ -108,23 +91,23 @@ You can use Test Adapter for TAEF in three ways:
   [Test Adapter for TAEF](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) from the Visual Studio
   Marketplace, in Visual Studio with *Extensions > Manage Extensions* (search for "TAEF"). Alternatively, download
   `TaefTestAdapter.vsix` from the [Releases](https://github.com/axelriet/TaefTestAdapter/releases) of this repository (or
-  build it, see [Build from source](#building)), double-click it and select Visual Studio 2026 and/or Visual Studio 2022
+  build it, see *Build from source*), double-click it and select Visual Studio 2026 and/or Visual Studio 2022
   in the installer. After you restart Visual Studio, Test Explorer shows the tests of your TAEF test DLLs once they are
   built. This installation provides all features (debugging with all debugger engines, options, toolbar, solution
   settings file, project and item templates).
 * **vstest.console.exe**: pass the folder containing `TaefTestAdapter.TestAdapter.dll` (and its dependencies) with
-  `/TestAdapterPath:<folder>`, see [Run tests from the command line](#vstest_console).
+  `/TestAdapterPath:<folder>`, see *Run tests from the command line*.
 * **NuGet package** [TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) (add it to your test projects with
   *Manage NuGet Packages*): a development dependency of your test projects that makes Visual Studio find the adapter
   without installing the extension. Visual Studio integration is limited this way: tests can be
   discovered and run, but they can only be debugged with the debugger engine `VsTestFramework` (option `DebuggerKind`,
-  set in a `.runsettings` file, see [Debug tests](#debugging)), there is no options page and no toolbar, and the
+  set in a `.runsettings` file, see *Debug tests*), there is no options page and no toolbar, and the
   solution settings file is not used; you can provide settings with a `.runsettings` file (see
-  [Feature availability](#feature_availability)).
+  *Feature availability*).
 
-If no or not all tests show up, see [Troubleshoot](#troubleshooting).
+If no or not all tests show up, see *Troubleshoot*.
 
-## <a name="write_tests"></a>Write TAEF tests
+## Write TAEF tests
 
 If the extension is installed, create a project with the **TAEF Test Project** template (*File > New > Project*, search for
 "TAEF") and add further test classes with the **TAEF Test** item template (*Add > New Item*). Both templates declare the test
@@ -159,7 +142,9 @@ locations):
    with the arguments `"$(TargetPath)" /inproc`. *Command* and *Command Arguments* entered in *Project Properties >
    Debugging* (stored in the `.vcxproj.user` file) take precedence; the arguments must then contain the quoted test DLL and
    `/inproc` (so that the tests run in the debugged `TE.exe` process and their breakpoints are hit), for example
-   `"$(TargetPath)" /inproc /name:*Addition` to debug only some of the tests.
+   `"$(TargetPath)" /inproc /name:*Addition` to debug only some of the tests. For the ARM64 configurations, this applies
+   where Visual Studio debugs ARM64 processes locally (on ARM64 Windows); elsewhere, Visual Studio uses the *Remote Windows
+   Debugger* for ARM64 by default.
 
 A test DLL contains test classes; a test class needs no base class, test methods have the signature `void Method()`, fixtures
 (setup and cleanup methods) the signature `bool Fixture()`:
@@ -207,15 +192,15 @@ namespace Contoso { namespace Tests
 After you build the project, Test Explorer shows the tests `Contoso::Tests::MathTests::Addition` and
 `Contoso::Tests::MathTests::Rounding#metadataSet0` to `#metadataSet2`. You can run the same tests on the command line with
 `TE.exe <path of the test DLL>`. See the [TAEF documentation](https://learn.microsoft.com/windows-hardware/drivers/taef/) for
-all macros, metadata, data sources and runtime parameters; the sample test DLLs in [SampleTests](SampleTests) show many more
-examples.
+all macros, metadata, data sources and runtime parameters; the sample test DLLs in
+[SampleTests](https://github.com/axelriet/TaefTestAdapter/tree/main/SampleTests) show many more examples.
 
-## <a name="run_and_debug"></a>Run and debug tests
+## Run and debug tests
 
-Test Explorer shows each test with its TAEF name (see [Test names](#test_names)) and groups the tests by namespace and class.
+Test Explorer shows each test with its TAEF name (see *Test names*) and groups the tests by namespace and class.
 Run and debug them as any other tests; the following sections describe what the adapter does.
 
-### <a name="discovery"></a>Test discovery
+### Test discovery
 
 Visual Studio passes all DLLs of a solution (and `vstest.console.exe` the DLLs given on its command line) to the adapter. For
 each DLL, the adapter
@@ -225,7 +210,7 @@ each DLL, the adapter
    `testdata` section written by `WexTestClass.h`) and imports or delay-loads (`/DELAYLOAD`) one of the TAEF DLLs
    `Wex.Logger.dll`, `Wex.Common.dll` and `TE.Common.dll`. Other DLLs are ignored silently (see `OutputMode` `Debug` for
    details). This check does not start any process;
-2. selects the `TE.exe` to be used (see [TE.exe selection](#te_selection));
+2. selects the `TE.exe` to be used (see *TE.exe selection*);
 3. runs `TE.exe "<dll>" <additional TE.exe arguments> /listProperties /runIgnoredTests /unicodeOutput:false /coloredConsoleOutput:false`
    (with the configured working directory, `PATH` extension and environment variables, and a timeout of
    `TestDiscoveryTimeoutInSeconds`, after which `TE.exe` and all processes started by it are killed). `TE.exe` reads the
@@ -244,7 +229,7 @@ line: the lines after the empty line cannot be told apart from the listing itsel
 listing are ignored, and a warning (`TE.exe printed <n> unexpected line(s) while listing the tests of test DLL ...`) says
 that some tests or their traits may be missing or wrong.
 
-### <a name="traits"></a>Traits
+### Traits
 
 The TAEF metadata of a test - its test properties, merged with the properties of its class and module (the most specific
 wins) - are shown as traits, for example `Priority [1]`. Multi-valued properties (for example, two `Owner` properties) are
@@ -263,9 +248,9 @@ You can assign additional traits with regular expressions which are matched agai
 Within a phase, traits are added (a test can have several traits with the same name). Syntax: `<regex>///<trait name>,<trait value>`,
 several of those separated by `//||//`, for example `.*::Performance::.*///Type,Slow//||//.*#metadataSet.*///Kind,DataDriven`.
 
-### <a name="execution"></a>Test execution
+### Test execution
 
-The adapter runs one `TE.exe` process per test DLL (per thread in [parallel execution](#parallelization)):
+The adapter runs one `TE.exe` process per test DLL (per thread in parallel execution, see *Parallel test execution*):
 
 ```
 TE.exe "<dll>" <additional TE.exe arguments> /unicodeOutput:false /coloredConsoleOutput:false [/runIgnoredTests]
@@ -276,7 +261,7 @@ TE.exe "<dll>" <additional TE.exe arguments> /unicodeOutput:false /coloredConsol
 
 * The switches are added according to the options `RunIgnoredTests`, `BreakOnError` (only while debugging),
   `NrOfTestRepetitions` (only if greater than 1), `TestTimeout`, `IsolationLevel` and `RunInProcess` (`/inproc` and
-  `/disableTimeouts` are always used while debugging, see [Debug tests](#debugging)). `/enableWttLogging` is only used while
+  `/disableTimeouts` are always used while debugging, see *Debug tests*). `/enableWttLogging` is only used while
   debugging with `DebuggerKind` `VsTestFramework`.
 * **In process** (`/inproc`, that is, with option `RunInProcess` and always while debugging), `/testTimeout` and
   `/isolationLevel` are not passed: `TE.exe` ignores timeouts in process, and isolation levels need further test host
@@ -296,7 +281,7 @@ TE.exe "<dll>" <additional TE.exe arguments> /unicodeOutput:false /coloredConsol
   So for a test whose name contains `*`, `?`, `"` or control characters (for example, a data row named `a*`), the adapter
   replaces them by `?` (which matches any single character) and, for rows of table data sources, also selects the row by its
   index: `(@Name='<pattern>' and @Data:Index=<n>)`. `TE.exe` might nevertheless run a few more tests (see
-  [Limitations](#limitations)); their results are ignored.
+  *Limitations*); their results are ignored.
 * By default, TAEF runs the tests in a separate test host process (`TE.ProcessHost.exe`).
 * The results are reported while the tests are running (except while debugging with `DebuggerKind` `VsTestFramework`);
   test durations are measured by the adapter (TAEF does not print them). Each repetition of a test produces its own result.
@@ -319,7 +304,7 @@ TE.exe "<dll>" <additional TE.exe arguments> /unicodeOutput:false /coloredConsol
 * Unexpected `TE.exe` exit codes (for example, `0x05000000` "no test files", `0x06000000` "startup or `/select` error",
   `0x07000000` "no tests executed") and TAEF errors outside of tests are logged to the *Tests* output window.
 
-### <a name="results"></a>Test results
+### Test results
 
 | TAEF result | Visual Studio outcome |
 |---|---|
@@ -344,20 +329,23 @@ source information for it (for example, failed `VERIFY_*` macros); otherwise onl
 message. The complete log output of the test (for example, `Log::Comment` and `Verify:` lines) is shown as its output.
 Option `PrintTestOutput` additionally prints the complete console output of `TE.exe` to the *Tests* output window.
 
-<a name="cleanup_failures"></a>**Failures of cleanup methods do not change test results.** `TE.exe` reports the result of
+**Failures of cleanup methods do not change test results.** `TE.exe` reports the result of
 a test before its cleanup methods (`TEST_METHOD_CLEANUP`, `TEST_CLASS_CLEANUP`, `MODULE_CLEANUP`) run, and does not change
 it if a cleanup method returns `false` or logs errors. The adapter logs such failures as warnings to the *Tests* output
 window (and in the summary of warnings), not in the test's own results. So a check which must fail a test, for example a
-check for memory leaks, belongs in the test method itself (see the `LeakCheckTests` sample in [SampleTests](SampleTests)),
-not only in a cleanup method.
+check for memory leaks, belongs in the test method itself (see the `LeakCheckTests` sample in
+[SampleTests](https://github.com/axelriet/TaefTestAdapter/tree/main/SampleTests)), not only in a cleanup method.
 
-### <a name="debugging"></a>Debug tests
+### Debug tests
 
 You can debug tests from Test Explorer (*Debug*). The adapter then runs `TE.exe` with `/inproc` (so the test code runs in
 the debugged `TE.exe` process) and `/disableTimeouts`, and with `/breakOnError` if option `BreakOnError` is enabled (the
 debugger then breaks as soon as a test logs an error). As the tests run in process, test timeouts and isolation levels
 (`IsolationLevel`) do not apply while debugging, and test repetitions (`NrOfTestRepetitions`) repeat each test in a row within
-the `TE.exe` process (see [Test execution](#execution)).
+the `TE.exe` process (see *Test execution*).
+
+Only `TE.exe` is debugged: the test platform does not attach the debugger to its own test host process, which runs the
+adapter but no test code.
 
 Option `DebuggerKind` selects how the debugger is attached:
 
@@ -375,16 +363,17 @@ Option `DebuggerKind` selects how the debugger is attached:
   * test durations are not measured (they are shown as about 0 ms);
   * if a test crashes `TE.exe`, the WTT log is not completed; the adapter then reads the incomplete log `TE.exe` wrote
     while the tests were running (`<log file>.trace`): the tests which finished before the crash have their results, the
-    test that was running is reported as crashed, and the remaining tests are reported as in [Crashes](#limitations).
+    test that was running is reported as crashed, and the remaining tests are reported as described under *Crashes* in
+    *Limitations*.
 
   Use `Native` or `ManagedAndNative` (with the extension) to avoid these restrictions.
 
 If the debugger cannot be attached to `TE.exe` (`Native`, `ManagedAndNative`), `TE.exe` is terminated before it runs any
 test, an error is logged, and the tests are reported according to option `MissingTestsReportMode`.
 
-## <a name="configure"></a>Configure
+## Configure
 
-### <a name="global_settings"></a>Visual Studio options
+### Visual Studio options
 
 The options of the adapter are in *Tools > Options > Test Adapter for TAEF*, with the pages *General*, *Test Discovery*,
 *Test Execution* and *TAEF* (only available if the extension is installed). These are the *global* settings.
@@ -392,14 +381,14 @@ The options of the adapter are in *Tools > Options > Test Adapter for TAEF*, wit
 In Visual Studio 2026 the pages are classic options pages: open *Tools > Options* and use the link to the legacy Options
 dialog (or search for TAEF).
 
-### <a name="toolbar"></a>Toolbar
+### Toolbar
 
 The toolbar *Test Adapter for TAEF* (*View > Toolbars*) has the switches *Run tests in process (/inproc)*, *Break on error*,
 *Parallel test execution* and *Print test output*; they change (and show) the corresponding global options.
 
-### <a name="settings_files"></a>Settings files
+### Settings files
 
-* <a name="solution_settings"></a>**Solution settings file**: a file `<SolutionName>.taef.runsettings` next to the solution
+* **Solution settings file**: a file `<SolutionName>.taef.runsettings` next to the solution
   file `<SolutionName>.sln` (for example, `Foo.taef.runsettings` for `Foo.sln`); you can share it via source control. It is
   used by the extension only (not with the NuGet package or `vstest.console.exe`).
 * **User settings files**: `.runsettings` files selected in Visual Studio (*Test > Configure Run Settings*) or passed to
@@ -410,9 +399,9 @@ The toolbar *Test Adapter for TAEF* (*View > Toolbars*) has the switches *Run te
 Solution and user settings files have the same format: a `<TaefTestAdapterSettings>` node within the `<RunSettings>` node
 contains the solution settings and (optionally) project settings. The settings of a `<Settings ProjectRegex="...">` node apply
 to the test DLLs whose full path matches the regular expression (the attribute `ProjectRegex` is required there). The file
-[AllTestSettings.taef.runsettings](TaefTestAdapter/Resources/AllTestSettings.taef.runsettings) lists all settings (except
-`SkipOriginCheck`) with their default values, the schema is
-[TaefTestAdapterSettings.xsd](TaefTestAdapter/TestAdapter/TaefTestAdapterSettings.xsd).
+[AllTestSettings.taef.runsettings](https://github.com/axelriet/TaefTestAdapter/blob/main/TaefTestAdapter/Resources/AllTestSettings.taef.runsettings)
+lists all settings (except `SkipOriginCheck`) with their default values, the schema is
+[TaefTestAdapterSettings.xsd](https://github.com/axelriet/TaefTestAdapter/blob/main/TaefTestAdapter/TestAdapter/TaefTestAdapterSettings.xsd).
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -457,28 +446,28 @@ matching project settings of the solution settings file, solution settings of th
 solution settings file, global settings. It is thus usually best to only put the settings that differ from the defaults into
 settings files.
 
-### <a name="placeholders"></a>Placeholders
+### Placeholders
 
 | Placeholder | Value | Available in |
 |---|---|---|
 | `$(TestDll)` | full path of the test DLL | `TeExecutable`, `AdditionalPdbs`, `WorkingDir`, `PathExtension`, `EnvironmentVariables`, `AdditionalTestExecutionParam` |
 | `$(TestDllDir)` | folder of the test DLL | as `$(TestDll)` |
-| `$(SolutionDir)`, `$(PlatformName)`, `$(ConfigurationName)` | solution folder, platform and configuration of the solution | the settings listed for `$(TestDll)`, and with restrictions `BatchForTestSetup`/`BatchForTestTeardown` (see [below](#batch_placeholders) and [availability](#feature_availability)) |
+| `$(SolutionDir)`, `$(PlatformName)`, `$(ConfigurationName)` | solution folder, platform and configuration of the solution | the settings listed for `$(TestDll)`, and with restrictions `BatchForTestSetup`/`BatchForTestTeardown` (see below and *Feature availability*) |
 | `$(TestDir)` | a temporary folder the tests may use (one per thread, deleted after the test run) | `WorkingDir`, `EnvironmentVariables`, `AdditionalTestExecutionParam` (test execution only), `BatchForTestSetup`/`BatchForTestTeardown` |
 | `$(ThreadId)` | id of the thread running the tests | as `$(TestDir)` |
 | `%NAME%` | value of environment variable `NAME` | all settings listed in this table |
-| `$(<key>)` | value from a [settings helper file](#settings_helper_files) of the test DLL | the settings listed for `$(TestDll)` (not the batch files) |
+| `$(<key>)` | value from a *settings helper file* of the test DLL | the settings listed for `$(TestDll)` (not the batch files) |
 
 During test discovery, `$(TestDir)` and `$(ThreadId)` are removed.
 
-<a name="batch_placeholders"></a>The batch files are not related to a single test DLL, so [settings helper files](#settings_helper_files) are
+The batch files are not related to a single test DLL, so *settings helper files* are
 not used for them: `$(PlatformName)` and `$(ConfigurationName)` only have a value there inside Visual Studio with the
 extension, `$(SolutionDir)` only if Visual Studio or the test platform provides the solution folder (for example, with
 `<RunConfiguration><SolutionDirectory>...</SolutionDirectory></RunConfiguration>` in the `.runsettings` file). Otherwise
 they are replaced by an empty string; use absolute paths or environment variables (`%NAME%`) in the batch file settings
 in that case.
 
-### <a name="settings_helper_files"></a>Settings helper files
+### Settings helper files
 
 The adapter has no access to Visual Studio project settings, and when running outside of Visual Studio (NuGet package,
 `vstest.console.exe`) it does not know the solution folder, platform or configuration. A *settings helper file* provides such
@@ -497,7 +486,7 @@ With this file, you can use `$(TheTarget)` in the settings (for example,
 `<AdditionalTestExecutionParam>/p:"Target=$(TheTarget)"</AdditionalTestExecutionParam>`). Make sure your version control
 ignores these files.
 
-### <a name="parallelization"></a>Parallel test execution
+### Parallel test execution
 
 Tests are run sequentially by default. With `ParallelTestExecution`, the tests are distributed to `MaxNrOfThreads` threads,
 each of which runs its tests with its own `TE.exe` invocations. The adapter remembers the durations of the tests in files
@@ -507,19 +496,19 @@ tests of a test DLL.
 
 Module and class setup/cleanup methods run in every `TE.exe` invocation that runs tests of the module or class.
 
-### <a name="setup_teardown"></a>Test setup and teardown
+### Test setup and teardown
 
 Batch files configured with `BatchForTestSetup`/`BatchForTestTeardown` are executed before/after the tests (once per thread);
 placeholders such as `$(TestDir)` and `$(ThreadId)` let them prepare resources for the tests. They run in the solution
 folder (if known). A missing batch file is logged as error, a non-zero exit code as warning; the tests are run anyway.
 Processes started by a batch file (for example, a server started with `start`) keep running after the batch file has
 finished; if they keep its output open, the adapter continues after at most 3 seconds with a warning (see
-[Test execution](#execution)). TAEF's own `MODULE_SETUP`, `TEST_CLASS_SETUP` and `TEST_METHOD_SETUP` fixtures are of
+*Test execution*). TAEF's own `MODULE_SETUP`, `TEST_CLASS_SETUP` and `TEST_METHOD_SETUP` fixtures are of
 course available as well.
 
-## <a name="reference"></a>Reference
+## Reference
 
-### <a name="settings_reference"></a>Settings
+### Settings
 
 | Setting (XML element) | Options page: option | Default | Description |
 |---|---|---|---|
@@ -533,19 +522,19 @@ course available as well.
 | `TestDiscoveryRegex` | Test Discovery: *Regex for test discovery* | *(empty)* | If set, exactly the DLLs whose full path matches this regex are treated as TAEF test DLLs (instead of checking the DLLs for TAEF metadata); DLLs with an indicator file `<dll>.is_taef_test` always are. |
 | `TestDiscoveryTimeoutInSeconds` | Test Discovery: *Test discovery timeout in s* | `30` | Timeout of `TE.exe /listProperties` for one DLL; `0`: no timeout. |
 | `ParseSymbolInformation` | Test Discovery: *Parse symbol information* | `true` | Read the source locations of the tests from the PDBs. |
-| `TraitsRegexesBefore`, `TraitsRegexesAfter` | Test Discovery: *Before test discovery*, *After test discovery* | *(empty)* | Assign traits by regexes on the test names, see [Traits](#traits). |
+| `TraitsRegexesBefore`, `TraitsRegexesAfter` | Test Discovery: *Before test discovery*, *After test discovery* | *(empty)* | Assign traits by regexes on the test names, see *Traits*. |
 | `AdditionalPdbs` | Test Execution: *Additional PDBs* | *(empty)* | Additional PDB files (patterns separated by `;`, `*` and `?` allowed in the file part) to search for source locations, for example `$(TestDllDir)\pdbs\*.pdb`. |
 | `WorkingDir` | Test Execution: *Working directory* | `$(TestDllDir)` | Working directory of `TE.exe` (and the tests) for discovery and execution. |
 | `PathExtension` | Test Execution: *PATH extension* | *(empty)* | Folders added in front of the `PATH` of `TE.exe` (and thus of the test host processes) for discovery and execution, for example to find dependencies of the test DLLs. |
 | `EnvironmentVariables` | Test Execution: *Environment variables* | *(empty)* | Environment variables for `TE.exe` and the tests, `Name=Value` pairs separated by `//\|\|//`. If `PathExtension` is set, a `PATH` variable given here (in any letter case) is ignored with a warning. |
-| `AdditionalTestExecutionParam` | Test Execution: *Additional TE.exe arguments* | *(empty)* | Additional `TE.exe` arguments for discovery and execution, inserted before the adapter's switches, for example `/p:"Name=Value"` (runtime parameters) or `/runas:<context>`. A `/select` or `/name` given here restricts test discovery and is combined with the adapter's selection, see [Test execution](#execution). |
-| `BatchForTestSetup`, `BatchForTestTeardown` | Test Execution: *Test setup batch file*, *Test teardown batch file* | *(empty)* | Batch files executed before/after the test run (once per thread in parallel execution). Settings helper files are not used for them, see [Placeholders](#placeholders). |
-| `KillProcessesOnCancel` | Test Execution: *Kill processes on cancel* | `false` | Kill `TE.exe`, its test host processes and all processes started by the tests when a test run is canceled (see [Test execution](#execution)); cleanup methods of the tests are then not run. |
-| `DebuggerKind` | Test Execution: *Debugger engine* | `Native` | How tests are debugged: `VsTestFramework`, `Native`, `ManagedAndNative`; without the extension (NuGet package), only `VsTestFramework` works, with restrictions (see [Debug tests](#debugging)). |
-| `ParallelTestExecution` | Test Execution: *Parallel test execution* | `false` | Run tests in parallel threads (see [Parallel test execution](#parallelization)). |
+| `AdditionalTestExecutionParam` | Test Execution: *Additional TE.exe arguments* | *(empty)* | Additional `TE.exe` arguments for discovery and execution, inserted before the adapter's switches, for example `/p:"Name=Value"` (runtime parameters) or `/runas:<context>`. A `/select` or `/name` given here restricts test discovery and is combined with the adapter's selection, see *Test execution*. |
+| `BatchForTestSetup`, `BatchForTestTeardown` | Test Execution: *Test setup batch file*, *Test teardown batch file* | *(empty)* | Batch files executed before/after the test run (once per thread in parallel execution). Settings helper files are not used for them, see *Placeholders*. |
+| `KillProcessesOnCancel` | Test Execution: *Kill processes on cancel* | `false` | Kill `TE.exe`, its test host processes and all processes started by the tests when a test run is canceled (see *Test execution*); cleanup methods of the tests are then not run. |
+| `DebuggerKind` | Test Execution: *Debugger engine* | `Native` | How tests are debugged: `VsTestFramework`, `Native`, `ManagedAndNative`; without the extension (NuGet package), only `VsTestFramework` works, with restrictions (see *Debug tests*). |
+| `ParallelTestExecution` | Test Execution: *Parallel test execution* | `false` | Run tests in parallel threads (see *Parallel test execution*). |
 | `MaxNrOfThreads` | Test Execution: *Maximum number of threads* | `0` | Maximum number of threads for parallel execution; `0`: number of processors. |
 | `MissingTestsReportMode` | Test Execution: *Behavior for missing test results* | `ReportAsNotFound` | How tests without result are reported: `DoNotReport`, `ReportAsNotFound`, `ReportAsSkipped`, `ReportAsFailed`. |
-| `TeExecutable` | TAEF: *TE.exe path* | *(empty: automatic)* | Path of `TE.exe`, or of a folder containing `<arch>\TE.exe` or `TE.exe`; placeholders allowed (see [TE.exe selection](#te_selection)). |
+| `TeExecutable` | TAEF: *TE.exe path* | *(empty: automatic)* | Path of `TE.exe`, or of a folder containing `<arch>\TE.exe` or `TE.exe`; placeholders allowed (see *TE.exe selection*). |
 | `RunIgnoredTests` | TAEF: *Also run ignored tests* | `false` | Also run the tests which TAEF ignores, that is, tests with property `Ignore` = `true` or `1` (`/runIgnoredTests`). |
 | `BreakOnError` | TAEF: *Break on error* | `false` | While debugging, break into the debugger as soon as a test logs an error (`/breakOnError`). |
 | `NrOfTestRepetitions` | TAEF: *Number of test repetitions* | `1` | Run each test *n* times (`/testmode:Loop /Loop:<n> /LoopTest:1`: *n* loops over all tests, each in new test host processes); minimum 1. When running in process or debugging, each test is repeated *n* times in a row within the same process instead (`/testmode:Loop /Loop:1 /LoopTest:<n>`; module and class fixtures run only once). |
@@ -555,7 +544,7 @@ course available as well.
 
 The XML settings `DebuggingNamedPipeId`, `SolutionDir`, `PlatformName` and `ConfigurationName` are used internally.
 
-### <a name="test_names"></a>Test names
+### Test names
 
 | TAEF test | Test Explorer display name (the TAEF name) |
 |---|---|
@@ -581,7 +570,7 @@ of a data-driven method `Contoso::MathTests`; it is shown as the latter (method 
 from the fully qualified name; so a `.` in a row name (for example, a row named `1.5`) can move the test to an unexpected
 place in the tree.
 
-### <a name="te_selection"></a>TE.exe selection
+### TE.exe selection
 
 For each test DLL, the adapter determines its architecture `<arch>` (`x86`, `x64` or `arm64`; `arm` for 32-bit ARM) from
 the machine type in its PE header (if it cannot be determined, the architecture of Windows is assumed) and uses
@@ -602,7 +591,7 @@ it runs emulated and can load ARM64EC code; an arm64 `TE.exe` cannot). ARM64X DL
 with the arm64 `TE.exe`. If `TeExecutable` is a folder, it must therefore contain `x64\TE.exe` (or `TE.exe`) for ARM64EC
 test DLLs.
 
-### <a name="feature_availability"></a>Feature availability
+### Feature availability
 
 | Feature | VS with VSIX | VS with NuGet package | vstest.console.exe |
 |---|:---:|:---:|:---:|
@@ -611,23 +600,23 @@ test DLLs.
 | Configuration: VS options, toolbar | yes | no | - |
 | Configuration: solution settings file | yes | no | no |
 | Configuration: user settings file | yes (*Test > Configure Run Settings*) | yes | yes (`/Settings`) |
-| Placeholder `$(SolutionDir)` | yes | with [helper files](#settings_helper_files)<sup>1, 3</sup> | with helper files<sup>3</sup> |
+| Placeholder `$(SolutionDir)` | yes | with settings helper files<sup>1, 3</sup> | with helper files<sup>3</sup> |
 | Placeholders `$(PlatformName)`, `$(ConfigurationName)` | yes | with helper files<sup>3</sup> | with helper files<sup>3</sup> |
 | Placeholders `$(TestDll)`, `$(TestDllDir)`, `$(TestDir)`, `$(ThreadId)`, environment variables, helper file keys | yes | yes | yes |
 | Project and item templates (with the wizard for C++ names) | yes | no | - |
 
 <sup>1</sup> During test execution, `$(SolutionDir)` is also available without helper files.  
 <sup>2</sup> Set in a `.runsettings` file; the default engines `Native` and `ManagedAndNative` need the extension. See
-[Debug tests](#debugging) for the restrictions of `VsTestFramework`.  
+*Debug tests* for the restrictions of `VsTestFramework`.  
 <sup>3</sup> Not in `BatchForTestSetup`/`BatchForTestTeardown`, for which helper files are not used (see
-[Placeholders](#batch_placeholders)).
+*Placeholders*).
 
-### <a name="limitations"></a>Limitations
+### Limitations
 
 * **Console output of tests**: by default, TAEF runs the tests in a separate test host process whose console output is lost,
   so only output of the WEX logging API (`Log::Comment`, `Log::Error`, ...) and of the `VERIFY_*` macros is available.
   `printf`/`std::cout` output of the tests is only visible when running in process (`RunInProcess`, or while debugging
-  with `DebuggerKind` `Native` or `ManagedAndNative`; not with `VsTestFramework`, see [Debug tests](#debugging)).
+  with `DebuggerKind` `Native` or `ManagedAndNative`; not with `VsTestFramework`, see *Debug tests*).
 * **Crashes**: out of process (default), a crashing test fails with the crash code (for example,
   `terminated with exit code 0xC0000005`), TAEF starts a new test host process (running the module setup again) and
   continues with the remaining tests. A crashing setup method blocks the following tests of its class (they fail with
@@ -640,12 +629,13 @@ test DLLs.
     logged.
 
   While debugging with `DebuggerKind` `VsTestFramework`, the results come from the incomplete WTT log of the crashed
-  `TE.exe` run (see [Debug tests](#debugging)).
+  `TE.exe` run (see *Debug tests*).
 * **Cleanup methods** cannot fail tests: failures of `TEST_METHOD_CLEANUP`, `TEST_CLASS_CLEANUP` and `MODULE_CLEANUP` are
-  logged as warnings, see [Test results](#cleanup_failures).
+  logged as warnings, see *Test results*.
 * **Error dialogs** of the Debug CRT (`abort()`, `assert`, `_ASSERTE`) or of Windows Error Reporting stop a test run until
-  they are closed, see [Troubleshoot](#crt_dialogs).
-* <a name="taef_own_adapter"></a>**TAEF's own test adapter**: TAEF ships its own VSTest adapter `TE.TestAdapter.dll` (for
+  they are closed, see *A test run hangs, or a "Debug Error! abort() has been called" or assertion dialog appears* in
+  *Troubleshoot*.
+* **TAEF's own test adapter**: TAEF ships its own VSTest adapter `TE.TestAdapter.dll` (for
   example, in `Runtimes\TAEF\<arch>`). If the test platform finds it as well - for example, because the `Microsoft.Taef`
   NuGet package copies it into the output folder of the test project, or because a TAEF runtime folder is passed with
   `/TestAdapterPath` - all tests are discovered twice. Make sure that only one of the adapters is used, for example delete
@@ -669,7 +659,7 @@ test DLLs.
   the adapter combines it with its own selection (`/select:"(<your query>) and (<adapter's query>)"`). Quotes must directly
   follow the colon of a switch: `/p:"Name=Value with spaces"`, not `"/p:Name=Value with spaces"`.
 * **Similar test names**: `TE.exe` compares names case-insensitively, and names containing `*`, `?`, `"` or control
-  characters can only be selected by patterns (see [Test execution](#execution)). So when some tests of a DLL are run,
+  characters can only be selected by patterns (see *Test execution*). So when some tests of a DLL are run,
   `TE.exe` may run further tests matching their names (the adapter ignores their results, but their fixtures run): tests
   whose names differ only in case, instances of class templates whose names differ in a single character at such a
   position (for example, `Container<int *>` and `Container<int &>`), and - for data-driven classes whose row names contain
@@ -682,40 +672,40 @@ test DLLs.
   temporary folder (or created in the working directory). If there is no such ASCII path, an error is logged; move the
   test DLL to a folder with an ASCII path, set `WorkingDir` to `$(TestDllDir)`, or enable 8.3 file names on the volume.
 * **Property values containing empty lines** make the output of `TE.exe /listProperties` ambiguous, so some tests or traits
-  may be missing or wrong (a warning is logged, see [Test discovery](#discovery)).
+  may be missing or wrong (a warning is logged, see *Test discovery*).
 * **Timeouts** (option `TestTimeout` and the `TestTimeout` metadata of tests) and **isolation levels** (`IsolationLevel`)
   are not effective when running in process or while debugging: `TE.exe` ignores timeouts with `/inproc` and cannot start
   the further test host processes that isolation levels need. **Test repetitions** (`NrOfTestRepetitions`) then repeat
   each test in a row within the same process, so module and class fixtures are not run for each repetition.
 * **Test Explorer hierarchy**: the hierarchy is derived from the fully qualified names, so data rows with `.` in their names
   and tests of data-driven classes with named rows in a namespace may be shown at unexpected places, see
-  [Test names](#test_names).
+  *Test names*.
 * **Architecture**: each test DLL is run with the `TE.exe` of its own architecture (required for `/inproc`); ARM64EC test
-  DLLs are run with the x64 `TE.exe` (see [TE.exe selection](#te_selection)).
+  DLLs are run with the x64 `TE.exe` (see *TE.exe selection*).
 * Only native (C++) TAEF test DLLs are supported.
 
-## <a name="vstest_console"></a>Run tests from the command line
+## Run tests from the command line
 
 ```
 vstest.console.exe MyTests_taef.dll OtherTests_taef.dll /TestAdapterPath:"<folder with TaefTestAdapter.TestAdapter.dll>" /Settings:My.runsettings
 ```
 
-The adapter folder is, for example, `out\binaries\TaefTestAdapter\Release\TestAdapter` of a [build](#building), the
-`build\_common` folder of the NuGet package, or the folder of the extracted VSIX. `vstest.console.exe` does not use the
+The adapter folder is, for example, `out\binaries\TaefTestAdapter\Release\TestAdapter` of a build (see *Build from source*),
+the `build\_common` folder of the NuGet package, or the folder of the extracted VSIX. `vstest.console.exe` does not use the
 solution settings file; pass all settings with `/Settings` (and provide solution related placeholders with
-[settings helper files](#settings_helper_files)). Helper files are not used for the setup/teardown batch files: there,
+*settings helper files*). Helper files are not used for the setup/teardown batch files: there,
 `$(PlatformName)` and `$(ConfigurationName)` are empty, and `$(SolutionDir)` is only available if the settings file contains
 `<RunConfiguration><SolutionDirectory>...</SolutionDirectory></RunConfiguration>`; otherwise use absolute paths or
-environment variables in `BatchForTestSetup`/`BatchForTestTeardown` (see [Placeholders](#batch_placeholders)).
+environment variables in `BatchForTestSetup`/`BatchForTestTeardown` (see *Placeholders*).
 
-<a name="test_case_filters"></a>You can select tests with `/TestCaseFilter` (see the
+You can select tests with `/TestCaseFilter` (see the
 [documentation](https://learn.microsoft.com/visualstudio/test/vstest-console-options)) using the properties
 `FullyQualifiedName` (the dotted name, for example `FullyQualifiedName~Contoso.Tests.MathTests`), `DisplayName` (the TAEF
 name), `Source`, `CodeFilePath`, `LineNumber`, `Id` and `ExecutorUri` (`executor://TestAdapterForTaef/v1`), and all traits
 (trait names are not case sensitive), for example `/TestCaseFilter:"Priority=1"`. If the filter is invalid, an error is
 logged and no tests are run.
 
-## <a name="troubleshooting"></a>Troubleshoot
+## Troubleshoot
 
 ### General advice
 
@@ -729,7 +719,7 @@ logged and no tests are run.
 
 * The DLL is not recognized as TAEF test DLL: create a file `<test dll>.is_taef_test` next to it, or configure
   `TestDiscoveryRegex` (for example, `.*_taef\.dll$`; in a settings file if you use the NuGet package).
-* `TE.exe` was not found (an error in the *Tests* output window says so): install TAEF (see [Prerequisites](#prerequisites))
+* `TE.exe` was not found (an error in the *Tests* output window says so): install TAEF (see *Prerequisites*)
   or set `TeExecutable`.
 * The test DLL does not originate from this computer (for example, it was downloaded; an error in the *Tests* output window
   says so): remove its *mark of the web* with `Unblock-File <test dll>` (PowerShell) or the *Unblock* check box of the file
@@ -749,7 +739,7 @@ logged and no tests are run.
 
 ### All my tests show up twice
 
-* TAEF's own adapter `TE.TestAdapter.dll` is used as well, see [TAEF's own test adapter](#taef_own_adapter).
+* TAEF's own adapter `TE.TestAdapter.dll` is used as well, see *TAEF's own test adapter* in *Limitations*.
 
 ### Tests fail with "Blocked: ... 0x8007007E" or "Failed to load"
 
@@ -764,10 +754,10 @@ logged and no tests are run.
 
 ### The output of `printf`/`std::cout` is missing
 
-* See [Console output of tests](#limitations): use the WEX logging API or enable `RunInProcess` (while debugging, use
+* See *Console output of tests* in *Limitations*: use the WEX logging API or enable `RunInProcess` (while debugging, use
   `DebuggerKind` `Native` or `ManagedAndNative`).
 
-### <a name="crt_dialogs"></a>A test run hangs, or a "Debug Error! abort() has been called" or assertion dialog appears
+### A test run hangs, or a "Debug Error! abort() has been called" or assertion dialog appears
 
 * Debug builds of the C runtime show a modal dialog for `abort()`, failed `assert`/`_ASSERTE` and other CRT errors, and
   Windows Error Reporting may show one for a crashing test. The dialog belongs to the test host process
@@ -805,7 +795,7 @@ logged and no tests are run.
 ### A warning says that `TE.exe` "has exited, but its output is still being kept open"
 
 * A test (or a setup batch file) started a process which is still running and has inherited the output of `TE.exe` (or of
-  the batch file). The adapter does not wait for such processes; they keep running (see [Test execution](#execution)).
+  the batch file). The adapter does not wait for such processes; they keep running (see *Test execution*).
   If they are not intended to outlive the test, end them in the test's cleanup method.
 
 ### A warning says that `TE.exe` "printed unexpected line(s)" while listing the tests
@@ -829,7 +819,7 @@ logged and no tests are run.
 
 * The `<TaefTestAdapterSettings>` node contains an unknown element, an invalid value, or project settings without
   `ProjectRegex`; the message names the problem. Check the file against
-  [TaefTestAdapterSettings.xsd](TaefTestAdapter/TestAdapter/TaefTestAdapterSettings.xsd).
+  [TaefTestAdapterSettings.xsd](https://github.com/axelriet/TaefTestAdapter/blob/main/TaefTestAdapter/TestAdapter/TaefTestAdapterSettings.xsd).
 
 ### Test discovery is slow
 
@@ -841,24 +831,24 @@ logged and no tests are run.
 * Visual Studio's MEF cache might be corrupted. Close Visual Studio and delete the folder
   `%LOCALAPPDATA%\Microsoft\VisualStudio\<version>\ComponentModelCache`.
 
-## <a name="faq"></a>FAQ
+## FAQ
 
 ### Can I use Test Adapter for TAEF side by side with other test adapters?
 
 Yes. Its executor URI (`executor://TestAdapterForTaef/v1`), package and command GUIDs and its settings node
 (`<TaefTestAdapterSettings>`) differ from those of other adapters, including the adapter that ships with TAEF
 (`TE.TestAdapter.dll`, executor `executor://TaefTestAdapter`). If both TAEF adapters find the same test DLLs, the tests are
-shown twice; see [TAEF's own test adapter](#taef_own_adapter).
+shown twice; see *TAEF's own test adapter* in *Limitations*.
 
 ### Which TE.exe is used?
 
 The `TE.exe` of the Windows Kits that matches the architecture of the test DLL, unless you set `TeExecutable`; see
-[TE.exe selection](#te_selection). With `OutputMode` `Debug`, the *Tests* output window shows the `TE.exe` in use.
+*TE.exe selection*. With `OutputMode` `Debug`, the *Tests* output window shows the `TE.exe` in use.
 
 ### Why is the output of `printf`/`std::cout` missing?
 
 By default, TAEF runs the tests in a separate test host process whose console output is lost. Use the WEX logging API
-(`Log::Comment`) or enable `RunInProcess`; see [Limitations](#limitations).
+(`Log::Comment`) or enable `RunInProcess`; see *Limitations*.
 
 ### Are managed TAEF tests supported?
 
@@ -868,17 +858,17 @@ No. Only native (C++) TAEF test DLLs are supported; mixed-mode DLLs whose tests 
 
 Use the extension on developer machines: it provides the options pages, the toolbar, the solution settings file and
 debugging with the native debugger engines. Use the NuGet package (or `vstest.console.exe /TestAdapterPath`) on build
-servers or where you cannot install the extension; see [Feature availability](#feature_availability).
+servers or where you cannot install the extension; see *Feature availability*.
 
 ### How do I make the adapter find a test DLL it does not recognize?
 
-Create an empty file `<test dll>.is_taef_test` next to the DLL, or set `TestDiscoveryRegex`; see [Test discovery](#discovery).
+Create an empty file `<test dll>.is_taef_test` next to the DLL, or set `TestDiscoveryRegex`; see *Test discovery*.
 
-## <a name="building"></a>Build from source
+## Build from source
 
 Requirements: Visual Studio 2026 or Visual Studio 2022 with the workloads *.NET desktop development*, *Desktop development
 with C++* (it contains the DIA SDK) and *Visual Studio extension development*, and the TAEF development files (installed
-with the WDK, see [Prerequisites](#prerequisites)) for the sample test DLLs, which the adapter's own tests use.
+with the WDK, see *Prerequisites*) for the sample test DLLs, which the adapter's own tests use.
 
 The repository contains paths of up to 150 characters (relative to its root; the golden files of the adapter's tests are
 the longest), and Windows limits paths to 259 characters unless long paths are enabled. So clone the repository into a
@@ -894,13 +884,16 @@ cloning (`git clone -c core.longpaths=true ...` or `git config --global core.lon
 Get-Help .\build.ps1 -Detailed   # all options
 ```
 
-[build.ps1](build.ps1) locates Visual Studio with `vswhere`, copies `msdia140.dll` from the DIA SDK of Visual Studio into
-`TaefTestAdapter\DiaResolver\x86` and `\x64` and generates the interop assembly `TaefTestAdapter\DiaResolver\dia2\dia2.dll`
-(`midl` and `tlbimp` in a Visual Studio developer environment), restores the NuGet packages, builds
-`SampleTests\SampleTests.sln` (Debug/Release, Win32/x64; see `-SampleConfiguration`, `-SamplePlatform` and `-SkipSamples`)
-and `TaefTestAdapter\TaefTestAdapter.sln`, and optionally runs the tests with `vstest.console.exe`. By running it, you accept
-the license terms of the DIA SDK (part of your Visual Studio license). [build_preparation.bat](build_preparation.bat) runs
-the preparation steps only, after which you can build the solutions in Visual Studio.
+[build.ps1](https://github.com/axelriet/TaefTestAdapter/blob/main/build.ps1) locates Visual Studio with `vswhere`, copies
+`msdia140.dll` from the DIA SDK of Visual Studio into `TaefTestAdapter\DiaResolver\x86`, `\x64` and `\arm64` (if the DIA
+SDK has no arm64 `msdia140.dll`, a warning is shown and the adapter is built without it, so it cannot read source locations
+in native ARM64 processes such as the ARM64 test host) and generates the interop assembly
+`TaefTestAdapter\DiaResolver\dia2\dia2.dll` (`midl` and `tlbimp` in a Visual Studio developer environment), restores the
+NuGet packages, builds `SampleTests\SampleTests.sln` (Debug/Release, Win32/x64; see `-SampleConfiguration`,
+`-SamplePlatform` and `-SkipSamples`) and `TaefTestAdapter\TaefTestAdapter.sln`, and optionally runs the tests with
+`vstest.console.exe`. By running it, you accept the license terms of the DIA SDK (part of your Visual Studio license).
+[build_preparation.bat](https://github.com/axelriet/TaefTestAdapter/blob/main/build_preparation.bat) runs the preparation
+steps only, after which you can build the solutions in Visual Studio.
 
 When `TaefTestAdapter.sln` is built, its project `SampleTestsBuilder` first builds the sample test DLLs for all four
 configurations (so building the adapter solution in Visual Studio requires TAEF), unless the MSBuild property
@@ -921,27 +914,33 @@ Other tools:
   in `TaefTestAdapter` (adapter, tests and helper tools), the VSIX manifest, the NuGet package and the assembly version in
   the `WizardExtension` of the project and item templates (Visual Studio loads the templates' wizard from
   `TaefTestAdapter.VsPackage` by the full name of this assembly). The changes of each version are listed in
-  [CHANGELOG.md](CHANGELOG.md), which the VSIX contains as its release notes.
+  [CHANGELOG.md](https://github.com/axelriet/TaefTestAdapter/blob/main/CHANGELOG.md), which the VSIX contains as its release
+  notes.
 * You can debug the VS package in the experimental instance of Visual Studio (`devenv /rootsuffix Exp`);
-  [TaefTestAdapter.ChildProcessDbgSettings](TaefTestAdapter/TaefTestAdapter.ChildProcessDbgSettings) contains settings for the
-  *Microsoft Child Process Debugging Power Tool* to automatically attach to the test host processes and `TE.exe`.
-* [Tools\make_branding_assets.py](Tools/make_branding_assets.py) generates the logo, template and toolbar images;
-  [Tools\Expand-Vsix.ps1](Tools/Expand-Vsix.ps1) extracts a VSIX for inspection, for example
-  `Tools\Expand-Vsix.ps1 out\binaries\TaefTestAdapter\Release\Packaging\TaefTestAdapter.vsix` into
+  [TaefTestAdapter.ChildProcessDbgSettings](https://github.com/axelriet/TaefTestAdapter/blob/main/TaefTestAdapter/TaefTestAdapter.ChildProcessDbgSettings)
+  contains settings for the *Microsoft Child Process Debugging Power Tool* to automatically attach to the test host
+  processes and `TE.exe`.
+* [Tools\make_branding_assets.py](https://github.com/axelriet/TaefTestAdapter/blob/main/Tools/make_branding_assets.py)
+  generates the logo, template and toolbar images;
+  [Tools\Expand-Vsix.ps1](https://github.com/axelriet/TaefTestAdapter/blob/main/Tools/Expand-Vsix.ps1) extracts a VSIX for
+  inspection, for example `Tools\Expand-Vsix.ps1 out\binaries\TaefTestAdapter\Release\Packaging\TaefTestAdapter.vsix` into
   `out\vsix\TaefTestAdapter\`.
 
-## <a name="credits"></a>Credits
+## Credits
 
 Test Adapter for TAEF is a modified version of [Google Test Adapter](https://github.com/csoltenborn/GoogleTestAdapter) by
 Christian Soltenborn, Jonas Gefele and contributors, parts of which were contributed by Microsoft; see
-[LICENSE.md](LICENSE.md) and [NOTICE](NOTICE).
+[LICENSE.md](https://github.com/axelriet/TaefTestAdapter/blob/main/LICENSE.md) and
+[NOTICE](https://github.com/axelriet/TaefTestAdapter/blob/main/NOTICE).
 
 Modified for TAEF support by Axel Rietschin and Claude Code.
 
 Test Adapter for TAEF is an independent project; it is not affiliated with or endorsed by Google or Microsoft. Google is a
 trademark of Google LLC. Microsoft, Visual Studio and Windows are trademarks of the Microsoft group of companies.
 
-## <a name="license"></a>License
+## License
 
-Test Adapter for TAEF is licensed under the [Apache License, Version 2.0](LICENSE.md); see [LICENSE.md](LICENSE.md) for the
-notice of modification and [NOTICE](NOTICE) for attributions and third-party components.
+Test Adapter for TAEF is licensed under the
+[Apache License, Version 2.0](https://github.com/axelriet/TaefTestAdapter/blob/main/LICENSE.md); see
+[LICENSE.md](https://github.com/axelriet/TaefTestAdapter/blob/main/LICENSE.md) for the notice of modification and
+[NOTICE](https://github.com/axelriet/TaefTestAdapter/blob/main/NOTICE) for attributions and third-party components.

@@ -14,7 +14,7 @@
     <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$.cpp">test.cpp</ProjectItem>
   </TemplateContent>
   <WizardExtension>
-    <Assembly>TaefTestAdapter.VsPackage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6dd9e1a7dfb9193e</Assembly>
+    <Assembly>TaefTestAdapter.VsPackage, Version=1.0.1.0, Culture=neutral, PublicKeyToken=6dd9e1a7dfb9193e</Assembly>
     <FullClassName>TaefTestAdapter.VsPackage.Templates.TaefTemplateWizard</FullClassName>
   </WizardExtension>
 </VSTemplate>

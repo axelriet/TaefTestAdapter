@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+// This file has been modified for TAEF support.
 
 using Microsoft.Dia;
 using System;
@@ -19,7 +20,7 @@ namespace TaefTestAdapter.DiaResolver
 
         static DiaFactory()
         {
-            MsdiaDllPath = Path.Combine(GetAssemblyBaseDir(), Is32Bit() ? "x86" : "x64", DiaDll);
+            MsdiaDllPath = Path.Combine(GetAssemblyBaseDir(), GetArchitectureDir(RuntimeInformation.ProcessArchitecture, Is32Bit()), DiaDll);
             MsdiaDll = NativeMethods.LoadLibrary(MsdiaDllPath);
         }
 
@@ -37,6 +38,27 @@ namespace TaefTestAdapter.DiaResolver
 
             var IID_IDiaDataSource = typeof(IDiaDataSource).GUID;
             return (IDiaDataSource)DiaSourceFactory.CreateInstance(null, IID_IDiaDataSource);
+        }
+
+        /// <summary>
+        /// The folder (below the folder of this assembly) of the msdia140.dll which can be loaded into a process of the given
+        /// architecture: a native ARM64 process (e.g. the ARM64 test host) needs the arm64 DLL, while an x64 or ARM64EC process
+        /// on ARM64 Windows reports <see cref="Architecture.X64"/> and needs the x64 DLL. For other architectures, the
+        /// folder is chosen by the bitness of the process.
+        /// </summary>
+        internal static string GetArchitectureDir(Architecture processArchitecture, bool is32BitProcess)
+        {
+            switch (processArchitecture)
+            {
+                case Architecture.X86:
+                    return "x86";
+                case Architecture.X64:
+                    return "x64";
+                case Architecture.Arm64:
+                    return "arm64";
+                default:
+                    return is32BitProcess ? "x86" : "x64";
+            }
         }
 
         private static string GetAssemblyBaseDir()

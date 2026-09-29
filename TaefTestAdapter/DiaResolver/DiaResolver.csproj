@@ -70,6 +70,10 @@
     <Content Include="x86\msdia140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- loaded in native ARM64 processes (see DiaFactory); build.ps1 copies it from the DIA SDK if the DIA SDK contains it -->
+    <Content Include="arm64\msdia140.dll" Condition="Exists('$(MSBuildThisFileDirectory)arm64\msdia140.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

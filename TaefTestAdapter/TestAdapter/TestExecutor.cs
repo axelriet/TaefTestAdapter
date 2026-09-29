@@ -26,7 +26,7 @@ namespace TaefTestAdapter.TestAdapter
     /// vstest.console.exe).
     /// </summary>
     [ExtensionUri(ExecutorUriString)]
-    public class TestExecutor : ITestExecutor
+    public class TestExecutor : ITestExecutor2
     {
         /// <summary>
         /// URI of the executor of the Test Adapter for TAEF; differs from the URI of the adapter shipped with TAEF
@@ -92,6 +92,27 @@ namespace TaefTestAdapter.TestAdapter
             }
 
             ReportErrors();
+        }
+
+        /// <summary>
+        /// Always false: while tests are debugged, they run in TE.exe, to which the adapter attaches the debugger itself
+        /// (debugger engines Native and ManagedAndNative, by the debugger attacher service of the VS package) or which it
+        /// has the VsTest framework launch under the debugger (debugger engine VsTestFramework, see
+        /// <see cref="IFrameworkHandle.LaunchProcessWithDebuggerAttached"/>). The test host process of the VsTest
+        /// framework, which runs the adapter, does not run test code, so the VsTest framework must not attach the debugger
+        /// to it (which it does for executors that do not implement <see cref="ITestExecutor2"/>).
+        /// </summary>
+        public bool ShouldAttachToTestHost(IEnumerable<string> sources, IRunContext runContext)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Always false, see <see cref="ShouldAttachToTestHost(IEnumerable{string}, IRunContext)"/>.
+        /// </summary>
+        public bool ShouldAttachToTestHost(IEnumerable<VsTestCase> tests, IRunContext runContext)
+        {
+            return false;
         }
 
         /// <summary>

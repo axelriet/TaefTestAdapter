@@ -174,6 +174,41 @@ namespace TaefTestAdapter
             }
         }
 
+        /// <summary>
+        /// The zone of a relative path would not be MyComputer (e.g. the test platform passes a root-relative path given on
+        /// the command line of vstest.console.exe as it is).
+        /// </summary>
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void VerifyTestDllTrust_LocalFileByRelativePaths_IsTrusted()
+        {
+            WithTestDllBelowCurrentDirectory("Local_taef.dll", testDll =>
+            {
+                foreach (string path in GetPathsOfFileBelowCurrentDirectory(testDll))
+                {
+                    TaefDiscoverer.VerifyTestDllTrust(path, MockOptions.Object, MockLogger.Object).Should().BeTrue(path);
+                }
+                MockLogger.Verify(l => l.LogError(It.IsAny<string>()), Times.Never);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void VerifyTestDllTrust_DownloadedFileByRelativePaths_IsNotTrusted()
+        {
+            WithTestDllBelowCurrentDirectory("Downloaded_taef.dll", testDll =>
+            {
+                MarkAsDownloaded(testDll);
+
+                foreach (string path in GetPathsOfFileBelowCurrentDirectory(testDll))
+                {
+                    TaefDiscoverer.VerifyTestDllTrust(path, MockOptions.Object, MockLogger.Object).Should().BeFalse(path);
+                    // the error names the test DLL as it has been given
+                    MockLogger.Verify(l => l.LogError(It.Is<string>(s => s.Contains("Test DLL " + path + " came from another computer"))), Times.Once, path);
+                }
+            });
+        }
+
         [TestMethod]
         [TestCategory(Unit)]
         public void GetTestsFromTestDll_DownloadedTestDll_TeIsNotStarted()
@@ -728,6 +763,47 @@ namespace TaefTestAdapter
             testCase.DisplayName.Should().Be(name);
             testCase.CodeFilePath.Should().EndWithEquivalent(@"SampleTests\" + file, name);
             testCase.LineNumber.Should().Be(line, name);
+        }
+
+        /// <summary>
+        /// Writes a TAEF test DLL <c>sub\&lt;fileName&gt;</c> into a new folder below %TEMP% (with a GUID in its name) and runs
+        /// <paramref name="action"/> with that folder as current directory, passing the full path of the DLL. Afterwards,
+        /// the current directory is restored and the folder is deleted.
+        /// </summary>
+        private static void WithTestDllBelowCurrentDirectory(string fileName, Action<string> action)
+        {
+            string directory = Path.Combine(Path.GetTempPath(), "TaefTestAdapter_" + Guid.NewGuid().ToString("N"));
+            string subDirectory = Path.Combine(directory, "sub");
+            Directory.CreateDirectory(subDirectory);
+            string formerCurrentDirectory = Environment.CurrentDirectory;
+            try
+            {
+                string testDll = SyntheticPeFile.TaefTestDll().WriteTo(Path.Combine(subDirectory, fileName));
+                Environment.CurrentDirectory = directory;
+                action(testDll);
+            }
+            finally
+            {
+                Environment.CurrentDirectory = formerCurrentDirectory;
+                Utils.DeleteDirectory(directory);
+            }
+        }
+
+        /// <returns>
+        /// The full path <paramref name="file"/> (in the sub folder <c>sub</c> of the current directory), and the relative,
+        /// root-relative and drive-relative paths of it.
+        /// </returns>
+        private static IEnumerable<string> GetPathsOfFileBelowCurrentDirectory(string file)
+        {
+            string fileName = Path.GetFileName(file);
+            string root = Path.GetPathRoot(file);
+            root.Should().MatchRegex(@"^[A-Za-z]:\\$", "the temporary folder is on a drive");
+
+            yield return file;
+            yield return Path.Combine("sub", fileName);
+            yield return Path.Combine(".", "sub", fileName);
+            yield return file.Substring(root.Length - 1);
+            yield return root.Substring(0, 2) + Path.Combine("sub", fileName);
         }
 
         /// <summary>Marks a file as downloaded from the internet (Zone.Identifier stream with ZoneId=3, "Mark of the Web").</summary>

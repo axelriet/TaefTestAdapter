@@ -6,10 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TemplateWizard;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TaefTestAdapter.Common;
 using TaefTestAdapter.Tests.Common;
+using TaefTestAdapter.Tests.Common.Fakes;
 using TaefTestAdapter.Tests.Common.Helpers;
 using static TaefTestAdapter.Tests.Common.TestMetadata.TestCategories;
 
@@ -80,6 +83,85 @@ namespace TaefTestAdapter.VsPackage.Templates
             x86[LocalDebuggerCommand].Should().EndWith(@"\Testing\Runtimes\TAEF\x86\TE.exe");
             x86[LocalDebuggerCommandArguments].Should().Be($"\"{x86[TargetPath]}\" /inproc");
             x86[DebuggerFlavor].Should().Be("WindowsLocalDebugger");
+        }
+
+        /// <summary>
+        /// The TAEF folders of the Windows Kits are named <c>arm64</c>, while <c>$(PlatformShortName)</c> of platform ARM64 is
+        /// <c>ARM64</c> (file names are not case sensitive). The debugger is the default of the platform ARM64: the local
+        /// debugger if Visual Studio can debug ARM64 processes locally (it contains the ARM64 remote debugger, as on ARM64
+        /// Windows), else the remote debugger (ARM64 test DLLs cannot run on other architectures).
+        /// </summary>
+        [TestMethod]
+        [TestCategory(Integration)]
+        public void F5Settings_Arm64_TeExeOfArm64RunsTestDllInProcess()
+        {
+            AssumePlatformIsInstalled("ARM64");
+            string visualStudioDir = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(GetMsBuildPath()) ?? "", @"..\..\.."));
+            string expectedDebuggerFlavor = File.Exists(Path.Combine(visualStudioDir, @"Common7\IDE\Remote Debugger\arm64\msvsmon.exe"))
+                ? "WindowsLocalDebugger"
+                : "WindowsRemoteDebugger";
+
+            foreach (string configuration in new[] { "Debug", "Release" })
+            {
+                IDictionary<string, string> arm64 = Evaluate(configuration, "ARM64");
+                arm64[LocalDebuggerCommand].Should().EndWithEquivalent(@"\Testing\Runtimes\TAEF\arm64\TE.exe", configuration);
+                arm64[LocalDebuggerCommandArguments].Should().Be($"\"{arm64[TargetPath]}\" /inproc", configuration);
+                arm64[DebuggerFlavor].Should().Be(expectedDebuggerFlavor, configuration);
+            }
+        }
+
+        /// <summary>
+        /// Every configuration of the template has its configuration properties, property sheets and item definitions; the
+        /// ARM64 configurations mirror the x64 ones, and Debug|x64 stays the preferred configuration of new solutions.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void Template_Configurations_Win32X64AndArm64WithAllSettings()
+        {
+            XDocument project = XDocument.Load(Path.Combine(TemplateDir, "TaefTest.vcxproj"));
+            XNamespace ns = project.Root.Name.Namespace;
+            string[] configurations = project.Descendants(ns + "ProjectConfiguration").Select(c => (string)c.Attribute("Include")).ToArray();
+            configurations.Should().BeEquivalentTo("Debug|Win32", "Release|Win32", "Debug|x64", "Release|x64", "Debug|ARM64", "Release|ARM64");
+
+            foreach (string configuration in configurations)
+            {
+                XElement[] elements = GetConfigurationElements(project, configuration);
+                elements.Should().ContainSingle(e => e.Name == ns + "PropertyGroup" && (string)e.Attribute("Label") == "Configuration", configuration);
+                elements.Should().ContainSingle(e => e.Name == ns + "ImportGroup" && (string)e.Attribute("Label") == "PropertySheets", configuration);
+                elements.Should().ContainSingle(e => e.Name == ns + "ItemDefinitionGroup", configuration);
+            }
+
+            foreach (string configuration in new[] { "Debug", "Release" })
+            {
+                string arm64 = $"{configuration}|ARM64";
+                string x64 = $"{configuration}|x64";
+                GetConfigurationElements(project, arm64).Select(e => e.ToString().Replace(arm64, x64))
+                    .Should().Equal(GetConfigurationElements(project, x64).Select(e => e.ToString()), $"{arm64} mirrors {x64}");
+            }
+
+            XDocument vsTemplate = XDocument.Load(Path.Combine(TemplateDir, "TaefTest.vstemplate"));
+            XNamespace templateNamespace = vsTemplate.Root.Name.Namespace;
+            ((string)vsTemplate.Root.Element(templateNamespace + "TemplateContent")?.Attribute("PreferedSolutionConfiguration"))
+                .Should().Be("Debug|x64");
+        }
+
+        /// <summary>
+        /// The ARM64 configurations build ARM64 test DLLs. This needs the MSVC ARM64 build tools and the ARM64 libraries of the
+        /// Windows SDK and of TAEF (the test is inconclusive without them). TE.exe cannot list the tests of an ARM64 DLL on
+        /// other architectures, so only the architecture of the DLLs is checked.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(Integration)]
+        public void Build_Arm64Configurations_Arm64TestDlls()
+        {
+            AssumePlatformIsInstalled("ARM64");
+            foreach (string configuration in new[] { "Debug", "Release" })
+            {
+                // MSB8007: the platform is not installed; MSB8020: the build tools of the platform are not installed;
+                // LNK1104, LNK1181: a library of the platform (e.g. of the Windows SDK) is missing
+                string testDll = Build(_projectFile, configuration, "ARM64", "MSB8007", "MSB8020", "LNK1104", "LNK1181");
+                TaefLocator.GetArchitecture(testDll, new FakeLogger(() => OutputMode.Info)).Should().Be(TaefLocator.ArchitectureArm64, testDll);
+            }
         }
 
         [TestMethod]
@@ -223,19 +305,26 @@ namespace TaefTestAdapter.VsPackage.Templates
             return result;
         }
 
+        /// <param name="projectFile">The project to build.</param>
+        /// <param name="configuration">The configuration to build.</param>
+        /// <param name="platform">The platform to build.</param>
+        /// <param name="missingToolsErrors">
+        /// Build errors which make the test inconclusive, in addition to those of missing C++ build tools and TAEF development
+        /// files.
+        /// </param>
         /// <returns>The test DLL built from the project.</returns>
-        private static string Build(string projectFile, string configuration, string platform)
+        private static string Build(string projectFile, string configuration, string platform, params string[] missingToolsErrors)
         {
             string arguments = $"\"{projectFile}\" -nologo -nr:false -v:minimal -p:Configuration={configuration} -p:Platform={platform}";
             int exitCode = new TestProcessLauncher().GetOutputStreams(Path.GetDirectoryName(projectFile), GetMsBuildPath(), arguments,
                 out List<string> standardOut, out List<string> standardErr);
             string output = string.Join(Environment.NewLine, standardOut.Concat(standardErr));
-            if (exitCode != 0 && (output.Contains("MSB4019") || output.Contains("WexTestClass.h") || output.Contains("TE.Common.lib")))
+            if (exitCode != 0 && new[] { "MSB4019", "WexTestClass.h", "TE.Common.lib" }.Concat(missingToolsErrors).Any(output.Contains))
                 Assert.Inconclusive($"The C++ build tools or the TAEF development files are not available:{Environment.NewLine}{output}");
             exitCode.Should().Be(0, output);
 
             // the DLL is named like the project file ($(ProjectName))
-            string testDll = Path.Combine(Path.GetDirectoryName(projectFile) ?? "", platform == "x64" ? "x64" : "", configuration,
+            string testDll = Path.Combine(Path.GetDirectoryName(projectFile) ?? "", GetPlatformDir(platform), configuration,
                 Path.GetFileNameWithoutExtension(projectFile) + ".dll");
             File.Exists(testDll).Should().BeTrue(output);
             return testDll;
@@ -295,8 +384,42 @@ namespace TaefTestAdapter.VsPackage.Templates
                 result[match.Groups["name"].Value] = Regex.Unescape(match.Groups["value"].Value);
             }
             result.Keys.Should().Contain(properties, output);
-            result[TargetPath].Should().EndWith($@"\My Tests\{(platform == "x64" ? @"x64\" : "")}{configuration}\{ProjectName}.dll");
+            result[TargetPath].Should().EndWith($@"\My Tests\{Path.Combine(GetPlatformDir(platform), configuration)}\{ProjectName}.dll");
             return result;
+        }
+
+        /// <summary>
+        /// Makes the test inconclusive if the C++ platform <paramref name="platform"/> is not installed in Visual Studio (e.g.
+        /// ARM64 without the MSVC ARM64 build tools): MSBuild then evaluates the project without the settings of the platform
+        /// (<c>$(PlatformShortName)</c> is empty) and cannot build it.
+        /// </summary>
+        private void AssumePlatformIsInstalled(string platform)
+        {
+            string arguments = $"\"{_projectFile}\" -nologo -nr:false -getProperty:PlatformShortName -p:Configuration=Debug -p:Platform={platform}";
+            int exitCode = new TestProcessLauncher().GetOutputStreams(Path.GetDirectoryName(_projectFile), GetMsBuildPath(), arguments,
+                out List<string> standardOut, out List<string> standardErr);
+            string output = string.Join(Environment.NewLine, standardOut.Concat(standardErr));
+            if (exitCode != 0 && (output.Contains("MSB4019") || output.Contains("MSB1001")))
+                Assert.Inconclusive($"The C++ build tools or MSBuild's -getProperty switch are not available:{Environment.NewLine}{output}");
+            exitCode.Should().Be(0, output);
+
+            // -getProperty with a single property prints its value
+            if (standardOut.All(string.IsNullOrWhiteSpace))
+                Assert.Inconclusive($"The C++ platform {platform} (e.g. the MSVC {platform} build tools) is not installed");
+        }
+
+        /// <returns>The folder of the project's outputs of <paramref name="platform"/>, relative to the project folder.</returns>
+        private static string GetPlatformDir(string platform)
+        {
+            return platform == "Win32" ? "" : platform;
+        }
+
+        /// <returns>The elements of the project with the condition of <paramref name="configuration"/> (e.g. <c>Debug|x64</c>).</returns>
+        private static XElement[] GetConfigurationElements(XDocument project, string configuration)
+        {
+            string condition = $"'$(Configuration)|$(Platform)'=='{configuration}'";
+            // ReSharper disable once PossibleNullReferenceException
+            return project.Root.Elements().Where(e => (string)e.Attribute("Condition") == condition).ToArray();
         }
 
         private static string GetMsBuildPath()

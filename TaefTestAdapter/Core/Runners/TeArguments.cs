@@ -210,7 +210,11 @@ namespace TaefTestAdapter.Runners
             return GetFullPath(directory.Trim().Trim('"')).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
 
-        private static string GetFullPath(string path)
+        /// <returns>
+        /// The full path of <paramref name="path"/> (relative paths are relative to the current directory), or
+        /// <paramref name="path"/> itself if it is not a valid path. Never throws.
+        /// </returns>
+        internal static string GetFullPath(string path)
         {
             try
             {

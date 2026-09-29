@@ -55,7 +55,7 @@ namespace TaefTestAdapter.VsPackage
                 {
                     File.Copy(adapterDll, Path.Combine(extensionsDir, Path.GetFileName(adapterDll)), true);
                 }
-                foreach (string architecture in new[] { "x86", "x64" })
+                foreach (string architecture in new[] { "x86", "x64", "arm64" })
                 {
                     string msdia = Path.Combine(adapterDir, architecture, "msdia140.dll");
                     if (File.Exists(msdia))

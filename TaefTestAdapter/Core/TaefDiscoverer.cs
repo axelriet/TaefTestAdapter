@@ -15,6 +15,7 @@ using TaefTestAdapter.Helpers;
 using TaefTestAdapter.Model;
 using TaefTestAdapter.ProcessExecution;
 using TaefTestAdapter.ProcessExecution.Contracts;
+using TaefTestAdapter.Runners;
 using TaefTestAdapter.Settings;
 using TaefTestAdapter.TestCases;
 
@@ -231,14 +232,16 @@ namespace TaefTestAdapter
 
         /// <summary>
         /// Checks that <paramref name="testDll"/> has not been downloaded from another computer (the security zone is
-        /// MyComputer), unless option 'Skip check of file origin' is set.
+        /// MyComputer), unless option 'Skip check of file origin' is set. The zone is determined for the full path, since
+        /// a relative path (e.g. <c>dir\x.dll</c> or <c>\dir\x.dll</c>) does not get zone MyComputer; a downloaded file
+        /// (mark of the web) gets the zone of its origin by its full path as well.
         /// </summary>
         public static bool VerifyTestDllTrust(string testDll, SettingsWrapper settings, ILogger logger)
         {
             if (settings.SkipOriginCheck)
                 return true;
 
-            var zone = Zone.CreateFromUrl(testDll);
+            var zone = Zone.CreateFromUrl(TeArguments.GetFullPath(testDll));
             if (zone.SecurityZone != System.Security.SecurityZone.MyComputer)
             {
                 logger.LogError("Test DLL " + testDll + " came from another computer and was blocked to help protect this computer.");

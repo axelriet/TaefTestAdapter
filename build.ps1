@@ -7,8 +7,10 @@ Performs the complete local build of the Test Adapter for TAEF:
 
   1. Locates Visual Studio 2026 (18.x) or 2022 (17.x) with vswhere.
   2. Prepares the DIA SDK files needed by the DiaResolver project:
-     - copies msdia140.dll from '<VS>\DIA SDK\bin' and '<VS>\DIA SDK\bin\amd64' into
-       TaefTestAdapter\DiaResolver\x86 and TaefTestAdapter\DiaResolver\x64,
+     - copies msdia140.dll from '<VS>\DIA SDK\bin', '<VS>\DIA SDK\bin\amd64' and '<VS>\DIA SDK\bin\arm64' into
+       TaefTestAdapter\DiaResolver\x86, TaefTestAdapter\DiaResolver\x64 and TaefTestAdapter\DiaResolver\arm64
+       (if the DIA SDK has no arm64 DLL, a warning is shown and the adapter cannot read source locations in
+       native ARM64 processes),
      - generates the interop assembly TaefTestAdapter\DiaResolver\dia2\dia2.dll from
        '<VS>\DIA SDK\idl\dia2.idl' (midl + tlbimp inside a VS developer environment).
   3. Restores NuGet packages (NuGet.exe restore for packages.config projects, then
@@ -69,7 +71,7 @@ Do not build TaefTestAdapter\TaefTestAdapter.sln.
 Regenerate dia2.dll even if it already exists.
 
 .PARAMETER DiaTargetDir
-Folder receiving x86\msdia140.dll, x64\msdia140.dll and dia2\dia2.dll.
+Folder receiving x86\msdia140.dll, x64\msdia140.dll, arm64\msdia140.dll and dia2\dia2.dll.
 Default: <repo>\TaefTestAdapter\DiaResolver.
 
 .PARAMETER Test
@@ -303,10 +305,22 @@ function Find-VisualStudio {
 function Initialize-Dia([string] $VisualStudio) {
     $diaSdk = Join-Path $VisualStudio 'DIA SDK'
 
-    foreach ($pair in @(@{ Source = 'bin\msdia140.dll'; Target = 'x86' },
-                        @{ Source = 'bin\amd64\msdia140.dll'; Target = 'x64' })) {
+    # the arm64 DLL is optional: without it, the adapter works, but has no source locations in native ARM64 processes
+    foreach ($pair in @(@{ Source = 'bin\msdia140.dll'; Target = 'x86'; Optional = $false },
+                        @{ Source = 'bin\amd64\msdia140.dll'; Target = 'x64'; Optional = $false },
+                        @{ Source = 'bin\arm64\msdia140.dll'; Target = 'arm64'; Optional = $true })) {
         $source = Join-Path $diaSdk $pair.Source
         if (-not (Test-Path -LiteralPath $source -PathType Leaf)) {
+            if ($pair.Optional) {
+                # a copy from an earlier build (e.g. with another Visual Studio) would still be packaged
+                $stale = Join-Path (Join-Path $DiaTargetDir $pair.Target) 'msdia140.dll'
+                if (Test-Path -LiteralPath $stale -PathType Leaf) {
+                    Remove-Item -LiteralPath $stale -Force
+                }
+                Write-Warning ("DIA SDK file '$source' not found: the adapter is built without $($pair.Target)\msdia140.dll " +
+                               "and cannot read the source locations of tests in native ARM64 processes (e.g. the ARM64 test host).")
+                continue
+            }
             throw "DIA SDK file '$source' not found."
         }
         $targetDir = Join-Path $DiaTargetDir $pair.Target

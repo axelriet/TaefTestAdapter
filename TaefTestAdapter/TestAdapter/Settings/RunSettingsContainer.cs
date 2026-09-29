@@ -80,7 +80,8 @@ namespace TaefTestAdapter.TestAdapter.Settings
 
         public static RunSettingsContainer LoadFromXml(XPathNavigator rootElement)
         {
-            ValidateArg.NotNull(rootElement, nameof(rootElement));
+            if (rootElement == null)
+                throw new ArgumentNullException(nameof(rootElement));
 
             RunSettingsContainer runSettingsContainer = null;
             if (rootElement.Name.Equals(TaefConstants.SettingsName))

@@ -93,6 +93,11 @@
       <Link>ReleaseNotes.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <!-- the readme of the NuGet package (see <readme> in VsPackage.nuspec); not included in the VSIX -->
+    <Content Include="..\..\README.md">
+      <Link>README.md</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\taef-logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -116,7 +121,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <!-- The referenced projects' outputs (assemblies, x86\msdia140.dll and x64\msdia140.dll of DiaResolver) are copied
+    <!-- The referenced projects' outputs (assemblies, x86\, x64\ and arm64\msdia140.dll of DiaResolver) are copied
          to the output folder and included in the VSIX; assemblies provided by Visual Studio are excluded from the VSIX by
          the VSSDK (SuppressFromVsix). -->
     <ProjectReference Include="..\Common\Common.csproj">
@@ -207,13 +212,71 @@
   <PropertyGroup>
     <NuGetExe>$(PkgNuGet_CommandLine)\tools\NuGet.exe</NuGetExe>
     <NuGetPackageMarkerFile>$(OutDir)_.txt</NuGetPackageMarkerFile>
+    <!-- the nuspec that is packed: VsPackage.nuspec with the source commit, see target AddRepositoryCommitToNuspec -->
+    <NuGetPackageNuspec>$(IntermediateOutputPath)VsPackage.nuspec</NuGetPackageNuspec>
+    <!-- XSLT 1.0: copies the nuspec and sets the attribute commit of its <repository> element to the parameter commit
+         (removes it if the parameter is empty) -->
+    <RepositoryCommitXslt><![CDATA[<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:param name="commit" />
+  <xsl:template match="@*|node()">
+    <xsl:copy><xsl:apply-templates select="@*|node()" /></xsl:copy>
+  </xsl:template>
+  <xsl:template match="/*[local-name()='package']/*[local-name()='metadata']/*[local-name()='repository']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*[local-name()!='commit']" />
+      <xsl:if test="$commit != ''">
+        <xsl:attribute name="commit"><xsl:value-of select="$commit" /></xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="node()" />
+    </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>]]></RepositoryCommitXslt>
   </PropertyGroup>
 
-  <Target Name="CreateNuGetPackage" AfterTargets="Build" Condition="'$(CreateNuGetPackage)' == 'true'">
+  <!-- The commit the package is built from (<repository commit="..."> in the package): RepositoryCommit if given (for
+       example, /p:RepositoryCommit=<commit> when building from a source archive), otherwise 'git rev-parse HEAD' in the
+       enlistment if it is a git checkout (it has .git, a folder, or a file in worktrees and submodules; git is not run in
+       other folders, where it would return the commit of an enclosing repository). If git is not available or the
+       enlistment is not a git checkout, the package is created without it. -->
+  <Target Name="GetRepositoryCommit">
+    <PropertyGroup>
+      <_CommitHashPattern>^[0-9a-f]{40}([0-9a-f]{24})?$</_CommitHashPattern>
+    </PropertyGroup>
+    <Error Condition="'$(RepositoryCommit)' != '' And !$([System.Text.RegularExpressions.Regex]::IsMatch('$(RepositoryCommit)', '$(_CommitHashPattern)'))" Text="RepositoryCommit '$(RepositoryCommit)' is not a git commit hash (40 or 64 lowercase hexadecimal digits)." />
+    <Exec Condition="'$(RepositoryCommit)' == '' And Exists('$(EnlistmentRoot).git')" Command="git rev-parse HEAD 2&gt;nul" WorkingDirectory="$(EnlistmentRoot)" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" ContinueOnError="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitRevParseOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitRevParseExitCode" />
+    </Exec>
+    <PropertyGroup Condition="'$(RepositoryCommit)' == '' And '$(_GitRevParseExitCode)' == '0' And $([System.Text.RegularExpressions.Regex]::IsMatch('$(_GitRevParseOutput.Trim())', '$(_CommitHashPattern)'))">
+      <_RepositoryCommitIsHead>true</_RepositoryCommitIsHead>
+      <RepositoryCommit>$(_GitRevParseOutput.Trim())</RepositoryCommit>
+    </PropertyGroup>
+    <Message Condition="'$(RepositoryCommit)' == ''" Importance="high" Text="The NuGet package is created without the source commit: $(EnlistmentRoot) is not a git checkout, or 'git rev-parse HEAD' failed there (git is not available)." />
+    <!-- the commit does not contain uncommitted changes: a message (not a warning, as in development builds these are
+         common) reminds to build the package to be published after committing -->
+    <Exec Condition="'$(_RepositoryCommitIsHead)' == 'true'" Command="git status --porcelain --untracked-files=no 2&gt;nul" WorkingDirectory="$(EnlistmentRoot)" ConsoleToMSBuild="true" StandardOutputImportance="low" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" ContinueOnError="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitStatusOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitStatusExitCode" />
+    </Exec>
+    <Message Condition="'$(_RepositoryCommitIsHead)' == 'true' And '$(_GitStatusExitCode)' == '0' And '$(_GitStatusOutput)' != ''" Importance="high" Text="The NuGet package records the source commit $(RepositoryCommit), but $(EnlistmentRoot) has uncommitted changes, which that commit does not contain: build the package to be published after committing them." />
+  </Target>
+
+  <Target Name="AddRepositoryCommitToNuspec" DependsOnTargets="GetRepositoryCommit">
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName($(NuGetPackageNuspec)))" />
+    <XslTransformation XmlInputPaths="$(OutDir)VsPackage.nuspec" XslContent="$(RepositoryCommitXslt)" OutputPaths="$(NuGetPackageNuspec)" Parameters="&lt;Parameter Name=&quot;commit&quot; Value=&quot;$(RepositoryCommit)&quot; /&gt;" />
+    <ItemGroup>
+      <FileWrites Include="$(NuGetPackageNuspec)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CreateNuGetPackage" AfterTargets="Build" DependsOnTargets="AddRepositoryCommitToNuspec" Condition="'$(CreateNuGetPackage)' == 'true'">
     <Error Condition="!Exists('$(NuGetExe)')" Text="NuGet.exe not found at '$(NuGetExe)' - restore the NuGet packages of the solution." />
     <!-- at least one file is needed within the lib\native folder to convince VS that the package can be installed into native C++ projects -->
     <WriteLinesToFile File="$(NuGetPackageMarkerFile)" Lines="This file makes the package installable into native C++ projects." Overwrite="true" WriteOnlyWhenDifferent="true" />
-    <Exec Command="&quot;$(NuGetExe)&quot; pack &quot;$(OutDir)VsPackage.nuspec&quot; -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(OutDir.TrimEnd('\'))&quot; -NonInteractive -NoPackageAnalysis -ForceEnglishOutput" />
+    <!-- the nuspec takes the optional arm64\msdia140.dll with a wildcard, which fails if the folder does not exist -->
+    <MakeDir Directories="$(OutDir)arm64" />
+    <!-- the files of the package are taken from the output folder (BasePath) -->
+    <Exec Command="&quot;$(NuGetExe)&quot; pack &quot;$(NuGetPackageNuspec)&quot; -BasePath &quot;$(OutDir.TrimEnd('\'))&quot; -OutputDirectory &quot;$(OutDir.TrimEnd('\'))&quot; -NonInteractive -NoPackageAnalysis -ForceEnglishOutput" />
     <ItemGroup>
       <FileWrites Include="$(NuGetPackageMarkerFile);$(OutDir)TaefTestAdapter.*.nupkg" />
     </ItemGroup>
@@ -223,6 +286,6 @@
     <ItemGroup>
       <_NuGetPackageToDelete Include="$(OutDir)TaefTestAdapter.*.nupkg" />
     </ItemGroup>
-    <Delete Files="@(_NuGetPackageToDelete);$(NuGetPackageMarkerFile)" />
+    <Delete Files="@(_NuGetPackageToDelete);$(NuGetPackageMarkerFile);$(NuGetPackageNuspec)" />
   </Target>
 </Project>

@@ -132,9 +132,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <!-- IRunSettingsService (Test Explorer) and the test platform's object model; provided by Visual Studio at runtime -->
+    <!-- IRunSettingsService (Test Explorer) and the test platform's object model; provided by Visual Studio at runtime. The
+         object model is the one of Visual Studio 2022 17.0 (see TestAdapter.csproj); Visual Studio redirects all versions of
+         it, including version 11.0.0.0 referenced by TestWindow.Interfaces, to the version it ships (15.0.0.0). -->
     <PackageReference Include="Microsoft.VisualStudio.TestWindow.Interfaces" Version="11.0.61030" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.0.0" ExcludeAssets="runtime" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- the end-to-end tests of this project only need Tests.Common (no Visual Studio SDK) -->
-    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="11.0.0" />
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="17.0.0" />
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
   </ItemGroup>
   <ItemGroup>

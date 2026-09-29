@@ -132,6 +132,53 @@ namespace TaefTestAdapter.VsPackage
             }
         }
 
+        /// <summary>
+        /// The VSIX and the NuGet package contain the adapter's assemblies and msdia140.dll of each architecture the adapter
+        /// can run in (x86, x64 and arm64; arm64 only if the DIA SDK used for the build contains it, see build.ps1), but no
+        /// other DLLs: in particular not the test platform's object model, which the test host provides.
+        /// </summary>
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void VsixAndNuGetPackage_ContainDiaDllsAndNoTestPlatformAssemblies()
+        {
+            string vsix = Path.Combine(TestResources.PackagingDir, "TaefTestAdapter.vsix");
+            string nupkg = Path.Combine(TestResources.PackagingDir, $"TaefTestAdapter.{GetNuGetPackageVersion()}.nupkg");
+            foreach (string package in new[] { vsix, nupkg })
+            {
+                if (!File.Exists(package))
+                    Assert.Inconclusive($"The package has not been built: {package}");
+            }
+
+            var architectures = new List<string> { "x86", "x64" };
+            if (File.Exists(Path.Combine(TestResources.AdapterSolutionDir, @"DiaResolver\arm64\msdia140.dll")))
+                architectures.Add("arm64");
+
+            foreach ((string package, string diaDllFolder) in new[] { (vsix, ""), (nupkg, "build/_common/") })
+            {
+                using (var archive = new ZipArchive(File.OpenRead(package), ZipArchiveMode.Read))
+                {
+                    string[] entries = archive.Entries.Select(e => e.FullName).ToArray();
+                    foreach (string architecture in architectures)
+                    {
+                        entries.Should().Contain($"{diaDllFolder}{architecture}/msdia140.dll", package);
+                    }
+                    entries.Where(e => e.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                        .Select(Path.GetFileName)
+                        .Should().OnlyContain(n => n.StartsWith("TaefTestAdapter.", StringComparison.Ordinal) || n == "msdia140.dll", package)
+                        .And.Contain("TaefTestAdapter.TestAdapter.dll", package);
+                }
+            }
+        }
+
+        /// <returns>
+        /// The version of the NuGet package as in its file name: NuGet omits the fourth part of the assembly version if it is 0.
+        /// </returns>
+        internal static string GetNuGetPackageVersion()
+        {
+            Version version = typeof(TaefTestAdapterPackage).Assembly.GetName().Version;
+            return version.Revision == 0 ? version.ToString(3) : version.ToString();
+        }
+
         /// <returns>
         /// The lower bound of the version ranges of the manifest's InstallationTargets and Prerequisites (which must all
         /// have the same, inclusive lower bound).
