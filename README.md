@@ -4,8 +4,8 @@ Test Adapter for TAEF enables Visual Studio's testing tools with native C++ unit
 [Test Authoring and Execution Framework (TAEF)](https://learn.microsoft.com/windows-hardware/drivers/taef/). It discovers the
 tests of your TAEF test DLLs, shows them in Test Explorer, and runs and debugs them with TAEF's test runner `TE.exe`. It
 works in Visual Studio 2026 and Visual Studio 2022, and with `vstest.console.exe` (for example, on build servers). Get it
-from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) or as the
-[TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) NuGet package, see *Install* below.
+from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=arsd.VisualStudioTaefTestAdapter) or as the
+[TaefTestAdapter](https://www.nuget.org/packages/TaefTestAdapter) NuGet package, see *Install* below. The source code is on [GitHub](https://github.com/axelriet/TaefTestAdapter).
 
 ## Why TAEF
 
@@ -86,7 +86,7 @@ Visual Studio, and run the same test DLLs in your build pipeline, in your labs a
 You can use Test Adapter for TAEF in three ways:
 
 * **Visual Studio extension (VSIX)** - recommended: install
-  [Test Adapter for TAEF](https://marketplace.visualstudio.com/items?itemName=arsd.TaefTestAdapter) from the Visual Studio
+  [Test Adapter for TAEF](https://marketplace.visualstudio.com/items?itemName=arsd.VisualStudioTaefTestAdapter) from the Visual Studio
   Marketplace, in Visual Studio with *Extensions > Manage Extensions* (search for "TAEF"). Alternatively, download
   `TaefTestAdapter.vsix` from the [Releases](https://github.com/axelriet/TaefTestAdapter/releases) of this repository (or
   build it, see *Build from source*), double-click it and select Visual Studio 2026 and/or Visual Studio 2022
