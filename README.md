@@ -154,37 +154,40 @@ using namespace WEX::Common;
 using namespace WEX::Logging;
 using namespace WEX::TestExecution;
 
-namespace Contoso { namespace Tests
+namespace Contoso
 {
-    class MathTests
+    namespace Tests
     {
-        TEST_CLASS(MathTests);
-
-        TEST_CLASS_SETUP(ClassSetup)          // once before the first test of the class
+        class MathTests
         {
-            Log::Comment(L"setting up");      // WEX logging, visible in the TE.exe output
-            return true;                      // false: the tests of the class are Blocked
-        }
+            TEST_CLASS(MathTests);
 
-        TEST_METHOD(Addition)
+            TEST_CLASS_SETUP(ClassSetup)          // once before the first test of the class
+            {
+                Log::Comment(L"setting up");      // WEX logging, visible in the TE.exe output
+                return true;                      // false: the tests of the class are Blocked
+            }
+
+            TEST_METHOD(Addition)
+            {
+                VERIFY_ARE_EQUAL(4, 2 + 2);       // a failing VERIFY_* fails (and ends) the test
+            }
+
+            BEGIN_TEST_METHOD(Rounding)           // a test with metadata (shown as traits) ...
+                TEST_METHOD_PROPERTY(L"Priority", L"1")
+                TEST_METHOD_PROPERTY(L"Data:Value", L"{1, 2, 3}")   // ... which is data-driven
+            END_TEST_METHOD()
+        };
+
+        void MathTests::Rounding()                // BEGIN_TEST_METHOD tests are defined outside of the class
         {
-            VERIFY_ARE_EQUAL(4, 2 + 2);       // a failing VERIFY_* fails (and ends) the test
+            int value = 0;
+            VERIFY_SUCCEEDED(TestData::TryGetValue(L"Value", value));
+            Log::Comment(String().Format(L"Value = %d", value));
+            VERIFY_IS_GREATER_THAN(value, 0);
         }
-
-        BEGIN_TEST_METHOD(Rounding)           // a test with metadata (shown as traits) ...
-            TEST_METHOD_PROPERTY(L"Priority", L"1")
-            TEST_METHOD_PROPERTY(L"Data:Value", L"{1, 2, 3}")   // ... which is data-driven
-        END_TEST_METHOD()
-    };
-
-    void MathTests::Rounding()                // BEGIN_TEST_METHOD tests are defined outside of the class
-    {
-        int value = 0;
-        VERIFY_SUCCEEDED(TestData::TryGetValue(L"Value", value));
-        Log::Comment(String().Format(L"Value = %d", value));
-        VERIFY_IS_GREATER_THAN(value, 0);
     }
-} }
+}
 ```
 
 After you build the project, Test Explorer shows the tests `Contoso::Tests::MathTests::Addition` and
