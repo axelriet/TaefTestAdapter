@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Data>
+  <Table Id="Rows">
+    <ParameterTypes>
+      <ParameterType Name="Name">String</ParameterType>
+    </ParameterTypes>
+    <Row Name="First">
+      <Parameter Name="Name">alpha</Parameter>
+    </Row>
+    <Row>
+      <Parameter Name="Name">beta</Parameter>
+    </Row>
+  </Table>
+</Data>

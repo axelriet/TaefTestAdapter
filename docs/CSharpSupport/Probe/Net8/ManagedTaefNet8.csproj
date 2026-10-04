@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <DebugType>portable</DebugType>
+    <TaefRuntime>C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64</TaefRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Source/ManagedTests.cs" />
+    <None Include="../Source/ManagedTestsData.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Reference Include="TE.Managed"><HintPath>$(TaefRuntime)\netstandard2.0\TE.Managed.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Wex.Logger.Interop"><HintPath>$(TaefRuntime)\netstandard2.0\Wex.Logger.Interop.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Wex.Common.Managed"><HintPath>$(TaefRuntime)\netstandard2.0\Wex.Common.Managed.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
