@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <OutRoot Condition="'$(OutRoot)' == ''">$(MSBuildThisFileDirectory)..\..\out\</OutRoot>
+    <OutRoot>$([MSBuild]::EnsureTrailingSlash('$(OutRoot)'))</OutRoot>
+    <BaseIntermediateOutputPath>$(OutRoot)intermediate\ManagedSamples\$(Configuration)\$(Platform)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows;net10.0-windows</TargetFrameworks>
+    <Platforms>AnyCPU;x86;x64;ARM64</Platforms>
+    <PlatformTarget Condition="'$(Platform)' == 'AnyCPU' or '$(Platform)' == ''">AnyCPU</PlatformTarget>
+    <PlatformTarget Condition="'$(Platform)' != 'AnyCPU' and '$(Platform)' != ''">$(Platform)</PlatformTarget>
+    <AssemblyName>ManagedTests_taef</AssemblyName>
+    <RootNamespace>TaefSampleTests</RootNamespace>
+    <IsTestProject>true</IsTestProject>
+    <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>portable</DebugType>
+    <OutputPath>$(OutRoot)binaries\ManagedSamples\$(Configuration)\$(Platform)\</OutputPath>
+    <TaefRuntimeRoot Condition="'$(TaefRuntimeRoot)' == ''">$(MSBuildProgramFiles32)\Windows Kits\10\Testing\Runtimes\TAEF</TaefRuntimeRoot>
+    <TaefManagedReferences Condition="'$(TargetFramework)' == 'net48'">$(TaefRuntimeRoot)\NetFx4.5</TaefManagedReferences>
+    <TaefManagedReferences Condition="'$(TargetFramework)' != 'net48'">$(TaefRuntimeRoot)\netstandard2.0</TaefManagedReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <Reference Include="TE.Managed">
+      <HintPath>$(TaefManagedReferences)\TE.Managed.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Wex.Logger.Interop">
+      <HintPath>$(TaefManagedReferences)\Wex.Logger.Interop.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <None Update="ManagedData.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

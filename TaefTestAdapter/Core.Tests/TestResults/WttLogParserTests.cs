@@ -658,6 +658,29 @@ line X)"" CA=""91896"" LA=""92136"" >
 
         [TestMethod]
         [TestCategory(Unit)]
+        public void GetConsoleOutput_ManagedExceptionRetainsPortablePdbStackTrace()
+        {
+            const string name = "Ns.Managed.Throwing#row.with::colons";
+            string wttLog = WriteWttLog(@"<WTT-Logger>
+<StartTest Title=""Ns.Managed.Throwing#row.with::colons"" />
+<Error UserText=""System.InvalidOperationException: boom&#xA;   at Ns.Managed.Throwing() in C:\src\ManagedTests.cs:line 32"" />
+<EndTest Title=""Ns.Managed.Throwing#row.with::colons"" Result=""Fail"" />
+</WTT-Logger>", Guid.NewGuid().ToString("N") + ".wtl");
+            var test = new TestCase(name, LabDll, name, @"C:\src\ManagedTests.cs", 32);
+            test.Properties.Add(new Model.TestCaseTaefClassProperty("Ns.Managed"));
+
+            IList<string> lines = new WttLogParser(wttLog, MockLogger.Object).GetConsoleOutput();
+            TestResult result = new TaefOutputParser(new[] { test }, lines, MockLogger.Object).GetTestResults().Single();
+
+            result.TestCase.FullyQualifiedName.Should().Be(name);
+            result.Outcome.Should().Be(TestOutcome.Failed);
+            result.ErrorMessage.Should().Be("System.InvalidOperationException: boom");
+            result.ErrorStackTrace.Should().Be(ErrorMessageParser.CreateStackTraceEntry(
+                "Ns.Managed.Throwing()", @"C:\src\ManagedTests.cs", "32"));
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
         public void GetConsoleOutput_FileDoesNotExist_EmptyOutputAndDebugWarning()
         {
             string wttLog = _directory.GetPath("DoesNotExist.wtl");

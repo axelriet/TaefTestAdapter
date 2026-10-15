@@ -10,6 +10,13 @@ namespace TaefTestAdapter.TestCases
     /// </summary>
     public class ListPropertiesParser
     {
+        private readonly bool _isManaged;
+
+        public ListPropertiesParser(bool isManaged = false)
+        {
+            _isManaged = isManaged;
+        }
+
         /// <summary>The <c>Error: ...</c> lines of the last parsed output.</summary>
         public IReadOnlyList<string> Errors { get; private set; } = new string[0];
 
@@ -24,7 +31,7 @@ namespace TaefTestAdapter.TestCases
         {
             var testCaseDescriptors = new List<TestCaseDescriptor>();
 
-            var actualParser = new StreamingListPropertiesParser();
+            var actualParser = new StreamingListPropertiesParser(_isManaged);
             actualParser.TestCaseDescriptorCreated += (sender, args) => testCaseDescriptors.Add(args.TestCaseDescriptor);
 
             foreach (string line in consoleOutput)

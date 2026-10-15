@@ -27,7 +27,8 @@ namespace TaefTestAdapter.Scheduling
 
         public List<List<TestCase>> SplitTestcases()
         {
-            int nrOfThreadsToUse = Math.Min(_settings.MaxNrOfThreads, _testcasesToRun.Count());
+            List<List<TestCase>> units = ManagedExecutionGroups.GetUnits(_testcasesToRun);
+            int nrOfThreadsToUse = Math.Min(_settings.MaxNrOfThreads, units.Count);
             var splitTestCases = new List<TestCase>[nrOfThreadsToUse];
             for (int i = 0; i < nrOfThreadsToUse; i++)
             {
@@ -35,9 +36,9 @@ namespace TaefTestAdapter.Scheduling
             }
 
             int testcaseCounter = 0;
-            foreach (TestCase testCase in _testcasesToRun)
+            foreach (List<TestCase> unit in units)
             {
-                splitTestCases[testcaseCounter++ % nrOfThreadsToUse].Add(testCase);
+                splitTestCases[testcaseCounter++ % nrOfThreadsToUse].AddRange(unit);
             }
 
             return splitTestCases.ToList();

@@ -114,7 +114,7 @@ namespace TaefTestAdapter.VsPackage
                 archive.Entries.Select(e => e.Name).Should().NotContain("Microsoft.VisualStudio.TemplateWizardInterface.dll");
 
                 string[] templates = archive.Entries.Select(e => e.FullName).Where(n => n.EndsWith(".vstemplate", StringComparison.Ordinal)).ToArray();
-                templates.Should().HaveCount(2);
+                templates.Should().HaveCount(4);
                 foreach (string template in templates)
                 {
                     XDocument vsTemplate = LoadXml(archive, template);
@@ -125,7 +125,8 @@ namespace TaefTestAdapter.VsPackage
                     ((string)wizardExtension.Element(templateNamespace + "Assembly")).Should().Be(wizardAssembly, template);
                     ((string)wizardExtension.Element(templateNamespace + "FullClassName")).Should().Be(typeof(TaefTemplateWizard).FullName, template);
 
-                    string code = ReadText(archive, template.Substring(0, template.LastIndexOf('/') + 1) + "test.cpp");
+                    string codeFile = (string)vsTemplate.Descendants(templateNamespace + "ProjectItem").First();
+                    string code = ReadText(archive, template.Substring(0, template.LastIndexOf('/') + 1) + codeFile);
                     code.Should().Contain("namespace " + TaefTemplateWizard.NamespaceParameter, template);
                     Regex.IsMatch(code, @"(?<!\r)\n").Should().BeFalse($"{template}: the template files have Windows line endings");
                 }
@@ -164,8 +165,25 @@ namespace TaefTestAdapter.VsPackage
                     }
                     entries.Where(e => e.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                         .Select(Path.GetFileName)
-                        .Should().OnlyContain(n => n.StartsWith("TaefTestAdapter.", StringComparison.Ordinal) || n == "msdia140.dll", package)
+                        .Should().OnlyContain(n => n.StartsWith("TaefTestAdapter.", StringComparison.Ordinal) || n == "msdia140.dll" ||
+                            n == "System.Reflection.Metadata.dll" || n == "System.Collections.Immutable.dll" ||
+                            n == "System.ComponentModel.Composition.dll", package)
                         .And.Contain("TaefTestAdapter.TestAdapter.dll", package);
+                    entries.Should().Contain(diaDllFolder + "TaefTestAdapter.DebuggerBridge.exe", package);
+                    entries.Should().Contain(diaDllFolder + "System.Reflection.Metadata.dll", package);
+                    entries.Should().Contain(diaDllFolder + "System.Collections.Immutable.dll", package);
+                    entries.Should().Contain(diaDllFolder + "ModernHost/System.ComponentModel.Composition.dll", package);
+                    foreach (string dependency in new[] { "System.Reflection.Metadata", "System.Collections.Immutable", "System.ComponentModel.Composition" })
+                    {
+                        entries.Should().Contain($"Licenses/{dependency}/LICENSE.TXT", package);
+                        entries.Should().Contain($"Licenses/{dependency}/THIRD-PARTY-NOTICES.TXT", package);
+                    }
+                    if (package == nupkg)
+                    {
+                        entries.Should().Contain("build/TaefTestAdapter.props", package);
+                        entries.Should().Contain("build/TaefTestAdapter.targets", package);
+                        entries.Should().Contain("buildTransitive/TaefTestAdapter.targets", package);
+                    }
                 }
             }
         }

@@ -170,6 +170,35 @@ namespace TaefTestAdapter.DiaResolver
 
         private IDiaSymbol GlobalScope => _diaSession?.globalScope;
 
+        public bool MatchesPdb(Guid guid, uint age)
+        {
+            try
+            {
+                return GlobalScope != null && GlobalScope.guid == guid && GlobalScope.age == age;
+            }
+            catch (Exception e)
+            {
+                _logger.DebugInfo($"Could not read the identity of PDB '{_pdb}': {e.Message}");
+                return false;
+            }
+        }
+
+        public SourceFileLocation FindFunctionByToken(uint token)
+        {
+            if (_diaSession == null)
+                return null;
+            try
+            {
+                _diaSession.findSymbolByToken(token, SymTagEnum.SymTagFunction, out IDiaSymbol function);
+                return function == null ? null : ToSourceFileLocation(function, skipHiddenLines: true);
+            }
+            catch (Exception e)
+            {
+                _logger.DebugInfo($"Could not locate metadata token 0x{token:X8} in PDB '{_pdb}': {e.Message}");
+                return null;
+            }
+        }
+
         private static bool HasCode(IDiaSymbol function)
         {
             return function.relativeVirtualAddress != 0 && function.length > 0;
@@ -196,12 +225,18 @@ namespace TaefTestAdapter.DiaResolver
 
         private SourceFileLocation ToSourceFileLocation(IDiaSymbol function)
         {
+            return ToSourceFileLocation(function, skipHiddenLines: false);
+        }
+
+        private SourceFileLocation ToSourceFileLocation(IDiaSymbol function, bool skipHiddenLines)
+        {
             try
             {
                 string name = function.name;
                 uint rva = function.relativeVirtualAddress;
                 ulong length = function.length;
-                if (rva == 0 || length == 0)
+                // In a managed Windows PDB this address is an IL offset, and the first method can start at zero.
+                if ((!skipHiddenLines && rva == 0) || length == 0)
                 {
                     _logger.DebugWarning($"Function '{name}' has no code in PDB '{_pdb}'");
                     return null;
@@ -209,6 +244,8 @@ namespace TaefTestAdapter.DiaResolver
 
                 _diaSession.findLinesByRVA(rva, (uint)Math.Min(length, uint.MaxValue), out IDiaEnumLineNumbers lineNumbers);
                 lineNumbers.Next(1, out IDiaLineNumber lineNumber, out uint fetched);
+                while (skipHiddenLines && fetched == 1 && lineNumber != null && (lineNumber.lineNumber == 0xFEEFEE || lineNumber.lineNumber == 0))
+                    lineNumbers.Next(1, out lineNumber, out fetched);
                 if (fetched != 1 || lineNumber == null)
                 {
                     _logger.DebugWarning($"Failed to locate line number for function '{name}' in PDB '{_pdb}'");

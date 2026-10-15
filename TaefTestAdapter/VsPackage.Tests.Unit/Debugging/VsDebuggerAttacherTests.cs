@@ -4,6 +4,8 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.VisualStudio;
+using TaefTestAdapter.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static TaefTestAdapter.Tests.Common.TestMetadata.TestCategories;
 
@@ -19,6 +21,16 @@ namespace TaefTestAdapter.VsPackage.Debugging
         private const int RPC_E_SERVERCALL_RETRYLATER = unchecked((int)0x8001010A);
 
         private int _nrOfDelays;
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void GetDebugEngineGuids_PreservesNativeAndFrameworkAndSelectsCoreClrWithNative()
+        {
+            VsDebuggerAttacher.GetDebugEngineGuids(DebuggerEngine.Native).Should().Equal(VSConstants.DebugEnginesGuids.NativeOnly);
+            VsDebuggerAttacher.GetDebugEngineGuids(DebuggerEngine.ManagedAndNative).Should().Equal(VSConstants.DebugEnginesGuids.ManagedAndNative);
+            VsDebuggerAttacher.GetDebugEngineGuids(DebuggerEngine.CoreClrAndNative).Should().Equal(
+                VSConstants.DebugEnginesGuids.NativeOnly, new Guid("2e36f1d4-b23c-435d-ab41-18e608940038"));
+        }
 
         private Task DelayAsync()
         {

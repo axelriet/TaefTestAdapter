@@ -42,6 +42,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="netstandard" />
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>$(NuGetPackages)System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+      <HintPath Condition="!Exists('$(NuGetPackages)System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll')">$(NuGetPackages)system.reflection.metadata\1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>$(NuGetPackages)System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+      <HintPath Condition="!Exists('$(NuGetPackages)System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll')">$(NuGetPackages)system.collections.immutable\1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiaFactory.cs" />
@@ -53,6 +64,8 @@
     <Compile Include="IDiaResolverFactory.cs" />
     <Compile Include="PdbLocator.cs" />
     <Compile Include="PeParser.cs" />
+    <Compile Include="ManagedAssemblyInfo.cs" />
+    <Compile Include="ManagedSymbolResolver.cs" />
     <Compile Include="DiaResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceFileLocation.cs" />
@@ -62,6 +75,7 @@
       <Project>{bc05d210-68cd-47d0-ae8c-0f3168d1be73}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\msdia140.dll">

@@ -80,6 +80,53 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(NuGetPackages)System.Reflection.Metadata.1.6.0\LICENSE.TXT;$(NuGetPackages)System.Reflection.Metadata.1.6.0\THIRD-PARTY-NOTICES.TXT">
+      <Link>Licenses\System.Reflection.Metadata\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Licenses\System.Reflection.Metadata</VSIXSubPath>
+    </Content>
+    <Content Include="$(NuGetPackages)System.Collections.Immutable.1.5.0\LICENSE.TXT;$(NuGetPackages)System.Collections.Immutable.1.5.0\THIRD-PARTY-NOTICES.TXT">
+      <Link>Licenses\System.Collections.Immutable\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Licenses\System.Collections.Immutable</VSIXSubPath>
+    </Content>
+    <Content Include="$(NuGetPackages)system.componentmodel.composition\8.0.0\LICENSE.TXT;$(NuGetPackages)system.componentmodel.composition\8.0.0\THIRD-PARTY-NOTICES.TXT">
+      <Link>Licenses\System.ComponentModel.Composition\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Licenses\System.ComponentModel.Composition</VSIXSubPath>
+    </Content>
+    <!-- The VS SDK suppresses framework-like reference dependencies; these are adapter-owned runtime dependencies. -->
+    <Content Include="$(NuGetPackages)System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll">
+      <Link>System.Reflection.Metadata.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="$(NuGetPackages)System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll">
+      <Link>System.Collections.Immutable.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="$(OutRoot)binaries\$(SolutionName)\$(Configuration)\DebuggerBridge\TaefTestAdapter.DebuggerBridge.exe">
+      <Link>TaefTestAdapter.DebuggerBridge.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <!-- MEF attributes are inspected by modern test hosts; the IDE supplies its own framework MEF implementation. -->
+    <Content Include="$(NuGetPackages)system.componentmodel.composition\8.0.0\lib\netstandard2.0\System.ComponentModel.Composition.dll">
+      <Link>ModernHost\System.ComponentModel.Composition.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>ModernHost</VSIXSubPath>
+    </Content>
+    <Content Include="TaefTestAdapter.props">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TaefTestAdapter.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -93,10 +140,11 @@
       <Link>ReleaseNotes.txt</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <!-- the readme of the NuGet package (see <readme> in VsPackage.nuspec); not included in the VSIX -->
+    <!-- the readme is included in both packages (see <readme> in VsPackage.nuspec) -->
     <Content Include="..\..\README.md">
       <Link>README.md</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\taef-logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -111,6 +159,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition" Version="8.0.0" ExcludeAssets="all" PrivateAssets="all" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2142">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -158,10 +207,16 @@
     <ProjectTemplateZip>$(TemplatesIntermediateDir)ProjectTemplates\Test\TaefTestPT.zip</ProjectTemplateZip>
     <ItemTemplateSourceDir>$(MSBuildProjectDirectory)\..\ItemTemplates\Test\TAEF</ItemTemplateSourceDir>
     <ItemTemplateZip>$(TemplatesIntermediateDir)ItemTemplates\Test\TaefTestIT.zip</ItemTemplateZip>
+    <CSharpProjectTemplateSourceDir>$(MSBuildProjectDirectory)\..\ProjectTemplates\CSharp\Test\TAEF</CSharpProjectTemplateSourceDir>
+    <CSharpProjectTemplateZip>$(TemplatesIntermediateDir)ProjectTemplates\CSharp\Test\TaefCSharpTestPT.zip</CSharpProjectTemplateZip>
+    <CSharpItemTemplateSourceDir>$(MSBuildProjectDirectory)\..\ItemTemplates\CSharp\Test\TAEF</CSharpItemTemplateSourceDir>
+    <CSharpItemTemplateZip>$(TemplatesIntermediateDir)ItemTemplates\CSharp\Test\TaefCSharpTestIT.zip</CSharpItemTemplateZip>
   </PropertyGroup>
   <ItemGroup>
     <_ProjectTemplateFile Include="$(ProjectTemplateSourceDir)\**\*" />
     <_ItemTemplateFile Include="$(ItemTemplateSourceDir)\**\*" />
+    <_CSharpProjectTemplateFile Include="$(CSharpProjectTemplateSourceDir)\**\*" />
+    <_CSharpItemTemplateFile Include="$(CSharpItemTemplateSourceDir)\**\*" />
   </ItemGroup>
 
   <Target Name="ZipProjectTemplate" Inputs="@(_ProjectTemplateFile)" Outputs="$(ProjectTemplateZip)">
@@ -174,7 +229,13 @@
     <ZipDirectory SourceDirectory="$(ItemTemplateSourceDir)" DestinationFile="$(ItemTemplateZip)" Overwrite="true" />
   </Target>
 
-  <Target Name="IncludeTemplatesInVsix" BeforeTargets="GetVsixSourceItems" DependsOnTargets="ZipProjectTemplate;ZipItemTemplate">
+  <Target Name="ZipCSharpTemplates" Inputs="@(_CSharpProjectTemplateFile);@(_CSharpItemTemplateFile)" Outputs="$(CSharpProjectTemplateZip);$(CSharpItemTemplateZip)">
+    <MakeDir Directories="$([System.IO.Path]::GetDirectoryName($(CSharpProjectTemplateZip)));$([System.IO.Path]::GetDirectoryName($(CSharpItemTemplateZip)))" />
+    <ZipDirectory SourceDirectory="$(CSharpProjectTemplateSourceDir)" DestinationFile="$(CSharpProjectTemplateZip)" Overwrite="true" />
+    <ZipDirectory SourceDirectory="$(CSharpItemTemplateSourceDir)" DestinationFile="$(CSharpItemTemplateZip)" Overwrite="true" />
+  </Target>
+
+  <Target Name="IncludeTemplatesInVsix" BeforeTargets="GetVsixSourceItems" DependsOnTargets="ZipProjectTemplate;ZipItemTemplate;ZipCSharpTemplates">
     <ItemGroup>
       <Content Include="$(ProjectTemplateZip)">
         <IncludeInVSIX>true</IncludeInVSIX>
@@ -186,7 +247,17 @@
         <VSIXSubPath>ItemTemplates\Test</VSIXSubPath>
         <Visible>false</Visible>
       </Content>
-      <FileWrites Include="$(ProjectTemplateZip);$(ItemTemplateZip)" />
+      <Content Include="$(CSharpProjectTemplateZip)">
+        <IncludeInVSIX>true</IncludeInVSIX>
+        <VSIXSubPath>ProjectTemplates\CSharp\Test</VSIXSubPath>
+        <Visible>false</Visible>
+      </Content>
+      <Content Include="$(CSharpItemTemplateZip)">
+        <IncludeInVSIX>true</IncludeInVSIX>
+        <VSIXSubPath>ItemTemplates\CSharp\Test</VSIXSubPath>
+        <Visible>false</Visible>
+      </Content>
+      <FileWrites Include="$(ProjectTemplateZip);$(ItemTemplateZip);$(CSharpProjectTemplateZip);$(CSharpItemTemplateZip)" />
     </ItemGroup>
   </Target>
 

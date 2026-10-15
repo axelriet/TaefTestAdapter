@@ -80,6 +80,30 @@ namespace TaefTestAdapter.Runners
 
         [TestMethod]
         [TestCategory(Unit)]
+        public void RunTests_ManagedExecutionGroupQueryTooLong_NoProcessStartsAndAllResultsAreReported()
+        {
+            var tests = new[]
+            {
+                new TestCase("Ns.C.First", TestDll, "Ns.C.First", "", 0),
+                new TestCase("Ns.C.Second", TestDll, "Ns.C.Second", "", 0)
+            };
+            foreach (TestCase test in tests)
+            {
+                test.Properties.Add(new Model.TestCaseTaefClassProperty("Ns.C"));
+                test.Properties.Add(new Model.TestCaseMetaDataProperty(3, 10));
+                test.Traits.Add(new Model.Trait("ExecutionGroup", "Scenario"));
+            }
+            MockOptions.Setup(o => o.AdditionalTestExecutionParam).Returns("/p:X=" + new string('x', CommandLineGenerator.MaxCommandLength));
+
+            RunTests(tests);
+
+            _factory.Executions.Should().BeEmpty();
+            _reporter.ReportedTestResults.Select(result => result.TestCase).Should().BeEquivalentTo(tests);
+            MockLogger.Verify(l => l.LogError(It.Is<string>(message => message.Contains("cannot fit in one TE.exe command line"))), Times.Once);
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
         public void RunTests_AllTestsOfTestDll_TeIsRunOnceWithoutSelection()
         {
             List<TestCase> testCases = RunnerTestData.CreateTestCases(TestDll, "A::X", "A::Y", "B::Z");

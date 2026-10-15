@@ -291,15 +291,32 @@ namespace TaefTestAdapter.DiaResolver
 
         /// <summary>
         /// Checks statically (without loading the DLL or starting any process) whether <paramref name="dll"/> is a TAEF
-        /// test DLL: it must be a PE DLL with a section named exactly "testdata" whose raw data starts with the TAEF
-        /// signature ("TAEF"), followed (at offset 4 for PE32, 8 for PE32+) by the ABI version (10..13), and it must
-        /// import or delay-load (linker option <c>/DELAYLOAD</c>) at least one of Wex.Logger.dll, Wex.Common.dll and
-        /// TE.Common.dll (DLLs only including WexTestClass.h have the metadata section, but no tests and no such import).
-        /// Only the file headers, the section table, the start of the "testdata" section and the (delay-load) import
-        /// directories are read.
+        /// test DLL. Native TAEF metadata takes precedence; managed candidates are inspected through CLR metadata.
         /// </summary>
         /// <returns>True if the DLL is a TAEF test DLL. Never throws; false for unreadable or malformed files.</returns>
         public static bool IsTaefTestDll(string dll, ILogger logger)
+        {
+            if (IsNativeTaefTestDll(dll, logger))
+                return true;
+
+            if (ManagedAssemblyInfo.Read(dll, logger)?.IsTaefTestAssembly == true)
+            {
+                logger?.VerboseInfo($"'{dll}' is a managed TAEF test assembly");
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks native TAEF metadata only, preserving native-macro C++/CLI classification. The file must be a PE DLL
+        /// with a section named exactly "testdata" whose raw data starts with the TAEF signature ("TAEF"), followed
+        /// (at offset 4 for PE32, 8 for PE32+) by the ABI version (10..13), and it must import or delay-load
+        /// (linker option <c>/DELAYLOAD</c>) at least one of Wex.Logger.dll, Wex.Common.dll and TE.Common.dll
+        /// (DLLs only including WexTestClass.h have the metadata section, but no tests and no such import).
+        /// Only the file headers, the section table, the start of the "testdata" section and the (delay-load)
+        /// import directories are read.
+        /// </summary>
+        public static bool IsNativeTaefTestDll(string dll, ILogger logger = null)
         {
             try
             {

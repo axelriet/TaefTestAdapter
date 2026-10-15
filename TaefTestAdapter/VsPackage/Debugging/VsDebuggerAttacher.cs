@@ -87,20 +87,20 @@ namespace TaefTestAdapter.VsPackage.Debugging
             if (!(_serviceProvider.GetService(typeof(SVsShellDebugger)) is IVsDebugger4 debugger))
                 throw new InvalidOperationException("Visual Studio's debugger service (SVsShellDebugger) is not available");
 
-            IntPtr pDebugEngine = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(Guid)));
+            Guid[] debuggerEngineGuids = GetDebugEngineGuids(debuggerEngine);
+            int guidSize = Marshal.SizeOf(typeof(Guid));
+            IntPtr pDebugEngine = Marshal.AllocCoTaskMem(guidSize * debuggerEngineGuids.Length);
             try
             {
-                Guid debuggerEngineGuid = debuggerEngine == DebuggerEngine.Native
-                    ? VSConstants.DebugEnginesGuids.NativeOnly
-                    : VSConstants.DebugEnginesGuids.ManagedAndNative;
-                Marshal.StructureToPtr(debuggerEngineGuid, pDebugEngine, false);
+                for (int i = 0; i < debuggerEngineGuids.Length; i++)
+                    Marshal.StructureToPtr(debuggerEngineGuids[i], IntPtr.Add(pDebugEngine, guidSize * i), false);
 
                 var debugTarget = new VsDebugTargetInfo4
                 {
                     dlo = (uint) DEBUG_LAUNCH_OPERATION.DLO_AlreadyRunning
                           | (uint) _DEBUG_LAUNCH_OPERATION4.DLO_AttachToSuspendedLaunchProcess,
                     dwProcessId = (uint) processId,
-                    dwDebugEngineCount = 1,
+                    dwDebugEngineCount = (uint) debuggerEngineGuids.Length,
                     pDebugEngines = pDebugEngine,
                 };
 
@@ -111,6 +111,23 @@ namespace TaefTestAdapter.VsPackage.Debugging
                 Marshal.FreeCoTaskMem(pDebugEngine);
             }
             return true;
+        }
+
+        /// <returns>The engines needed by the runtime which hosts the test code in TE.exe.</returns>
+        public static Guid[] GetDebugEngineGuids(DebuggerEngine debuggerEngine)
+        {
+            switch (debuggerEngine)
+            {
+                case DebuggerEngine.Native:
+                    return new[] { VSConstants.DebugEnginesGuids.NativeOnly };
+                case DebuggerEngine.ManagedAndNative:
+                    return new[] { VSConstants.DebugEnginesGuids.ManagedAndNative };
+                case DebuggerEngine.CoreClrAndNative:
+                    // CoreSystemClr, defined by the Visual Studio debugger SDK (DkmEngineId).
+                    return new[] { VSConstants.DebugEnginesGuids.NativeOnly, new Guid("2e36f1d4-b23c-435d-ab41-18e608940038") };
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(debuggerEngine));
+            }
         }
 
     }

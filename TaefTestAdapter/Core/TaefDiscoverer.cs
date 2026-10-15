@@ -5,7 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using TaefTestAdapter.Common;
@@ -241,13 +241,42 @@ namespace TaefTestAdapter
             if (settings.SkipOriginCheck)
                 return true;
 
-            var zone = Zone.CreateFromUrl(TeArguments.GetFullPath(testDll));
-            if (zone.SecurityZone != System.Security.SecurityZone.MyComputer)
+            // URLMON applies the Windows security-zone policy, including Zone.Identifier streams. The old
+            // System.Security.Policy.Zone API is unavailable in modern .NET test hosts.
+            if (GetSecurityZone(TeArguments.GetFullPath(testDll)) != 0)
             {
                 logger.LogError("Test DLL " + testDll + " came from another computer and was blocked to help protect this computer.");
                 return false;
             }
             return true;
+        }
+
+        private static uint GetSecurityZone(string path)
+        {
+            Marshal.ThrowExceptionForHR(CoInternetCreateSecurityManager(IntPtr.Zero, out IInternetSecurityManager manager, 0));
+            try
+            {
+                Marshal.ThrowExceptionForHR(manager.MapUrlToZone(path, out uint zone, 0));
+                return zone;
+            }
+            finally
+            {
+                Marshal.ReleaseComObject(manager);
+            }
+        }
+
+        [DllImport("urlmon.dll", ExactSpelling = true)]
+        private static extern int CoInternetCreateSecurityManager(IntPtr serviceProvider, out IInternetSecurityManager manager, uint reserved);
+
+        [ComImport, Guid("79eac9ee-baf9-11ce-8c82-00aa004ba90b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IInternetSecurityManager
+        {
+            [PreserveSig]
+            int SetSecuritySite(IntPtr site);
+            [PreserveSig]
+            int GetSecuritySite(out IntPtr site);
+            [PreserveSig]
+            int MapUrlToZone([MarshalAs(UnmanagedType.LPWStr)] string url, out uint zone, uint flags);
         }
 
     }

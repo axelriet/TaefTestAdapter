@@ -70,6 +70,13 @@ namespace TaefTestAdapter.Tests.Common.Helpers
 
                 if (copyDependencies)
                 {
+                    // SDK managed projects use stem sidecars rather than the native <DLL>.* convention.
+                    foreach (string extension in new[] { ".deps.json", ".runtimeconfig.json", ".runtimeconfig.dev.json" })
+                    {
+                        string sidecar = Path.ChangeExtension(sampleDll, extension);
+                        if (File.Exists(sidecar))
+                            File.Copy(sidecar, directory.GetPath(Path.GetFileNameWithoutExtension(targetFileName) + extension));
+                    }
                     foreach (string file in System.IO.Directory.GetFiles(sourceDir, sourceFileName + ".*"))
                     {
                         // note that the pattern also matches the DLL itself

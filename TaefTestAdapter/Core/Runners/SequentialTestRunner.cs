@@ -42,6 +42,7 @@ namespace TaefTestAdapter.Runners
 
         private readonly object _processExecutorLock = new object();
         private IProcessExecutor _processExecutor;
+        private DebuggerEngine _debuggerEngine;
 
         // durations of debugged tests are not representative
         private bool _recordDurations = true;
@@ -117,6 +118,23 @@ namespace TaefTestAdapter.Runners
             }
             _logger.DebugInfo($"{_threadName}Running tests of test DLL '{testDll}' with '{teExecutable}'");
 
+            _debuggerEngine = _settings.DebuggerKind == DebuggerKind.Native
+                ? DebuggerEngine.Native : DebuggerEngine.ManagedAndNative;
+            if (testCasesToRun.Any(test => test.IsManaged))
+            {
+                bool hasCoreClrProfile = testCasesToRun.Any(test => test.Traits.Any(trait =>
+                    string.Equals(trait.Name, "CoreClrProfile", StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrWhiteSpace(trait.Value)));
+                if (!ManagedRuntimeResolver.TryConfigureEnvironment(testDll, teExecutable, environmentVariables,
+                    _logger, out bool usesCoreClr, hasCoreClrProfile))
+                {
+                    ReportResults(testDll, CollectMissingResults(testCasesToRun.Where(test =>
+                        _settings.RunIgnoredTests || !TaefConstants.IsIgnored(test)), null));
+                    return;
+                }
+                _debuggerEngine = usesCoreClr ? DebuggerEngine.CoreClrAndNative : DebuggerEngine.ManagedAndNative;
+            }
+
             // if TE.exe's output is not available (debugging with the VsTest framework), results are taken from a WTT log
             TeArguments.WttLogFile wttLogFile = IsTestOutputAvailable(isBeingDebugged)
                 ? null
@@ -124,7 +142,19 @@ namespace TaefTestAdapter.Runners
 
             var generator = new CommandLineGenerator(testCasesToRun, testDll, teExecutable.Length, userParameters, isBeingDebugged, _settings,
                 wttLogFile?.Argument, workingDir, _logger);
-            foreach (CommandLineGenerator.Args arguments in generator.GetCommandLines())
+            IList<CommandLineGenerator.Args> commandLines;
+            try
+            {
+                commandLines = generator.GetCommandLines().ToList();
+            }
+            catch (InvalidOperationException e)
+            {
+                _logger.DebugError($"{_threadName}Could not prepare test selection for '{testDll}': {e.Message}");
+                ReportResults(testDll, CollectMissingResults(testCasesToRun.Where(test =>
+                    _settings.RunIgnoredTests || !TaefConstants.IsIgnored(test)), null));
+                return;
+            }
+            foreach (CommandLineGenerator.Args arguments in commandLines)
             {
                 if (_canceled)
                 {
@@ -311,7 +341,7 @@ namespace TaefTestAdapter.Runners
                 ? _settings.DebuggerKind == DebuggerKind.VsTestFramework
                     ? processExecutorFactory.CreateFrameworkDebuggingExecutor(printTestOutput, _logger)
                     : processExecutorFactory.CreateNativeDebuggingExecutor(
-                        _settings.DebuggerKind == DebuggerKind.Native ? DebuggerEngine.Native : DebuggerEngine.ManagedAndNative,
+                        _debuggerEngine,
                         printTestOutput, _logger)
                 : processExecutorFactory.CreateExecutor(printTestOutput, _logger);
             lock (_processExecutorLock)

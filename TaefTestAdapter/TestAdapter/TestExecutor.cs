@@ -262,7 +262,11 @@ namespace TaefTestAdapter.TestAdapter
             bool isRunningInsideVisualStudio = !string.IsNullOrEmpty(runContext.SolutionDirectory);
             var reporter = new VsTestFrameworkReporter(frameworkHandle, isRunningInsideVisualStudio, _logger);
 
-            var debuggerAttacher = _debuggerAttacher ?? new MessageBasedDebuggerAttacher(_settings.DebuggingNamedPipeId, _logger);
+            // Ordinary runs and the test platform's debugger never use the package's WCF service. In particular,
+            // modern .NET test hosts must not load framework-only WCF types while running tests without it.
+            IDebuggerAttacher debuggerAttacher = _debuggerAttacher;
+            if (runContext.IsBeingDebugged && _settings.DebuggerKind > DebuggerKind.VsTestFramework)
+                debuggerAttacher = debuggerAttacher ?? new MessageBasedDebuggerAttacher(_settings.DebuggingNamedPipeId, _logger);
             var processExecutorFactory = new DebuggedProcessExecutorFactory(frameworkHandle, debuggerAttacher);
 
             lock (_lock)

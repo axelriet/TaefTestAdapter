@@ -32,5 +32,11 @@ namespace TaefTestAdapter.DiaResolver
         /// </summary>
         /// <returns>The locations of the members found, by unqualified member name (e.g. <c>Method</c>).</returns>
         IDictionary<string, SourceFileLocation> FindMemberFunctions(string typeName, ICollection<string> memberNames);
+
+        /// <summary>Finds a managed function by its MethodDef metadata token.</summary>
+        SourceFileLocation FindFunctionByToken(uint token);
+
+        /// <summary>Checks the Windows PDB identity against the PE CodeView entry.</summary>
+        bool MatchesPdb(Guid guid, uint age);
     }
 }

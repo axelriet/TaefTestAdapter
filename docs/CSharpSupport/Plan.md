@@ -1,16 +1,16 @@
 # Plan: C# (managed) TAEF test support - version 1.1
 
-Status: **sized, not started** (2026-10-03). Nothing in the adapter has been changed for this yet. This folder holds
-everything needed to resume:
+Historical snapshot (2026-10-03): **sized, not started**. At that date, the adapter had no changes for this work.
+The scope, estimates and recommendations below record that planning state. This folder contains the resume materials:
 
 - `Plan.md` (this file): scope, owner decisions, estimate, resume checklist, and the consolidated sizing report.
-- [AuditDetails.md](AuditDetails.md): the raw findings of the six code audits (names, detection, symbols, test host,
-  debugging, tooling) with per-item file lists, plus the critic's review. Where it disagrees with this file, this file wins.
+- [AuditDetails.md](AuditDetails.md): findings from six code audits (names, detection, symbols, test host,
+  debugging, tooling), per-item file lists and the critic's review. This plan takes precedence where the documents disagree.
 - [Probe](Probe): the C# TAEF probe used to collect the facts below. `Source/ManagedTests.cs` holds tests of every
   interesting kind (fixtures, properties, ignored, lightweight and table data, async, data-driven class, nested class,
   global namespace). `Net48` and `Net8` are SDK-style projects that reference the WDK's TAEF runtime (x64), and `DiaProbe`
-  tries VSTest's `DiaSession` on the built DLLs. Build them with `dotnet build` in each folder. The probe is not part
-  of the solution or of build.ps1, and it does not follow the sample style rules below (it is not a sample).
+  tests VSTest's `DiaSession` on the built DLLs. Build them with `dotnet build` in each folder. The probe is separate
+  from the solution and build.ps1. It is an investigation tool and does not follow the sample style rules below.
 
 ## Scope of 1.1
 
@@ -21,7 +21,7 @@ everything needed to resume:
 
 ## Owner decisions
 
-- **Namespaces:** use whatever gives a proper Test Explorer tree. There must be no `<unnamed namespace>`-style
+- **Namespaces:** use namespaces that produce a clear Test Explorer tree. There must be no `<unnamed namespace>`-style
   placeholder node; nested namespaces are fine. Plan: dotted namespaces derived from the project (`Contoso.Tests`), each
   segment a valid C# identifier; never the global namespace.
   - To verify in VS: does `Contoso.Tests` show as one node or as two nested nodes? If it shows as one, look at the
@@ -36,8 +36,8 @@ everything needed to resume:
   and drop `Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core`.
   - To verify: whether Test Explorer needs its own component.
   - To verify: that VS hides the C++ templates when C++ is not installed.
-- **AnyCPU:** the C# template defaults to AnyCPU (x64, x86 and ARM64 are also offered). The adapter must run AnyCPU DLLs
-  with the TE.exe of the OS architecture. Today it picks the x86 TE.exe, because AnyCPU DLLs carry machine type I386.
+- **AnyCPU:** the C# template defaults to AnyCPU and also offers x64, x86 and ARM64. The adapter must run AnyCPU DLLs
+  with the TE.exe of the OS architecture. In this snapshot it picks the x86 TE.exe because AnyCPU DLLs carry machine type I386.
   The x86 TE.exe runs AnyCPU tests as 64-bit normally but as 32-bit with `/inproc` (debugging).
 
 ## Estimate
@@ -58,7 +58,7 @@ everything needed to resume:
      (Managed+Native interop vs managed-only)? How does `/breakOnError` behave? Check AnyCPU too.
    - **System.Reflection.Metadata:** does VS 2022's testhost.net48 provide it (assembly version \>= 1.4.3.0)? If yes, it
      need not be shipped.
-2. Implement the `netfx` items (F1-F15), keeping native behavior byte-identical. All 34 existing golden files must stay
+2. Implement the `netfx` items (F1-F15). Keep native behavior byte-identical. All 34 existing golden files must stay
    unchanged.
 3. Implement the `tooling` items (T1-T4).
 4. Run build.ps1 -Test, the VS Exp hands-on pass, then release 1.1.0.0. After any VSIX manifest edit, check that
@@ -73,13 +73,13 @@ everything needed to resume:
   - `...TableData#First` (named row) and `...TableData#1` (unnamed row)
   - `Contoso.Managed.Tests.DataDrivenClass#metadataSet0.InDataClass`
   - `GlobalNamespaceTests.InGlobal`
-- Nested test classes are listed by their simple name (`Nested.InNested`) and then Blocked. Every attribute shows up as
+- Nested test classes are listed by their simple name (`Nested.InNested`) and then Blocked. Every attribute appears as
   a `Property[...]`.
 - The run output is the same as for native DLLs (`StartGroup:` / `EndGroup: <name> [Passed|Failed|Blocked]`).
   - Verify failures carry `[File: ..., Function: ..., Line: ...]`.
   - Exceptions are followed by .NET stack frames, with `in <file>:line <n>` on CoreCLR only.
 - `/select:"@Name='Contoso.Managed.Tests.DataDrivenClass*' or @Name='...TableData#1'"` and `/inproc` work.
-- TAEF runs C# tests on .NET Framework 4.x by default. A .NET 8 DLL lists fine, but all its tests are Blocked unless
+- TAEF runs C# tests on .NET Framework 4.x by default. It lists a .NET 8 DLL, but blocks all tests unless
   `TAEF_CoreCLR` points at e.g. `C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.31`. With it set, they run.
 - VSTest's `DiaSession` gives correct locations for portable PDBs on .NET Framework, except for async methods. It fails
   on full Windows PDBs without msdia, and on net8 DLLs from a .NET Framework process. Decision: use our own
@@ -92,18 +92,18 @@ everything needed to resume:
 
 ### How TAEF discovers C# tests
 
-- **Authoring.** Tests use `[TestClass]`/`[TestMethod]`/`[TestProperty]`/`[DataSource]`/`[Ignore]`/fixture attributes from `WEX.TestExecution.Markup` in TE.Managed.dll (10.0.0.0). The compiled DLL is IL-only and has an AssemblyRef to `TE.Managed`. It has no native `testdata` section and no native imports of TAEF DLLs. WDK reference assemblies are in `Testing\Development\lib\<arch>\ref4.5`, byte-identical across arches. Correction to established fact 1: that folder **does** include wex.logger.interop.dll.
-- **Listing.** TE.exe reflects over the metadata. `/listProperties` has the same layout as for native DLLs (indentation, `Setup:`, `Property[]`, `Data[]`, `#error [Blocked]`). It takes about 200 ms. The module scope prints `Property[TaefTestType] =  Managed` before the first class. Discovery needs no CoreCLR, even for net8 DLLs.
-- **Naming.** `.` is used for every separator: `Ns.Class.Method`, `GlobalClass.Method`. Nested classes are flattened to their simple name and then Blocked. Generic classes keep the `` `1 `` arity and are Blocked. Overloads fail with AmbiguousMatchException. Inherited `[TestMethod]`s are listed under the derived class.
+- **Authoring.** Tests use `[TestClass]`/`[TestMethod]`/`[TestProperty]`/`[DataSource]`/`[Ignore]`/fixture attributes from `WEX.TestExecution.Markup` in TE.Managed.dll (10.0.0.0). The compiled DLL is IL-only and has an AssemblyRef to `TE.Managed`. It has no native `testdata` section or native TAEF DLL imports. WDK reference assemblies are in `Testing\Development\lib\<arch>\ref4.5` and are byte-identical across architectures. Correction to established fact 1: that folder **does** include wex.logger.interop.dll.
+- **Listing.** TE.exe reflects over the metadata. `/listProperties` uses the native layout: indentation, `Setup:`, `Property[]`, `Data[]` and `#error [Blocked]`. It takes about 200 ms. The module scope prints `Property[TaefTestType] =  Managed` before the first class. Discovery needs no CoreCLR, even for net8 DLLs.
+- **Naming.** Names use `.` for every separator: `Ns.Class.Method`, `GlobalClass.Method`. TAEF flattens nested classes to their simple name and blocks them. Generic classes keep the `` `1 `` arity and are Blocked. Overloads fail with AmbiguousMatchException. TAEF lists inherited `[TestMethod]`s under the derived class.
 - **Data rows.** Method rows look like `#metadataSetN`, `#<index>` or `#<row name>`. Row names may contain `.`, `::` and spaces. Data-driven class rows look like `Ns.Class#metadataSet0.Method`.
 - **Properties.** Every custom attribute becomes a `Property[...]`, including compiler-generated ones (`AsyncStateMachineAttribute`, `DebuggerStepThroughAttribute`).
 - **CLR selection.**
   - The default host is .NET Framework 4.x; netstandard2.0 DLLs run there.
-  - .NET 6/8/10 DLLs list fine but every test is Blocked unless `TAEF_CoreCLR` points at a `Microsoft.NETCore.App\<ver>` folder. Roll-forward from 8 to 10 works.
+  - TAEF lists .NET 6/8/10 DLLs but blocks every test unless `TAEF_CoreCLR` points at a `Microsoft.NETCore.App\<ver>` folder. Roll-forward from 8 to 10 works.
   - TAEF builds the trusted platform assembly list from that single folder, so WinForms/WPF/ASP.NET dependencies fail. This is a TAEF limitation.
   - `CoreClrProfile` metadata and `/coreClrProfileSearchPath` are alternatives; their format is undocumented.
 - **Execution.** Output uses the same `StartGroup`/`EndGroup` format. `/select` and `/inproc` work with dotted names.
-- **The adapter today skips C# DLLs silently.** `PeParser.CheckTaefTestDll` returns "no 'testdata' section". If forced through with an indicator file, the listing parser produces 0 tests: probe output was "35 unexpected lines".
+- **The adapter in this snapshot skips C# DLLs silently.** `PeParser.CheckTaefTestDll` returns "no 'testdata' section". An indicator file bypasses that check, but the listing parser still produces 0 tests: probe output was "35 unexpected lines".
 - **TAEF ships its own VSTest adapter.** It is `TE.TestAdapter.dll` (netstandard2.0, `executor://TaefTestAdapter`) and handles Native and Managed. If it lands in a .NET test output folder, the dotnet testhost loads it next to ours and tests are discovered twice.
 
 ### Gap analysis
@@ -129,11 +129,11 @@ everything needed to resume:
 The six audits overlapped heavily. After applying the critic's corrections:
 
 - Samples and golden files were counted six times (about 10.5 days); one consolidated item is 5-6 days.
-- Docs were counted three times; consolidated to 2 days.
+- Docs were counted three times; the consolidated estimate is 2 days.
 - VS-7 duplicated RT-6/RT-7 and is dropped.
-- RT-9 option B duplicated VS-3..6 and is folded into C2/C3.
+- RT-9 option B duplicated VS-3..6; C2/C3 now include that work.
 - Detection falls from 3 days to about 1.5 days. It uses only the CLI header plus an AssemblyRef/#Strings check, so it has no SRM dependency.
-- The CoreCLR debugging upper bound goes up to 3 days.
+- The CoreCLR debugging upper bound increases to 3 days.
 
 | ID | Work item | Phase | Days | Risk |
 |---|---|---|---|---|
@@ -181,23 +181,23 @@ The six audits overlapped heavily. After applying the critic's corrections:
    - VS 2022 and VS 2026 Test Explorer with an SDK net48 C# project and the VSIX: does a bare `ProjectCapability TestContainer` suffice, or is Microsoft.NET.Test.Sdk needed?
    - DBG-0 engine matrix in VS Exp: engine choice, `/breakOnError`, AnyCPU, early fixture breakpoints.
    - Check that VS 2022 testhost.net48 provides SRM (assembly version ≥ 1.4.3.0).
-2. **Release 1.1 = netfx + tooling (about 35-45 days).** Gate every change on the managed flag so native behaviour stays byte-identical, and byte-compare all 34 existing golden files. F9 (AnyCPU) and F11 (debug engine upgrade) must ship with discovery, otherwise C# breakpoints silently never bind.
+2. **Release 1.1 = netfx + tooling (about 35-45 days).** Gate every change on the managed flag to keep native behavior byte-identical. Byte-compare all 34 existing golden files. Ship F9 (AnyCPU) and F11 (debug engine upgrade) with discovery; otherwise C# breakpoints silently fail to bind.
 3. **Source-location decision:** use the SRM reader for portable and embedded PDBs, and msdia `findSymbolByToken` for Windows PDBs.
    - Reject DiaSession: it loads the assembly, fails on net8, and returns sentinels for async methods.
-   - Compile against SRM 1.6.0 with `Private=false`, isolate it in one class, and catch load failures so discovery still succeeds without locations. Ship SRM (about 0.7 MB) only if the VS 2022 check fails.
+   - Compile against SRM 1.6.0 with `Private=false` and isolate it in one class. Catch load failures so discovery still succeeds without locations. Ship SRM (about 0.7 MB) only if the VS 2022 check fails.
    - Detection stays dependency-free (F8).
-4. **netcore is deferred** until C1 settles VSIX vs NuGet delivery and runsettings-forced netfx vs a .NET-loadable adapter. Two independent audits found that the dotnet testhost only loads `*TestAdapter.dll` from the source folder. Until then, document netstandard2.0 as supported and net8 as unsupported.
+4. **netcore is deferred** until C1 settles delivery (VSIX or NuGet) and hosting (runsettings-forced netfx or a .NET-loadable adapter). Two independent audits found that the dotnet testhost only loads `*TestAdapter.dll` from the source folder. Until then, document netstandard2.0 as supported and net8 as unsupported.
 
 ### Risks and open questions
 
 - **Native regression across 16 `ScopeSeparator` references.** Mitigation: managed-only code paths and byte-compared golden files.
 - **Older TAEF may not print `TaefTestType`.** Mitigation: use the PE CLR-header hint from F8; warn on dotted unexpected lines.
 - **Test Explorer may not offer the DLL without Test.Sdk.** Mitigation: the IDE prototype; fall back to adding a Test.Sdk PackageReference in the template.
-- **CoreSystemClr attach to a suspended TE.exe that custom-hosts CoreCLR may fail.** Mitigation: DBG-0; attach after `coreclr.dll` loads (+1-2 days).
+- **CoreSystemClr may fail to attach to a suspended TE.exe that hosts CoreCLR itself.** Mitigation: DBG-0; attach after `coreclr.dll` loads (+1-2 days).
 - **`/breakOnError` under managed engines is undefined.** Mitigation: default to mixed mode; suppress the switch for managed-only engines.
 - **Stale portable PDB gives wrong lines.** Mitigation: compare the CodeView GUID/stamp with the PDB id.
 - **WCF enum skew between a NuGet adapter and an older VSIX.** Mitigation: only append enum values; turn the fault into an actionable message.
-- **Behavior change for C++ users with helper libraries that reference TE.Managed** (one extra TE.exe listing each). Mitigation: O4 opt-out setting.
+- **C++ users with helper libraries that reference TE.Managed get one extra TE.exe listing per helper.** Mitigation: O4 opt-out setting.
 - **Open product decisions for the owner:**
   - Wizard namespace style: keep dots (`Contoso.UnitTests`) or apply the C++ rule (`ContosoUnitTests`)?
   - Which CLR attribute properties become traits?
@@ -209,4 +209,4 @@ The six audits overlapped heavily. After applying the critic's corrections:
 - `VerifyTestDllTrust` dereferences `Zone.CreateFromUrl` with no null check (Core/TaefDiscoverer.cs:245).
 - `DiaResolver.ToSourceFileLocation` takes the first line without skipping hidden line 0xFEEFEE (DiaResolver/DiaResolver.cs:210-218).
 - The x86 TE.exe twice printed an empty listing with exit code 0 right after a build. Low confidence; if real, it affects native DLLs too.
-- README.md:686 and :854-856 state managed tests are unsupported. Correct today, but they must change with 1.1.
+- README.md:686 and :854-856 state managed tests are unsupported. This is correct for the snapshot; update them for 1.1.

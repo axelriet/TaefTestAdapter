@@ -90,6 +90,8 @@ namespace TaefTestAdapter.TestCases
         private TaefScope? _currentScope; // null: outside of a test DLL block
         private string _currentTestDll;
         private string _currentClass;
+        private readonly bool _managedModuleHint;
+        private bool _isManagedModule;
         private PendingTest _pendingTest;
         private int _errorMessageIndentation = -1; // indentation of the error message expected after a '#error [Blocked]' line
         private bool _isInSummary;
@@ -129,6 +131,12 @@ namespace TaefTestAdapter.TestCases
 
         /// <summary>The number of test DLL lines parsed (a DLL with module-level data is listed once per data row).</summary>
         public int NrOfTestDlls { get; private set; }
+
+        /// <param name="isManaged">A binary metadata hint for TAEF versions which omit the module type property.</param>
+        public StreamingListPropertiesParser(bool isManaged = false)
+        {
+            _managedModuleHint = isManaged;
+        }
 
         public void ReportLine(string line)
         {
@@ -304,7 +312,7 @@ namespace TaefTestAdapter.TestCases
             if (DataSourceErrorRegex.IsMatch(text))
                 return true;
 
-            string classPrefix = _currentClass + TaefConstants.ScopeSeparator;
+            string classPrefix = _currentClass + (_isManagedModule ? "." : TaefConstants.ScopeSeparator);
             return _currentClass != null
                 && text.Length > classPrefix.Length
                 && text.StartsWith(classPrefix, StringComparison.Ordinal);
@@ -317,6 +325,7 @@ namespace TaefTestAdapter.TestCases
             NrOfTestDlls++;
             _currentTestDll = text;
             _currentClass = null;
+            _isManagedModule = _managedModuleHint;
             _currentScope = TaefScope.Module;
             _moduleItems.Clear();
             _classItems.Clear();
@@ -366,6 +375,8 @@ namespace TaefTestAdapter.TestCases
             Match match = PropertyRegex.Match(text);
             if (match.Success)
             {
+                if (items == _moduleItems && string.Equals(match.Groups["name"].Value, "TaefTestType", StringComparison.OrdinalIgnoreCase))
+                    _isManagedModule = string.Equals(match.Groups["value"].Value, "Managed", StringComparison.OrdinalIgnoreCase);
                 items.Properties.Add(new TaefProperty(match.Groups["name"].Value, match.Groups["value"].Value));
                 _continuedValue = new ContinuedValue(items.Properties, indentation);
                 return;
@@ -416,7 +427,8 @@ namespace TaefTestAdapter.TestCases
                 fixtures,
                 test.IsDataSourceError,
                 test.ErrorMessage,
-                test.IsClassDataSourceError);
+                test.IsClassDataSourceError,
+                _isManagedModule);
 
             TestCaseDescriptorCreated?.Invoke(this, new TestCaseDescriptorCreatedEventArgs { TestCaseDescriptor = descriptor });
         }

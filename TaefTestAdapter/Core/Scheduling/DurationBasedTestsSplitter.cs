@@ -1,6 +1,7 @@
 ﻿// This file has been modified by Microsoft on 6/2017.
 // This file has been modified for TAEF support.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaefTestAdapter.Model;
@@ -29,6 +30,9 @@ namespace TaefTestAdapter.Scheduling
 
         public List<List<TestCase>> SplitTestcases()
         {
+            if (ManagedExecutionGroups.HasGroups(_testcaseDurations.Keys))
+                return SplitManagedExecutionGroups();
+
             List<TestCase> sortedTestcases = _testcaseDurations.Keys.OrderByDescending(tc => _testcaseDurations[tc]).ToList();
             int nrOfThreadsToUse = _settings.MaxNrOfThreads;
             int targetDuration = _overallDuration / nrOfThreadsToUse;
@@ -61,6 +65,20 @@ namespace TaefTestAdapter.Scheduling
             }
 
             return splitTestcases;
+        }
+
+        private List<List<TestCase>> SplitManagedExecutionGroups()
+        {
+            List<List<TestCase>> units = ManagedExecutionGroups.GetUnits(_testcaseDurations.Keys)
+                .OrderByDescending(unit => unit.Sum(test => _testcaseDurations[test])).ToList();
+            int nrOfThreads = Math.Min(_settings.MaxNrOfThreads, units.Count);
+            List<List<TestCase>> result = Enumerable.Range(0, nrOfThreads).Select(_ => new List<TestCase>()).ToList();
+            foreach (List<TestCase> unit in units)
+            {
+                int index = GetIndexOfListWithShortestDuration(result);
+                result[index].AddRange(unit);
+            }
+            return result;
         }
 
 

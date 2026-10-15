@@ -21,6 +21,7 @@ namespace TaefTestAdapter.VsPackage.Templates
     {
         public const string NamespaceParameter = "$taefnamespace$";
         public const string ClassNameParameter = "$taefclassname$";
+        public const string LanguageParameter = "$taeflanguage$";
 
         public void RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind,
             object[] customParams)
@@ -31,13 +32,14 @@ namespace TaefTestAdapter.VsPackage.Templates
             bool isItem = runKind == WizardRunKind.AsNewItem;
             try
             {
+                bool isCSharp = string.Equals(GetFirstValue(replacementsDictionary, LanguageParameter), "CSharp", StringComparison.OrdinalIgnoreCase);
                 if (isItem)
                 {
                     // $rootnamespace$ is the RootNamespace of the project the item is added to, as written in its project
                     // file; $rootname$ is the file name as typed, with extension (Visual Studio adds $fileinputname$ only
                     // after RunStarted, and $safeitemname$ has lost characters such as non-spacing marks)
-                    string namespaceName = TemplateNames.GetNamespace(
-                        GetFirstValue(replacementsDictionary, "$rootnamespace$", "$safeprojectname$", "$projectname$"));
+                    string rawNamespace = GetFirstValue(replacementsDictionary, "$rootnamespace$", "$safeprojectname$", "$projectname$");
+                    string namespaceName = isCSharp ? CSharpTemplateNames.GetNamespace(rawNamespace) : TemplateNames.GetNamespace(rawNamespace);
                     string fileName = GetFirstValue(replacementsDictionary, "$fileinputname$");
                     if (fileName == null)
                     {
@@ -45,15 +47,15 @@ namespace TaefTestAdapter.VsPackage.Templates
                         if (rootName != null)
                             fileName = Path.GetFileNameWithoutExtension(rootName);
                     }
-                    string className = TemplateNames.GetClassName(
-                        string.IsNullOrWhiteSpace(fileName) ? GetFirstValue(replacementsDictionary, "$safeitemname$") : fileName);
+                    string rawClassName = string.IsNullOrWhiteSpace(fileName) ? GetFirstValue(replacementsDictionary, "$safeitemname$") : fileName;
+                    string className = isCSharp ? CSharpTemplateNames.GetClassName(rawClassName) : TemplateNames.GetClassName(rawClassName);
                     replacementsDictionary[NamespaceParameter] = namespaceName;
                     replacementsDictionary[ClassNameParameter] = className;
                 }
                 else
                 {
-                    replacementsDictionary[NamespaceParameter] = TemplateNames.GetNamespace(
-                        GetFirstValue(replacementsDictionary, "$projectname$", "$safeprojectname$"));
+                    string name = GetFirstValue(replacementsDictionary, "$projectname$", "$safeprojectname$");
+                    replacementsDictionary[NamespaceParameter] = isCSharp ? CSharpTemplateNames.GetNamespace(name) : TemplateNames.GetNamespace(name);
                 }
             }
             catch (Exception)

@@ -101,6 +101,12 @@ namespace TaefTestAdapter
         public static string GetArchitecture(string testDll, ILogger logger)
         {
             ushort machineType = PeParser.GetMachineType(testDll, logger);
+            if (machineType == PeParser.MachineX86)
+            {
+                ManagedAssemblyInfo managedAssembly = ManagedAssemblyInfo.Read(testDll, logger);
+                if (managedAssembly != null && managedAssembly.IsILOnly && !managedAssembly.Is32BitRequired)
+                    return GetOperatingSystemArchitecture();
+            }
             string architecture = GetArchitecture(machineType);
             if (architecture != null)
                 return architecture;

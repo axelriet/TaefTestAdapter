@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Modern VSTest hosts enumerate adapters beside the test assembly. Keep this payload out of compilation and
+       include it in output and publish copies, rather than adding adapter assemblies as application references. -->
+  <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <None Include="$(TaefTestAdapterPackageDirectory)*.dll;$(TaefTestAdapterPackageDirectory)TaefTestAdapter.DebuggerBridge.exe">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Visible>false</Visible>
+    </None>
+    <None Include="$(TaefTestAdapterPackageDirectory)x86\*.dll;$(TaefTestAdapterPackageDirectory)x64\*.dll;$(TaefTestAdapterPackageDirectory)arm64\*.dll">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <TargetPath>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName('%(Identity)'))))\%(Filename)%(Extension)</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Visible>false</Visible>
+    </None>
+    <None Include="$(TaefTestAdapterPackageDirectory)ModernHost\System.ComponentModel.Composition.dll" Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
+      <Link>System.ComponentModel.Composition.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+</Project>

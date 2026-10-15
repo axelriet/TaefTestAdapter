@@ -129,6 +129,104 @@ namespace TaefTestAdapter.TestAdapter
 
         [TestMethod]
         [TestCategory(Unit)]
+        public void ToVsTestCase_ManagedRowsKeepIdentityAndUseListedClassForHierarchy()
+        {
+            const string listedClass = "Contoso.Tests.Data#a.b :: c#d";
+            const string name = listedClass + ".M#x.y :: z#q'\"";
+            TestCase testCase = CreateTestCase(name, @"C:\Tests\ManagedTests.cs", 27);
+            testCase.Properties.Add(new TestCaseTaefClassProperty(listedClass));
+            testCase.Properties.Add(new TestCaseExecutionGroupProperty("Scenario from TAEF"));
+            testCase.Properties.Add(new TestCaseModuleFixturesProperty(new[] { "Contoso.Module.Init", "Contoso.Module.Cleanup" }));
+            testCase.Properties.Add(new TestCaseDataRowIndexProperty(4));
+
+            VsTestCase vsTestCase = testCase.ToVsTestCase();
+
+            vsTestCase.FullyQualifiedName.Should().Be(name);
+            vsTestCase.DisplayName.Should().Be(name);
+            vsTestCase.GetTaefName().Should().Be(name);
+            ((string[])vsTestCase.GetPropertyValue(VsTestProperty.Find("TestCase.Hierarchy")))
+                .Should().Equal("MyTests_taef.dll", "Contoso.Tests", "Data#a.b :: c#d", "M#x.y :: z#q'\"");
+            vsTestCase.GetPropertyValue(VsTestProperty.Find("TestCase.ManagedType")).Should().Be("Contoso.Tests.Data");
+            vsTestCase.GetPropertyValue(VsTestProperty.Find("TestCase.ManagedMethod")).Should().Be("M");
+
+            TestCase restored = vsTestCase.ToTestCase();
+            restored.IsManaged.Should().BeTrue();
+            restored.TaefClassName.Should().Be(listedClass);
+            restored.Properties.OfType<TestCaseExecutionGroupProperty>().Single().Name.Should().Be("Scenario from TAEF");
+            restored.Properties.OfType<TestCaseModuleFixturesProperty>().Single().Names
+                .Should().Equal("Contoso.Module.Init", "Contoso.Module.Cleanup");
+            restored.FullyQualifiedName.Should().Be(name);
+            restored.CodeFilePath.Should().Be(testCase.CodeFilePath);
+            restored.LineNumber.Should().Be(27);
+            restored.Properties.OfType<TestCaseDataRowIndexProperty>().Single().Index.Should().Be(4);
+            restored.Properties.OfType<TestCaseMetaDataProperty>().Single().NrOfTestCasesInClass.Should().Be(3);
+            restored.ToVsTestCase().Id.Should().Be(vsTestCase.Id);
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void ToVsTestCase_ManagedGlobalClassAndClassDataErrorHaveExplicitHierarchy()
+        {
+            TestCase testCase = CreateTestCase("Global.M");
+            testCase.Properties.Add(new TestCaseTaefClassProperty("Global"));
+            VsTestCase vsTestCase = testCase.ToVsTestCase();
+            ((string[])vsTestCase.GetPropertyValue(VsTestProperty.Find("TestCase.Hierarchy")))
+                .Should().Equal("MyTests_taef.dll", "", "Global", "M");
+
+            testCase = CreateTestCase("Ns.C#error");
+            testCase.Properties.Add(new TestCaseTaefClassProperty("Ns.C#error"));
+            vsTestCase = testCase.ToVsTestCase();
+            vsTestCase.FullyQualifiedName.Should().Be("Ns.C#error");
+            vsTestCase.ToTestCase().TaefClassName.Should().Be("Ns.C#error");
+            vsTestCase.GetPropertyValue(VsTestProperty.Find("TestCase.ManagedMethod")).Should().BeNull();
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void ToTestCase_ManagedClassPropertyMustMatchExactTaefName()
+        {
+            VsTestCase vsTestCase = CreateTestCase("Ns::Native::M").ToVsTestCase();
+            vsTestCase.SetPropertyValue(VsTestProperty.Find(TestCaseTaefClassProperty.Id), "Ns.Managed");
+
+            vsTestCase.ToTestCase().IsManaged.Should().BeFalse();
+            vsTestCase.ToTestCase().TaefClassName.Should().Be("Ns::Native");
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void ToVsTestCase_ManagedMethodRowsHaveDistinctStableIdsDespiteSharedDebugNames()
+        {
+            VsTestCase[] rows = new[] { "plain", "row.with.dot", "row::with::colons" }.Select(row =>
+            {
+                TestCase test = CreateTestCase("Ns.C.M#" + row);
+                test.Properties.Add(new TestCaseTaefClassProperty("Ns.C"));
+                return test.ToVsTestCase();
+            }).ToArray();
+
+            rows.Select(row => row.Id).Should().OnlyHaveUniqueItems();
+            rows.Should().OnlyContain(row => (string)row.GetPropertyValue(VsTestProperty.Find("TestCase.ManagedMethod")) == "M");
+            rows.Should().OnlyContain(row => row.ToTestCase().ToVsTestCase().Id == row.Id);
+            TestCase otherSource = new TestCase("Ns.C.M#plain", @"C:\Tests\Other.dll", "Ns.C.M#plain", "", 0);
+            otherSource.Properties.Add(new TestCaseTaefClassProperty("Ns.C"));
+            otherSource.ToVsTestCase().Id.Should().NotBe(rows[0].Id);
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void ToTestCase_InvalidManagedModuleFixturesAreIgnored()
+        {
+            TestCase test = CreateTestCase("Ns.C.M");
+            test.Properties.Add(new TestCaseTaefClassProperty("Ns.C"));
+            VsTestCase vsTest = test.ToVsTestCase();
+            foreach (string invalid in new[] { "not XML", "<Fixtures/>", "<Other/>", "<Fixtures><Fixture/></Fixtures>" })
+            {
+                vsTest.SetPropertyValue(VsTestProperty.Find(TestCaseModuleFixturesProperty.Id), invalid);
+                vsTest.ToTestCase().Properties.OfType<TestCaseModuleFixturesProperty>().Should().BeEmpty();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(Unit)]
         public void ToTestCase_TestWithoutDataRowIndex_HasNoDataRowIndex()
         {
             TestCase roundTripped = CreateTestCase("W::Light#metadataSet0").ToVsTestCase().ToTestCase();

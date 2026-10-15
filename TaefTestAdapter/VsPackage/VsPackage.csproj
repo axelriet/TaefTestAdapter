@@ -83,6 +83,7 @@
     <Compile Include="TaefTestAdapterPackage.cs" />
     <Compile Include="Templates\TaefTemplateWizard.cs" />
     <Compile Include="Templates\TemplateNames.cs" />
+    <Compile Include="Templates\CSharpTemplateNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\taef-logo.ico" />

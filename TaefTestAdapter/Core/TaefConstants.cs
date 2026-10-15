@@ -196,12 +196,18 @@ namespace TaefTestAdapter
         /// </returns>
         public static string GetClassSelectionTerm(string className)
         {
+            return GetClassSelectionTerm(className, ScopeSeparator);
+        }
+
+        /// <summary>A class term using the separator of the containing TAEF module.</summary>
+        public static string GetClassSelectionTerm(string className, string scopeSeparator)
+        {
             if (className == null)
                 throw new ArgumentNullException(nameof(className));
 
-            string classPrefix = className + ScopeSeparator;
+            string classPrefix = className + scopeSeparator;
             string allMembers = GetNameSelectionTerm(classPrefix + SelectAnyCharactersWildcard);
-            string nestedMembers = GetNameSelectionTerm(classPrefix + SelectAnyCharactersWildcard + ScopeSeparator + SelectAnyCharactersWildcard);
+            string nestedMembers = GetNameSelectionTerm(classPrefix + SelectAnyCharactersWildcard + scopeSeparator + SelectAnyCharactersWildcard);
             return $"({allMembers} and not {nestedMembers})";
         }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Data>
+  <Table Id="Rows">
+    <ParameterTypes><ParameterType Name="Value">String</ParameterType></ParameterTypes>
+    <Row Name="plain"><Parameter Name="Value">value</Parameter></Row>
+    <Row Name="row.with.dot"><Parameter Name="Value">value</Parameter></Row>
+    <Row Name="row::with::colons"><Parameter Name="Value">value</Parameter></Row>
+  </Table>
+</Data>

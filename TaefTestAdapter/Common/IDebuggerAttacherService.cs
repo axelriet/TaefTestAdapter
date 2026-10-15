@@ -13,7 +13,7 @@ namespace TaefTestAdapter.Common
     /// </summary>
     public enum DebuggerEngine
     {
-        Native, ManagedAndNative
+        Native, ManagedAndNative, CoreClrAndNative
     }
 
 

@@ -1,6 +1,8 @@
 ﻿// This file has been modified for TAEF support.
 
 using System.Collections.Generic;
+using System.Linq;
+using TaefTestAdapter.Helpers;
 
 namespace TaefTestAdapter.Model
 {
@@ -26,6 +28,13 @@ namespace TaefTestAdapter.Model
         public List<Trait> Traits { get; } = new List<Trait>();
         /// <summary>Further properties of the test, e.g. <see cref="TestCaseMetaDataProperty"/>.</summary>
         public List<TestProperty> Properties { get; } = new List<TestProperty>();
+
+        /// <summary>Whether this test uses managed TAEF names.</summary>
+        public bool IsManaged => Properties.OfType<TestCaseTaefClassProperty>().Any();
+
+        /// <summary>The listed managed class, or the class obtained using the existing native name rules.</summary>
+        public string TaefClassName => Properties.OfType<TestCaseTaefClassProperty>().FirstOrDefault()?.ClassName
+            ?? TaefNames.GetClassName(FullyQualifiedName);
 
         /// <summary>Creates a test.</summary>
         public TestCase(string fullyQualifiedName, string source, string displayName, string codeFilePath, int lineNumber)

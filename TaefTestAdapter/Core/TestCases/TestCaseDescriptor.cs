@@ -28,6 +28,9 @@ namespace TaefTestAdapter.TestCases
         /// </summary>
         public string ClassName { get; }
 
+        /// <summary>Whether the containing module uses managed TAEF names; independent of merged test properties.</summary>
+        public bool IsManaged { get; }
+
         /// <summary>
         /// The test DLL as listed by TE.exe (full path; followed by <c>#metadataSet&lt;n&gt;</c> if the module has
         /// lightweight data), or null if the listing did not contain it.
@@ -71,10 +74,12 @@ namespace TaefTestAdapter.TestCases
         public TestCaseDescriptor(string name, string className, string testDll = null,
             IEnumerable<TaefProperty> properties = null, IEnumerable<TaefProperty> data = null,
             IEnumerable<TaefFixture> fixtures = null,
-            bool isDataSourceError = false, string dataSourceErrorMessage = null, bool isClassDataSourceError = false)
+            bool isDataSourceError = false, string dataSourceErrorMessage = null, bool isClassDataSourceError = false,
+            bool isManaged = false)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             ClassName = className ?? "";
+            IsManaged = isManaged;
             TestDll = testDll;
             Properties = properties?.ToList().AsReadOnly() ?? NoProperties;
             Data = data?.ToList().AsReadOnly() ?? NoProperties;

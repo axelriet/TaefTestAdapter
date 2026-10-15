@@ -83,6 +83,10 @@ namespace TaefTestAdapter.TestResults
             @"(?<=.)Test(?<result>Skipped|Blocked|Failed|NotRun): (?<message>.*)$",
             RegexOptions.Compiled);
 
+        private static readonly Regex ManagedStackFrameRegex = new Regex(
+            @"^\s+at (?<function>.+?)(?: in (?<file>.+):line (?<line>\d+))?$",
+            RegexOptions.Compiled);
+
         /// <summary>
         /// Starts of lines TE.exe prints itself: such a line is never the continuation of a message containing line
         /// breaks, and glued messages are not searched within it.
@@ -99,6 +103,7 @@ namespace TaefTestAdapter.TestResults
             public string File { get; set; }
             public string Function { get; set; }
             public string Line { get; set; }
+            public IList<string> ManagedStackTrace { get; set; }
 
             public bool HasSourceInformation => !string.IsNullOrEmpty(File) && !string.IsNullOrEmpty(Line);
         }
@@ -117,14 +122,14 @@ namespace TaefTestAdapter.TestResults
         /// Source file of the test (optional); used to resolve relative file names of the source information (which
         /// are the result of compiling without option <c>/FC</c>).
         /// </param>
-        public ErrorMessageParser(IEnumerable<string> lines, string codeFilePathOfTest = null)
+        public ErrorMessageParser(IEnumerable<string> lines, string codeFilePathOfTest = null, bool isManaged = false)
         {
-            _messages = ParseMessages(lines ?? Enumerable.Empty<string>());
+            _messages = ParseMessages(lines ?? Enumerable.Empty<string>(), isManaged);
             _codeFilePathOfTest = codeFilePathOfTest;
         }
 
-        public ErrorMessageParser(string consoleOutput, string codeFilePathOfTest = null)
-            : this(SplitIntoLines(consoleOutput), codeFilePathOfTest)
+        public ErrorMessageParser(string consoleOutput, string codeFilePathOfTest = null, bool isManaged = false)
+            : this(SplitIntoLines(consoleOutput), codeFilePathOfTest, isManaged)
         {
         }
 
@@ -153,6 +158,22 @@ namespace TaefTestAdapter.TestResults
                         ? $"{GetFileNameForLabel(file)}:{message.Line}"
                         : message.Function;
                     stackTrace.Add(CreateStackTraceEntry(messageReference + label, file, message.Line));
+                }
+                if (message.ManagedStackTrace != null)
+                {
+                    foreach (string frame in message.ManagedStackTrace)
+                    {
+                        Match match = ManagedStackFrameRegex.Match(frame);
+                        if (match.Success && match.Groups["file"].Success)
+                        {
+                            stackTrace.Add(CreateStackTraceEntry(messageReference + match.Groups["function"].Value,
+                                ResolveFile(match.Groups["file"].Value), match.Groups["line"].Value));
+                        }
+                        else
+                        {
+                            stackTrace.Add(frame.TrimStart() + Environment.NewLine);
+                        }
+                    }
                 }
             }
 
@@ -192,7 +213,7 @@ namespace TaefTestAdapter.TestResults
         /// line breaks (see <see cref="ErrorMessageParser"/>) is returned as one string containing its lines (joined by
         /// <see cref="Environment.NewLine"/>).
         /// </returns>
-        public static IList<string> GetErrors(IEnumerable<string> lines)
+        public static IList<string> GetErrors(IEnumerable<string> lines, bool isManaged = false)
         {
             IList<string> linesList = lines as IList<string> ?? (lines ?? Enumerable.Empty<string>()).ToList();
             var errors = new List<string>();
@@ -203,6 +224,8 @@ namespace TaefTestAdapter.TestResults
                     continue;
 
                 int lastLine = ErrorWithSourceInformationRegex.IsMatch(line) ? i : FindLastLineOfMultiLineError(linesList, i, out _);
+                if (lastLine < 0 && isManaged)
+                    lastLine = FindLastLineOfManagedException(linesList, i);
                 if (lastLine < 0)
                     lastLine = i;
                 errors.Add(string.Join(Environment.NewLine, linesList.Skip(i).Take(lastLine - i + 1)));
@@ -211,7 +234,7 @@ namespace TaefTestAdapter.TestResults
             return errors;
         }
 
-        private static IList<Message> ParseMessages(IEnumerable<string> lines)
+        private static IList<Message> ParseMessages(IEnumerable<string> lines, bool isManaged)
         {
             IList<string> linesList = lines as IList<string> ?? lines.ToList();
             var messages = new List<Message>();
@@ -244,7 +267,15 @@ namespace TaefTestAdapter.TestResults
                         continue;
                     }
 
-                    messages.Add(new Message { Text = line.Substring(ErrorPrefix.Length) });
+                    int lastManagedLine = isManaged ? FindLastLineOfManagedException(linesList, i) : -1;
+                    messages.Add(new Message
+                    {
+                        Text = line.Substring(ErrorPrefix.Length),
+                        ManagedStackTrace = lastManagedLine > i
+                            ? linesList.Skip(i + 1).Take(lastManagedLine - i).ToList() : null
+                    });
+                    if (lastManagedLine > i)
+                        i = lastManagedLine;
                     continue;
                 }
 
@@ -283,6 +314,26 @@ namespace TaefTestAdapter.TestResults
                 Function = sourceInformation.Groups["function"].Value,
                 Line = sourceInformation.Groups["line"].Value
             };
+        }
+
+        private static int FindLastLineOfManagedException(IList<string> lines, int firstLine)
+        {
+            int lastLine = firstLine;
+            bool hasFrame = false;
+            int end = Math.Min(lines.Count - 1, firstLine + MaxNrOfContinuationLines);
+            for (int i = firstLine + 1; i <= end; i++)
+            {
+                string line = lines[i];
+                if (line == null)
+                    break;
+                if (ManagedStackFrameRegex.IsMatch(line))
+                    hasFrame = true;
+                else if (!line.TrimStart().StartsWith("---> ", StringComparison.Ordinal)
+                    && !line.TrimStart().StartsWith("--- End of ", StringComparison.Ordinal))
+                    break;
+                lastLine = i;
+            }
+            return hasFrame ? lastLine : -1;
         }
 
         /// <summary>

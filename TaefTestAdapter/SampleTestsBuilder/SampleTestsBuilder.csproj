@@ -45,6 +45,7 @@
   -->
   <PropertyGroup>
     <SampleTestsSolution>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\SampleTests\SampleTests.sln'))</SampleTestsSolution>
+    <ManagedSampleProject>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\SampleTests\ManagedTests\ManagedTests.csproj'))</ManagedSampleProject>
     <SampleTestsBuildArguments>/t:Build /m /nr:false /v:minimal /nologo "/p:OutRoot=$([MSBuild]::EnsureTrailingSlash('$(OutRoot)'))\"</SampleTestsBuildArguments>
   </PropertyGroup>
 
@@ -53,6 +54,8 @@
     <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Release;Platform=Win32" />
     <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Debug;Platform=x64" />
     <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(SampleTestsSolution)&quot; $(SampleTestsBuildArguments) /p:Configuration=Release;Platform=x64" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(ManagedSampleProject)&quot; $(SampleTestsBuildArguments) /restore /p:Configuration=Debug;Platform=AnyCPU" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\MSBuild.exe&quot; &quot;$(ManagedSampleProject)&quot; $(SampleTestsBuildArguments) /restore /p:Configuration=Release;Platform=AnyCPU" />
   </Target>
 
   <Target Name="CleanSampleTests" AfterTargets="Clean" Condition="'$(SkipSampleTestsBuild)' != 'true'">

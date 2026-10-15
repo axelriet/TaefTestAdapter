@@ -45,6 +45,52 @@ namespace TaefTestAdapter.Helpers
 
         private static readonly Regex GeneratedRowNameRegex = new Regex(@"^(?:metadataSet\d+|\d+)$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
+        /// <summary>Splits managed names relative to the listed class so punctuation in data rows is preserved.</summary>
+        public static string GetManagedClassName(string taefName)
+        {
+            if (taefName == null)
+                throw new ArgumentNullException(nameof(taefName));
+
+            int row = taefName.IndexOf(DataRowSeparator);
+            string beforeRow = row < 0 ? taefName : taefName.Substring(0, row);
+            if (row >= 0)
+            {
+                int methodSeparator = taefName.IndexOf('.', row + 1);
+                if (methodSeparator > row + 1 && GeneratedRowNameRegex.IsMatch(taefName.Substring(row + 1, methodSeparator - row - 1)))
+                    return taefName.Substring(0, methodSeparator);
+            }
+            int separator = beforeRow.LastIndexOf('.');
+            return separator < 0 ? "" : beforeRow.Substring(0, separator);
+        }
+
+        public static string GetManagedMethodName(string taefName, string listedClass)
+        {
+            if (taefName == null)
+                throw new ArgumentNullException(nameof(taefName));
+            if (listedClass == null)
+                throw new ArgumentNullException(nameof(listedClass));
+
+            string prefix = listedClass + ".";
+            if (!taefName.StartsWith(prefix, StringComparison.Ordinal))
+                return "";
+            return RemoveManagedRow(taefName.Substring(prefix.Length));
+        }
+
+        public static string GetManagedBaseName(string taefName, string listedClass)
+        {
+            string method = GetManagedMethodName(taefName, listedClass);
+            return method.Length == 0 ? RemoveManagedRow(listedClass) : RemoveManagedRow(listedClass) + "." + method;
+        }
+
+        /// <summary>The metadata type name without the row suffix of a data-driven class.</summary>
+        public static string RemoveManagedRow(string name)
+        {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            int row = name.IndexOf(DataRowSeparator);
+            return row < 0 ? name : name.Substring(0, row);
+        }
+
         /// <returns>
         /// The C++ name of the test method, i.e. the name without data row suffixes, e.g. <c>Ns::Class::Method</c> for
         /// <c>Ns::Class::Method#metadataSet0</c> and for <c>Ns::Class#metadataSet0::Method#1</c>.

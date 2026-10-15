@@ -36,13 +36,13 @@ namespace TaefTestAdapter.VsPackage
         private const string ReleaseNotesUrl = "https://github.com/axelriet/TaefTestAdapter/blob/main/CHANGELOG.md";
         private const string Readme = "README.md";
 
-        /// <summary>The adapter runs native TAEF test DLLs, which are written in C++ or C.</summary>
-        private static readonly string[] SupportedTags = { "TAEF", "C++", "C" };
-        private static readonly string[] UnsupportedLanguageTags = { "C#", "JScript", "VBScript" };
+        /// <summary>The adapter runs native C++ and managed C# TAEF test DLLs.</summary>
+        private static readonly string[] SupportedTags = { "TAEF", "C++", "C", "C#" };
+        private static readonly string[] UnsupportedLanguageTags = { "JScript", "VBScript" };
 
         /// <summary>The tags of the VSIX and of the NuGet package: the supported languages and the test and Visual Studio tags.</summary>
-        private const string VsixTags = "Unit Test, C++, C, TAEF, Test Authoring and Execution Framework, TE.exe, Test Explorer, Testing";
-        private const string NuGetTags = "TAEF C++ C native TE.exe WEX test adapter unit integration automated testing VisualStudio TestExplorer vstest";
+        private const string VsixTags = "Unit Test, C++, C, C#, TAEF, Test Authoring and Execution Framework, TE.exe, Test Explorer, Testing";
+        private const string NuGetTags = "TAEF C++ C C# native managed TE.exe WEX test adapter unit integration automated testing VisualStudio TestExplorer vstest";
 
         /// <summary>A git commit hash (SHA-1, or SHA-256 in repositories using it).</summary>
         private const string CommitHashPattern = "^[0-9a-f]{40}([0-9a-f]{24})?$";
@@ -117,6 +117,8 @@ namespace TaefTestAdapter.VsPackage
             using (var archive = new ZipArchive(File.OpenRead(Vsix), ZipArchiveMode.Read))
             {
                 manifest = LoadXml(archive, "extension.vsixmanifest");
+                ReadBytes(archive, Readme).SequenceEqual(File.ReadAllBytes(Path.Combine(TestResources.EnlistmentRoot, Readme)))
+                    .Should().BeTrue("the readme of the extension is the README.md of the repository");
             }
 
             ((string)GetVsixIdentity(manifest).Attribute("Publisher")).Should().Be(Publisher);
@@ -184,9 +186,9 @@ namespace TaefTestAdapter.VsPackage
 
         private static void AssertTags(IList<string> tags, string package)
         {
-            tags.Should().Contain(SupportedTags, $"the {package} is for TAEF tests in C++ and C");
+            tags.Should().Contain(SupportedTags, $"the {package} supports native C++ and managed C# TAEF tests");
             tags.Should().NotContain(t => UnsupportedLanguageTags.Contains(t, StringComparer.OrdinalIgnoreCase),
-                $"the {package} runs native TAEF test DLLs only");
+                $"the {package} does not discover script tests");
             tags.Should().NotContain("").And.OnlyHaveUniqueItems();
         }
 

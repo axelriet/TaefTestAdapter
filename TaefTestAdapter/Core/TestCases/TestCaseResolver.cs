@@ -34,6 +34,9 @@ namespace TaefTestAdapter.TestCases
         /// <summary>The PDB of the test DLL (available after the first lookup), or null if none has been found.</summary>
         public string TestDllPdb { get; private set; }
 
+        /// <summary>Why managed source locations are unavailable, or null when managed symbols were opened.</summary>
+        public string ManagedSymbolsProblem { get; private set; }
+
         public TestCaseResolver(string testDll, IDiaResolverFactory diaResolverFactory, SettingsWrapper settings, ILogger logger)
         {
             _testDll = testDll;
@@ -48,6 +51,39 @@ namespace TaefTestAdapter.TestCases
         {
             FindTestCaseLocations(new[] { functionName }).TryGetValue(functionName, out TestCaseLocation location);
             return location;
+        }
+
+        /// <summary>Resolves managed names using the class TE.exe listed, retaining exact data-row identities.</summary>
+        public IDictionary<string, TestCaseLocation> FindManagedTestCaseLocations(IEnumerable<TestCaseDescriptor> descriptors)
+        {
+            var result = new Dictionary<string, TestCaseLocation>();
+            List<TestCaseDescriptor> requested = descriptors.ToList();
+            var additionalPdbs = new List<string>();
+            foreach (string pattern in _settings.GetAdditionalPdbs(_testDll))
+                additionalPdbs.AddRange(Utils.GetMatchingFiles(pattern, _logger));
+
+            using (var resolver = new ManagedSymbolResolver(_testDll, _logger, _settings.GetPathExtension(_testDll), additionalPdbs, _diaResolverFactory))
+            {
+                TestDllPdb = resolver.PdbFile;
+                foreach (TestCaseDescriptor descriptor in requested)
+                {
+                    string listedClass = descriptor.ClassName;
+                    string typeName = listedClass.Split(TaefConstants.DataRowSeparator)[0];
+                    string methodName = null;
+                    if (!descriptor.IsClassDataSourceError)
+                    {
+                        string prefix = listedClass + ".";
+                        if (!descriptor.Name.StartsWith(prefix, StringComparison.Ordinal))
+                            continue;
+                        methodName = descriptor.Name.Substring(prefix.Length).Split(TaefConstants.DataRowSeparator)[0];
+                    }
+                    SourceFileLocation location = resolver.FindLocation(typeName, methodName);
+                    if (location != null)
+                        result[descriptor.Name] = new TestCaseLocation(location.Symbol, location.Sourcefile, location.Line);
+                }
+                ManagedSymbolsProblem = requested.All(descriptor => result.ContainsKey(descriptor.Name)) ? null : resolver.SymbolsProblem;
+            }
+            return result;
         }
 
         /// <param name="functionNames">The C++ names of test methods as spelled by TAEF (see <see cref="TaefNames.GetBaseName"/>).</param>

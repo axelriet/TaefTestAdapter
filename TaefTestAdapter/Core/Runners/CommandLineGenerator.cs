@@ -7,6 +7,7 @@ using System.Text;
 using TaefTestAdapter.Common;
 using TaefTestAdapter.Helpers;
 using TaefTestAdapter.Model;
+using TaefTestAdapter.Scheduling;
 using TaefTestAdapter.Settings;
 
 namespace TaefTestAdapter.Runners
@@ -73,11 +74,13 @@ namespace TaefTestAdapter.Runners
         {
             public string Term { get; }
             public IList<TestCase> TestCases { get; }
+            public bool IsAtomic { get; }
 
-            public SelectionTerm(string term, IList<TestCase> testCases)
+            public SelectionTerm(string term, IList<TestCase> testCases, bool isAtomic = false)
             {
                 Term = term;
                 TestCases = testCases;
+                IsAtomic = isAtomic;
             }
         }
 
@@ -235,7 +238,7 @@ namespace TaefTestAdapter.Runners
             var testCasesOfClasses = new Dictionary<string, List<TestCase>>();
             foreach (TestCase testCase in _testCasesToRun)
             {
-                string className = TaefNames.GetClassName(testCase.FullyQualifiedName);
+                string className = testCase.TaefClassName;
                 if (!testCasesOfClasses.TryGetValue(className, out List<TestCase> testCasesOfClass))
                 {
                     testCasesOfClasses.Add(className, testCasesOfClass = new List<TestCase>());
@@ -246,6 +249,7 @@ namespace TaefTestAdapter.Runners
 
             foreach (string className in classNames)
             {
+                int firstClassTerm = selectionTerms.Count;
                 List<TestCase> testCasesOfClass = testCasesOfClasses[className];
                 List<TestCase> testCasesOfClassRunByTe = testCasesOfClass.Where(testCasesRunByTeSet.Contains).ToList();
                 if (testCasesOfClassRunByTe.Count == 0)
@@ -258,7 +262,7 @@ namespace TaefTestAdapter.Runners
                     testCasesSelectedByName = testCasesOfClassRunByTe.Where(tc => IsMatchedByNestedClassPattern(className, tc)).ToList();
                     List<TestCase> testCasesSelectedByClass = testCasesOfClassRunByTe.Except(testCasesSelectedByName).ToList();
                     if (testCasesSelectedByClass.Count > 0)
-                        selectionTerms.Add(new SelectionTerm(TaefConstants.GetClassSelectionTerm(className), testCasesSelectedByClass));
+                        selectionTerms.Add(new SelectionTerm(TaefConstants.GetClassSelectionTerm(className, GetScopeSeparator(testCasesOfClass[0])), testCasesSelectedByClass));
                 }
                 else
                 {
@@ -267,6 +271,15 @@ namespace TaefTestAdapter.Runners
 
                 selectionTerms.AddRange(testCasesSelectedByName.Select(tc =>
                     new SelectionTerm(GetTestSelectionTerm(tc), new List<TestCase> { tc })));
+
+                if (ManagedExecutionGroups.HasGroups(testCasesOfClassRunByTe))
+                {
+                    List<SelectionTerm> classTerms = selectionTerms.Skip(firstClassTerm).ToList();
+                    selectionTerms.RemoveRange(firstClassTerm, classTerms.Count);
+                    string atomicTerm = classTerms.Count == 1 ? classTerms[0].Term
+                        : "(" + string.Join(TaefConstants.SelectionOrOperator, classTerms.Select(term => term.Term)) + ")";
+                    selectionTerms.Add(new SelectionTerm(atomicTerm, testCasesOfClassRunByTe, isAtomic: true));
+                }
             }
 
             return selectionTerms;
@@ -318,7 +331,7 @@ namespace TaefTestAdapter.Runners
             if (string.IsNullOrEmpty(className) || IsPattern(className))
                 return false;
 
-            string classPrefix = className + TaefConstants.ScopeSeparator;
+            string classPrefix = className + GetScopeSeparator(testCasesOfClass[0]);
             if (!testCasesOfClass.All(tc => tc.FullyQualifiedName.StartsWith(classPrefix, StringComparison.Ordinal)))
                 return false;
 
@@ -330,8 +343,14 @@ namespace TaefTestAdapter.Runners
 
         private static bool IsMatchedByNestedClassPattern(string className, TestCase testCase)
         {
-            int startIndex = className.Length + TaefConstants.ScopeSeparator.Length;
-            return testCase.FullyQualifiedName.IndexOf(TaefConstants.ScopeSeparator, startIndex, StringComparison.Ordinal) >= 0;
+            string separator = GetScopeSeparator(testCase);
+            int startIndex = className.Length + separator.Length;
+            return testCase.FullyQualifiedName.IndexOf(separator, startIndex, StringComparison.Ordinal) >= 0;
+        }
+
+        private static string GetScopeSeparator(TestCase testCase)
+        {
+            return testCase.IsManaged ? "." : TaefConstants.ScopeSeparator;
         }
 
         private IEnumerable<Args> GetCommandLinesWithSelection(string baseCommandLine, List<SelectionTerm> selectionTerms)
@@ -352,6 +371,14 @@ namespace TaefTestAdapter.Runners
             var testCases = new List<TestCase>();
             foreach (SelectionTerm selectionTerm in selectionTerms)
             {
+                if (selectionTerm.IsAtomic && selectionTerm.Term.Length > maxQueryLength)
+                {
+                    string message = $"The selected managed execution groups in class '{selectionTerm.TestCases[0].TaefClassName}' "
+                        + "cannot fit in one TE.exe command line. Shorten the test DLL path or additional TE.exe arguments, "
+                        + "or select fewer tests while retaining the execution group's required prerequisites.";
+                    _logger?.LogError(message);
+                    throw new InvalidOperationException(message);
+                }
                 int additionalLength = selectionTerm.Term.Length + (query.Length == 0 ? 0 : TaefConstants.SelectionOrOperator.Length);
                 if (query.Length > 0 && query.Length + additionalLength > maxQueryLength)
                 {

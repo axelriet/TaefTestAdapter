@@ -111,6 +111,17 @@ namespace TaefTestAdapter.Tests.Common
         public static string SampleTestsBuildDir => LazySampleTestsBuildDir.Value;
         private static readonly Lazy<string> LazySampleTestsBuildDir = new Lazy<string>(FindSampleTestsBuildDir);
 
+        /// <summary>Managed samples are separate from the four native configurations and their expected counts.</summary>
+        public static string GetManagedSampleDll(string targetFramework, string configuration = BuildConfig, string platform = "AnyCPU")
+        {
+            string relative = Path.Combine("binaries", "ManagedSamples", configuration, platform, targetFramework, "ManagedTests_taef.dll");
+            string configured = Environment.GetEnvironmentVariable("TAEF_ADAPTER_MANAGED_SAMPLES_DIR");
+            if (!string.IsNullOrWhiteSpace(configured))
+                return Path.Combine(configured, configuration, platform, targetFramework, "ManagedTests_taef.dll");
+            string isolated = Path.Combine(OutRoot, relative);
+            return File.Exists(isolated) ? isolated : Path.Combine(EnlistmentRoot, "out", relative);
+        }
+
         /// <summary>Folder containing the test data files of Tests.Common (<c>Resources\TestData</c>).</summary>
         public static string TestdataDir => LazyTestdataDir.Value;
         private static readonly Lazy<string> LazyTestdataDir = new Lazy<string>(FindTestdataDir);
@@ -302,6 +313,8 @@ namespace TaefTestAdapter.Tests.Common
                     return new[] { DllProjectDll };
                 case "clrtests_taef.dll":
                     return new[] { ClrDotNetLibProjectDll };
+                case "managedtests_taef.dll":
+                    return new[] { "ManagedData.xml" };
                 default:
                     return new string[0];
             }

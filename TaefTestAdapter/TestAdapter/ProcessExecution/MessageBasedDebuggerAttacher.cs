@@ -3,6 +3,8 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using TaefTestAdapter.Common;
 
@@ -32,6 +34,19 @@ namespace TaefTestAdapter.TestAdapter.ProcessExecution
 
         public bool AttachDebugger(int processId, DebuggerEngine debuggerEngine)
         {
+            // This assembly also runs in modern .NET VSTest hosts. The existing service is hosted by the framework
+            // Visual Studio package; keep its framework-only WCF client in a separate process in those hosts.
+            return RequiresFrameworkBridge
+                ? AttachUsingFrameworkBridge(processId, debuggerEngine)
+                : AttachUsingWcf(processId, debuggerEngine);
+        }
+
+        /// <summary>Framework WCF is available in framework hosts; modern hosts use the companion executable.</summary>
+        protected virtual bool RequiresFrameworkBridge => typeof(object).Assembly.GetName().Name != "mscorlib";
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private bool AttachUsingWcf(int processId, DebuggerEngine debuggerEngine)
+        {
             try
             {
                 var stopWatch = Stopwatch.StartNew();
@@ -60,6 +75,46 @@ namespace TaefTestAdapter.TestAdapter.ProcessExecution
                 _logger.LogError($"Could not attach debugger to process {processId}:{Environment.NewLine}{e}");
             }
             return false;
+        }
+
+        private bool AttachUsingFrameworkBridge(int processId, DebuggerEngine debuggerEngine)
+        {
+            string bridge = Path.Combine(Path.GetDirectoryName(typeof(MessageBasedDebuggerAttacher).Assembly.Location),
+                "TaefTestAdapter.DebuggerBridge.exe");
+            try
+            {
+                var startInfo = new ProcessStartInfo(bridge)
+                {
+                    Arguments = $"{processId} {(int) debuggerEngine} {_debuggingNamedPipeId} {(int) _timeout.TotalMilliseconds}",
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true
+                };
+                using (var process = Process.Start(startInfo))
+                {
+                    var standardError = process.StandardError.ReadToEndAsync();
+                    var standardOutput = process.StandardOutput.ReadToEndAsync();
+                    if (!process.WaitForExit((int) _timeout.TotalMilliseconds + 5000))
+                    {
+                        process.Kill();
+                        _logger.LogError($"Timed out waiting for the debugger bridge to attach to process {processId}.");
+                        return false;
+                    }
+                    if (process.ExitCode != 0)
+                    {
+                        _logger.LogError($"Could not attach debugger to process {processId}: {standardError.GetAwaiter().GetResult().Trim()}");
+                        return false;
+                    }
+                    _logger.DebugInfo($"Debugger attached to process {processId} through the framework bridge.");
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Could not start the debugger bridge '{bridge}' for process {processId}: {e.Message}");
+                return false;
+            }
         }
     }
 

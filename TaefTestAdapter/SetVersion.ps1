@@ -39,7 +39,10 @@ if ($assembly_infos.Count -eq 0) {
 }
 $vsix_manifest = "Packaging\source.extension.vsixmanifest"
 $nuspec = "Packaging\VsPackage.nuspec"
-$templates = @("ProjectTemplates\Test\TAEF\TaefTest.vstemplate", "ItemTemplates\Test\TAEF\TaefTest.vstemplate")
+$templates = @("ProjectTemplates", "ItemTemplates") | ForEach-Object {
+    Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot $_) -Filter '*.vstemplate' -Recurse -File |
+        ForEach-Object { $_.FullName.Substring($PSScriptRoot.Length + 1) }
+} | Sort-Object
 
 # the version in an assembly's full name always has four parts and no leading zeros (AssemblyVersion("1.0.0") is
 # 1.0.0.0, AssemblyVersion("1.0.0.042") is 1.0.0.42)

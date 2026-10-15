@@ -3,11 +3,13 @@
 
 using FluentAssertions;
 using TaefTestAdapter.Common;
+using TaefTestAdapter.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.ServiceModel;
 using System.Threading;
+using System.IO;
 using TaefTestAdapter.TestAdapter.ProcessExecution;
 using static TaefTestAdapter.Tests.Common.TestMetadata.TestCategories;
 
@@ -30,6 +32,51 @@ namespace TaefTestAdapter.VsPackage.Debugging
 
         private Mock<IDebuggerAttacher> MockDebuggerAttacher { get; } = new Mock<IDebuggerAttacher>();
         private Mock<ILogger> MockLogger { get; } = new Mock<ILogger>();
+
+        [TestMethod]
+        [TestCategory(Integration)]
+        public void AttachDebugger_FrameworkBridge_PassesCoreClrEngineToFrameworkService()
+        {
+            MockDebuggerAttacher.Setup(a => a.AttachDebugger(DebuggeeProcessId, DebuggerEngine.CoreClrAndNative)).Returns(true);
+            string pipeId = Guid.NewGuid().ToString();
+            using (var host = new DebuggerAttacherServiceHost(pipeId, MockDebuggerAttacher.Object, MockLogger.Object))
+            {
+                host.Open();
+                string bridgeSource = Path.Combine(TestResources.PackagingDir, "TaefTestAdapter.DebuggerBridge.exe");
+                string bridgeTarget = Path.Combine(Path.GetDirectoryName(typeof(MessageBasedDebuggerAttacher).Assembly.Location), Path.GetFileName(bridgeSource));
+                if (!File.Exists(bridgeTarget))
+                    File.Copy(bridgeSource, bridgeTarget);
+                new FrameworkBridgeClient(pipeId, MockLogger.Object).AttachDebugger(DebuggeeProcessId, DebuggerEngine.CoreClrAndNative).Should().BeTrue();
+                MockDebuggerAttacher.Verify(a => a.AttachDebugger(DebuggeeProcessId, DebuggerEngine.CoreClrAndNative), Times.Once);
+                host.Close();
+            }
+        }
+
+        private sealed class FrameworkBridgeClient : MessageBasedDebuggerAttacher
+        {
+            public FrameworkBridgeClient(string pipeId, ILogger logger) : base(pipeId, Timeout, logger) { }
+            protected override bool RequiresFrameworkBridge => true;
+        }
+
+        [TestMethod]
+        [TestCategory(Integration)]
+        public void AttachDebugger_FrameworkBridge_PreservesTheServiceFailureReason()
+        {
+            MockDebuggerAttacher.Setup(a => a.AttachDebugger(It.IsAny<int>(), It.IsAny<DebuggerEngine>()))
+                .Throws(new InvalidOperationException("CoreCLR engine could not attach to the target."));
+            string pipeId = Guid.NewGuid().ToString();
+            using (var host = new DebuggerAttacherServiceHost(pipeId, MockDebuggerAttacher.Object, MockLogger.Object))
+            {
+                host.Open();
+                string bridgeSource = Path.Combine(TestResources.PackagingDir, "TaefTestAdapter.DebuggerBridge.exe");
+                string bridgeTarget = Path.Combine(Path.GetDirectoryName(typeof(MessageBasedDebuggerAttacher).Assembly.Location), Path.GetFileName(bridgeSource));
+                if (!File.Exists(bridgeTarget))
+                    File.Copy(bridgeSource, bridgeTarget);
+                new FrameworkBridgeClient(pipeId, MockLogger.Object).AttachDebugger(DebuggeeProcessId, DebuggerEngine.CoreClrAndNative).Should().BeFalse();
+                MockLogger.Verify(l => l.LogError(It.Is<string>(s => s.Contains("CoreCLR engine could not attach to the target."))), Times.Once);
+                host.Close();
+            }
+        }
 
         [TestInitialize]
         public void Setup()

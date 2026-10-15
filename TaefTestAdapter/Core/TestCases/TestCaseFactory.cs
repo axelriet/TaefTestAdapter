@@ -89,6 +89,17 @@ namespace TaefTestAdapter.TestCases
                 locations?.TryGetValue(GetTestMethodName(descriptor), out location);
 
                 var testCase = new TestCase(descriptor.Name, _testDll, descriptor.Name, location?.Sourcefile ?? "", (int)(location?.Line ?? 0));
+                if (descriptor.IsManaged)
+                {
+                    testCase.Properties.Add(new TestCaseTaefClassProperty(descriptor.ClassName));
+                    string executionGroup = descriptor.GetProperty("ExecutionGroup");
+                    if (!string.IsNullOrEmpty(executionGroup))
+                        testCase.Properties.Add(new TestCaseExecutionGroupProperty(executionGroup));
+                    string[] moduleFixtures = descriptor.Fixtures.Where(fixture => fixture.Scope == TaefScope.Module)
+                        .Select(fixture => fixture.Name).Distinct(StringComparer.Ordinal).ToArray();
+                    if (moduleFixtures.Length > 0)
+                        testCase.Properties.Add(new TestCaseModuleFixturesProperty(moduleFixtures));
+                }
                 TestCaseDataRowIndexProperty dataRowIndex = GetDataRowIndex(descriptor);
                 if (dataRowIndex != null)
                     testCase.Properties.Add(dataRowIndex);
@@ -140,9 +151,16 @@ namespace TaefTestAdapter.TestCases
         public static IList<Trait> GetTaefTraits(TestCaseDescriptor descriptor)
         {
             return descriptor.Properties
-                .Where(p => IsReportedAsTrait(p.Name))
+                .Where(p => IsReportedAsTrait(p.Name) && (!descriptor.IsManaged || !IsManagedInfrastructureProperty(p.Name)))
                 .Select(p => new Trait(p.Name, p.Value))
                 .ToList();
+        }
+
+        private static bool IsManagedInfrastructureProperty(string name)
+        {
+            return name.EndsWith("Attribute", StringComparison.Ordinal)
+                && (name.StartsWith("System.Runtime.CompilerServices.", StringComparison.Ordinal)
+                    || name.StartsWith("System.Diagnostics.", StringComparison.Ordinal));
         }
 
         #region Listing the tests
@@ -152,11 +170,17 @@ namespace TaefTestAdapter.TestCases
             string workingDir = _settings.GetWorkingDirForDiscovery(_testDll);
             string arguments = GetDiscoveryArguments(workingDir);
             string pathExtension = _settings.GetPathExtension(_testDll);
-            IDictionary<string, string> environmentVariables = _settings.GetEnvironmentVariablesForDiscovery(_testDll);
+            IDictionary<string, string> environmentVariables = new Dictionary<string, string>(
+                _settings.GetEnvironmentVariablesForDiscovery(_testDll), StringComparer.OrdinalIgnoreCase);
 
             var standardOutput = new List<string>();
             var descriptors = new List<TestCaseDescriptor>();
-            var parser = new StreamingListPropertiesParser();
+            bool managedHint = !PeParser.IsNativeTaefTestDll(_testDll, null)
+                && ManagedAssemblyInfo.Read(_testDll, _logger) != null;
+            if (managedHint && !ManagedRuntimeResolver.TryConfigureEnvironment(_testDll, teExecutable,
+                environmentVariables, _logger, out _))
+                return null;
+            var parser = new StreamingListPropertiesParser(managedHint);
             parser.TestCaseDescriptorCreated += (sender, args) => descriptors.Add(args.TestCaseDescriptor);
 
             void OnReportOutputLine(string line)
@@ -361,6 +385,9 @@ namespace TaefTestAdapter.TestCases
         /// </returns>
         private static string GetTestMethodName(TestCaseDescriptor descriptor)
         {
+            if (descriptor.IsManaged)
+                return descriptor.Name;
+
             string name = descriptor.Name;
             if (descriptor.IsClassDataSourceError && name.EndsWith(TaefConstants.DataSourceErrorSuffix, StringComparison.Ordinal))
             {
@@ -392,6 +419,9 @@ namespace TaefTestAdapter.TestCases
         /// </returns>
         private string GetClassName(TestCaseDescriptor descriptor)
         {
+            if (descriptor.IsManaged)
+                return descriptor.ClassName;
+
             string className = TaefNames.GetClassName(descriptor.Name);
             if (!descriptor.IsClassDataSourceError && className != descriptor.ClassName)
             {
@@ -414,9 +444,20 @@ namespace TaefTestAdapter.TestCases
             var resolver = new TestCaseResolver(_testDll, _diaResolverFactory, _settings, _logger);
             try
             {
-                IDictionary<string, TestCaseLocation> locations = resolver.FindTestCaseLocations(descriptors.Select(GetTestMethodName));
-                if (resolver.TestDllPdb == null)
+                List<TestCaseDescriptor> managed = descriptors.Where(d => d.IsManaged).ToList();
+                List<TestCaseDescriptor> native = descriptors.Where(d => !d.IsManaged).ToList();
+                IDictionary<string, TestCaseLocation> locations = native.Count == 0
+                    ? new Dictionary<string, TestCaseLocation>()
+                    : resolver.FindTestCaseLocations(native.Select(GetTestMethodName));
+                if (native.Count > 0 && resolver.TestDllPdb == null)
                     symbolsProblem = $"The PDB of the test DLL could not be found - make sure that it is located next to the test DLL (or use option '{SettingsWrapper.OptionAdditionalPdbs}').";
+                if (managed.Count > 0)
+                {
+                    foreach (KeyValuePair<string, TestCaseLocation> location in resolver.FindManagedTestCaseLocations(managed))
+                        locations[location.Key] = location.Value;
+                    if (resolver.ManagedSymbolsProblem != null)
+                        symbolsProblem = resolver.ManagedSymbolsProblem;
+                }
                 return locations;
             }
             catch (Exception e)
@@ -447,7 +488,10 @@ namespace TaefTestAdapter.TestCases
             string message = $"Could not find source locations for {testsWithoutLocation.Count} of {descriptors.Count} tests of test DLL '{_testDll}': {examples}";
             if (symbolsProblem != null)
                 message += Environment.NewLine + symbolsProblem;
-            _logger.LogWarning(message);
+            if (descriptors.All(d => d.IsManaged))
+                _logger.DebugWarning(message);
+            else
+                _logger.LogWarning(message);
         }
 
         #endregion

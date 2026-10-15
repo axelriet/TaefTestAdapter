@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Builds the Test Adapter for TAEF (and its sample test DLLs) from source.
+Builds the Test Adapter for TAEF and its native and managed sample DLLs.
 
 .DESCRIPTION
-Performs the complete local build of the Test Adapter for TAEF:
+Builds the adapter locally:
 
   1. Locates Visual Studio 2026 (18.x) or 2022 (17.x) with vswhere.
   2. Prepares the DIA SDK files needed by the DiaResolver project:
@@ -15,16 +15,15 @@ Performs the complete local build of the Test Adapter for TAEF:
        '<VS>\DIA SDK\idl\dia2.idl' (midl + tlbimp inside a VS developer environment).
   3. Restores NuGet packages (NuGet.exe restore for packages.config projects, then
      'msbuild /t:Restore' for PackageReference projects).
-  4. Builds the sample test DLLs of SampleTests\SampleTests.sln (-SampleConfiguration x
-     -SamplePlatform, unless -SkipSamples) and TaefTestAdapter\TaefTestAdapter.sln (-Configuration,
-     'Any CPU'). The adapter solution is built with /p:SkipSampleTestsBuild=true: its project
-     SampleTestsBuilder would otherwise build all sample configurations (again), which would also
-     require TAEF with -SkipSamples.
+  4. Builds native samples from SampleTests\SampleTests.sln (-SampleConfiguration x -SamplePlatform)
+     and managed samples from SampleTests\ManagedTests\ManagedTests.csproj (AnyCPU, net48/net8/net10).
+     -SkipSamples skips both. Builds TaefTestAdapter\TaefTestAdapter.sln for -Configuration, 'Any CPU'.
+     The adapter build passes /p:SkipSampleTestsBuild=true to avoid a second sample build.
   5. Optionally (-Test) runs the adapter's unit tests with vstest.console.exe.
 
-Building the sample test DLLs requires the TAEF development files of the Windows Kits
-(installed with the WDK: Testing\Development\inc\WexTestClass.h). Many of the adapter's tests run
-against the sample test DLLs of all four configurations (Debug/Release x Win32/x64).
+Native samples require the Windows Kits TAEF development files from the WDK
+(Testing\Development\inc\WexTestClass.h). Managed samples also require the .NET 10 SDK, MSBuild 18 and TAEF managed references.
+Adapter tests use all four native configurations and the managed Debug targets.
 
 By using this script you accept the license terms of the Microsoft DIA SDK (part of your
 Visual Studio installation, see https://visualstudio.microsoft.com/license-terms/), since
@@ -39,8 +38,7 @@ Configurations of the sample test DLLs (Debug, Release). Default: both, since th
 tests (-Test) use the sample test DLLs of all four configurations.
 
 .PARAMETER SamplePlatform
-Platforms of the sample test DLLs (Win32, x64). Default: both, since the adapter's tests (-Test)
-use the sample test DLLs of all four configurations.
+Native sample platforms (Win32, x64). Default: both. Managed samples build for AnyCPU independently.
 
 .PARAMETER VsPath
 Installation folder of the Visual Studio instance to use. Default: newest VS 2026/2022
@@ -59,10 +57,9 @@ Skip the preparation steps (DIA SDK files and NuGet restore).
 Skip building the solutions (e.g. to only run tests of an existing build).
 
 .PARAMETER SkipSamples
-Do not build the sample test DLLs (SampleTests\SampleTests.sln), e.g. if TAEF is not installed:
-the adapter is then built without TAEF. The adapter's tests (-Test) use sample test DLLs of an
-earlier build (or of the folder given by environment variable TAEF_ADAPTER_SAMPLES_DIR); tests
-which need sample test DLLs fail if there are none.
+Skip native and managed samples, allowing an adapter build without TAEF.
+Tests use samples from an earlier build. Set TAEF_ADAPTER_SAMPLES_DIR for native samples or
+TAEF_ADAPTER_MANAGED_SAMPLES_DIR for managed samples. Tests that require absent samples fail.
 
 .PARAMETER SkipAdapter
 Do not build TaefTestAdapter\TaefTestAdapter.sln.
@@ -161,6 +158,7 @@ $RepoRoot = $PSScriptRoot
 $AdapterDir = Join-Path $RepoRoot 'TaefTestAdapter'
 $AdapterSolution = Join-Path $AdapterDir 'TaefTestAdapter.sln'
 $SampleSolution = Join-Path $RepoRoot 'SampleTests\SampleTests.sln'
+$ManagedSampleProject = Join-Path $RepoRoot 'SampleTests\ManagedTests\ManagedTests.csproj'
 $BundledNuGet = Join-Path $RepoRoot 'NuGetPackages\NuGet.CommandLine.5.4.0\tools\NuGet.exe'
 $NuGetDownloadUrl = 'https://dist.nuget.org/win-x86-commandline/v5.4.0/nuget.exe'
 $SupportedVsVersions = '[17.0,19.0)'
@@ -432,6 +430,13 @@ function Restore-Packages([string] $MsBuild) {
         Assert-Tool -FilePath $MsBuild -Arguments @($solution, '/t:Restore', "/p:OutRoot=$OutRoot", '/nr:false', '/nologo', "/v:$Verbosity") `
                     -What "msbuild /t:Restore of $(Split-Path $solution -Leaf)"
     }
+    if (-not $SkipSamples) {
+        foreach ($config in $SampleConfiguration) {
+            Assert-Tool -FilePath $MsBuild -Arguments @($ManagedSampleProject, '/t:Restore',
+                "/p:Configuration=$config", '/p:Platform=AnyCPU', "/p:OutRoot=$OutRoot", '/nr:false', '/nologo', "/v:$Verbosity") `
+                -What "Restoring managed samples ($config)"
+        }
+    }
 }
 
 #endregion
@@ -600,6 +605,7 @@ if (-not $SkipBuild) {
             foreach ($platform in $SamplePlatform) {
                 Build-Solution $msBuild $SampleSolution $config $platform
             }
+            Build-Solution $msBuild $ManagedSampleProject $config 'AnyCPU'
         }
     }
 

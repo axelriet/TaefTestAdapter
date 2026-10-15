@@ -1,19 +1,26 @@
 # TAEF sample tests
 
-`SampleTests.sln` contains the native TAEF test DLLs the Test Adapter for TAEF is developed and tested against. They
-exercise everything the adapter supports: passing/failing/skipped/blocked/not-run tests, the different `VERIFY_*`
-macros and error locations, exceptions and crashes, fixtures (also failing ones), module/class/method/row
-properties (traits, `Ignore`), lightweight and table based data-driven tests, namespaces, class templates,
-non-ASCII names, runtime parameters (`TE.exe /p:`), environment variables, working directory, long running tests,
-5000 load tests, a runtime DLL dependency, a settings helper file and a mixed-mode (C++/CLI) test DLL.
+`ManagedTests\ManagedTests.csproj` provides separate C# fixtures for .NET Framework 4.8, .NET 8 and .NET 10.
+They cover fixtures, traits, ignored tests, async methods, MTA execution and data rows with dots and `::` in their names.
+Each target contains 12 tests: nine pass, two fail on purpose and one is ignored. Build them with the .NET 10 SDK.
+`build.ps1` builds them alongside the native fixtures. Their outputs are under
+`out\binaries\ManagedSamples\<Debug|Release>\AnyCPU\<target framework>\` and do not affect the native counts below.
+Set `TAEF_ADAPTER_MANAGED_SAMPLES_DIR` to the `ManagedSamples` directory to use a separate managed sample build in tests.
+
+`SampleTests.sln` contains native TAEF test DLLs used to develop and test the adapter. They cover
+passing/failing/skipped/blocked/not-run tests, `VERIFY_*` macros and error locations, exceptions, crashes and fixtures,
+including fixture failures. They also cover module/class/method/row properties (traits, `Ignore`), lightweight and
+table-based data-driven tests, namespaces, class templates and non-ASCII names. Runtime cases include parameters
+(`TE.exe /p:`), environment variables, working directories, long-running tests, 5000 load tests, a DLL dependency,
+a settings helper file and a mixed-mode (C++/CLI) test DLL.
 
 Roughly half of the tests fail on purpose.
 
-All test classes of all sample test DLLs are in the root namespace `TaefSamples` (nested and anonymous namespaces
-and class templates below it; helper types used as template arguments are in it as well), so every TAEF test name
-starts with `TaefSamples::` and every fully qualified name in Visual Studio with `TaefSamples.`: Test Explorer groups
-all sample tests below one namespace node. Only the module level macros (`BEGIN_MODULE`, `MODULE_SETUP`,
-`MODULE_CLEANUP`) are at global scope. Class names in the tables below are relative to `TaefSamples`.
+All native sample test classes are in the root namespace `TaefSamples`, including nested and anonymous namespaces,
+class templates and their helper argument types. Every native TAEF test name starts with `TaefSamples::`;
+its Visual Studio fully qualified name starts with `TaefSamples.`. Test Explorer groups these tests below one namespace node.
+Only the module-level macros (`BEGIN_MODULE`, `MODULE_SETUP`, `MODULE_CLEANUP`) are at global scope.
+Class names in the tables below are relative to `TaefSamples`.
 
 ## Building
 
@@ -22,8 +29,8 @@ Requirements: Visual Studio 2026 or 2022 with the C++ desktop workload (and C++/
 `C:\Program Files (x86)\Windows Kits\10\Testing\Development\` and `...\Testing\Runtimes\TAEF\<arch>\TE.exe`).
 
 * Build `SampleTests.sln` for `Debug|Win32`, `Release|Win32`, `Debug|x64` and `Release|x64`. `Any CPU` builds the
-  Win32 variant. The project `SampleTestsBuilder` of `TaefTestAdapter\TaefTestAdapter.sln` builds all four
-  configurations before the adapter's test projects are built (set `SkipSampleTestsBuild=true` to skip that).
+  Win32 variant. `SampleTestsBuilder` in `TaefTestAdapter\TaefTestAdapter.sln` builds all four configurations before
+  the adapter's test projects. Set `SkipSampleTestsBuild=true` to skip these builds.
 * Output (`$(OutRoot)` defaults to `<repo>\out\`): `$(OutRoot)binaries\SampleTests\{Debug,Release,Debug-x64,Release-x64}\`,
   intermediate files per configuration and platform in `$(OutRoot)intermediate\SampleTests\`. The C# library of the
   CLR sample is built to `...\{Debug,Release}-AnyCPU\` and copied next to `ClrTests_taef.dll`. When the sample
@@ -59,8 +66,8 @@ Other files: `Tests\Returns0.bat`/`Tests\Returns1.bat` (setup/teardown batch fil
 
 ### Settings needed by the samples
 
-`SampleTests.taef.runsettings` is found automatically by the adapter (`<SolutionName>.taef.runsettings`). The tests
-which depend on it fail without it (so both cases can be tested):
+The adapter finds `SampleTests.taef.runsettings` automatically (`<SolutionName>.taef.runsettings`). Tests that depend
+on these settings fail without them, so the adapter tests cover both cases:
 
 | Test | Setting | TE.exe equivalent |
 |---|---|---|
@@ -74,8 +81,8 @@ The runsettings also configure `BatchForTestSetup`/`BatchForTestTeardown` (`Retu
 
 ### Tests (`Tests_taef.dll`)
 
-Module properties `Component=SampleTests` and `Owner=ModuleOwner` (TestModule.cpp) are inherited by every test,
-module setup/cleanup write output outside of the tests.
+Every test inherits module properties `Component=SampleTests` and `Owner=ModuleOwner` from TestModule.cpp.
+Module setup and cleanup write output outside the tests.
 
 | File | Classes | What is covered |
 |---|---|---|
@@ -93,31 +100,31 @@ module setup/cleanup write output outside of the tests.
 
 Class `Crashing`: `AddFailsBeforeCrash`, `AddPassesBeforeCrash`, `TheCrash` (access violation, exit code
 0xC0000005), `AddFailsAfterCrash`, `AddPassesAfterCrash`, `LongRunning` (2 s), `TheAbort` (`abort()`, exit code 3),
-`TheStackOverflow` (0xC00000FD), `AddPassesAfterAllCrashes`. By default TE.exe runs the tests in `TE.ProcessHost.exe`:
-a crash fails only the crashing test (`Error: TAEF: [HRESULT 0x800706BE] ... terminated with exit code 0x...`), TE.exe
-starts a new host (class setup runs again, `TestSkipped: TAEF: The cleanup method ... will not be run ...` is printed)
-and continues. With `/inproc` (adapter option *Run tests in process* and when debugging) TE.exe itself dies in
-`TheCrash`: no `EndGroup`, no summary, the six tests after it are never run.
+`TheStackOverflow` (0xC00000FD), `AddPassesAfterAllCrashes`. By default, TE.exe runs tests in `TE.ProcessHost.exe`.
+A crash fails only that test (`Error: TAEF: [HRESULT 0x800706BE] ... terminated with exit code 0x...`). TE.exe starts
+a new host and continues. Class setup runs again, and TE.exe prints `TestSkipped: TAEF: The cleanup method ... will not be run ...`.
+With `/inproc` (adapter option *Run tests in process* and when debugging), TE.exe itself dies in `TheCrash`.
+It prints no `EndGroup` or summary. The six tests after it never run.
 
 ### LoadTests (`LoadTests_taef.dll`)
 
-5000 test methods `TaefSamples::LoadTests::Test0` ... `TaefSamples::LoadTests::Test4999` (odd numbers pass), generated by preprocessor macros in
-LoadTests.cpp (no code generator needed). Real methods instead of one data-driven test make discovery, PDB symbol
-lookup and `/select` command lines as large as possible.
+Preprocessor macros in LoadTests.cpp generate 5000 methods, `TaefSamples::LoadTests::Test0` ... `TaefSamples::LoadTests::Test4999`.
+Odd numbers pass. Separate methods exercise discovery, PDB symbol lookup and long `/select` command lines;
+one data-driven method would not impose the same load. No code generator is needed.
 
 ### DllTests (`DllTests_taef.dll`)
 
-`TaefSamples::Passing::InvokeFunction` and `TaefSamples::Failing::InvokeFunction` call `ReturnZero()` of `DllProject.dll`. TE.exe finds the DLL in
-the test DLL's folder or on the PATH (adapter setting `PathExtension`), not in the working directory; if it is missing,
-TE.exe reports the tests as Blocked.
+`TaefSamples::Passing::InvokeFunction` and `TaefSamples::Failing::InvokeFunction` call `ReturnZero()` in `DllProject.dll`.
+TE.exe finds this dependency in the test DLL's folder or on the PATH (adapter setting `PathExtension`).
+It does not search the working directory. If the dependency is missing, TE.exe reports the tests as Blocked.
 
 ### LeakCheckTests (`LeakCheckTests_taef.dll`)
 
 `TaefSamples::MemoryLeaks::Passing`, `Failing`, `PassingAndLeaking`, `FailingAndLeaking`. `LeakDetector.h` takes a CRT debug heap
 checkpoint in the method setup; `VerifyNoMemoryLeaks()` at the end of a test fails the test if memory has leaked.
-The method cleanup checks again and logs leaks of tests which failed before their own check - TAEF prints these
-errors after the test (`Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope '...' failed.`)
-without changing the test's result. Leaks are only detected in Debug builds, so `PassingAndLeaking` passes in Release.
+Method cleanup checks again and logs leaks from tests that failed before their own check. TAEF prints these errors
+after the test (`Error: TAEF: Cleanup fixture 'TaefSamples::MemoryLeaks::CheckForLeaks' for the scope '...' failed.`)
+without changing its result. Leak detection runs only in Debug builds, so `PassingAndLeaking` passes in Release.
 
 ### HelperFileTests (`HelperFileTests_taef.dll`)
 
@@ -128,10 +135,9 @@ placeholders; `TaefSamples::HelperFileTests::TheTargetIsSet` checks the runtime 
 
 ### ClrTests (`ClrTests_taef.dll`)
 
-A native TAEF test DLL linking the C++/CLI static library `ClrLibProject` (which calls the C# `ClrDotNetLibProject.dll`),
-i.e. a mixed-mode DLL. TE.exe lists and runs it like any native TAEF DLL (`TaefTestType` is `Native`). Because the CLR
-resolves assemblies relative to `TE.ProcessHost.exe`, the module setup registers an `AssemblyResolve` handler for the
-test DLL's folder (`TestDeploymentDir`).
+This mixed-mode DLL links the C++/CLI static library `ClrLibProject`, which calls the C# `ClrDotNetLibProject.dll`.
+TE.exe lists and runs it as a native TAEF DLL (`TaefTestType` is `Native`). The CLR resolves assemblies relative to
+`TE.ProcessHost.exe`. Module setup therefore registers an `AssemblyResolve` handler for the test DLL's folder (`TestDeploymentDir`).
 
 ## How the adapter's tests use the samples
 
@@ -162,7 +168,7 @@ set MYENVVAR=MyValue
 "%TE%" ..\out\binaries\SampleTests\Debug-x64\HelperFileTests_taef.dll /unicodeOutput:false /p:"TheTarget=HelperFileTests_taef.dll"
 ```
 
-## TAEF behaviour worth knowing when working with the samples
+## TAEF behavior in the samples
 
 * Test names are TAEF's names: `Namespace::Class::Method`, data rows `...::Method#<index|row name|metadataSet<N>>`,
   class templates with the compiler's spelling of the template arguments (`<class std::array<int,3> >`,

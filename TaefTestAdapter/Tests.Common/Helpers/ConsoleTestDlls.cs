@@ -34,6 +34,12 @@ namespace TaefTestAdapter.Tests.Common.Helpers
                     return TestResources.LongRunningTests_ReleaseX86;
                 case "DllTests":
                     return TestResources.DllTests_ReleaseX86;
+                case "ManagedFrameworkTests":
+                    return TestResources.GetManagedSampleDll("net48");
+                case "ManagedNet8Tests":
+                    return TestResources.GetManagedSampleDll("net8.0-windows");
+                case "ManagedNet10Tests":
+                    return TestResources.GetManagedSampleDll("net10.0-windows");
                 default:
                     throw new ArgumentException("Unknown test DLL key: " + key, nameof(key));
             }

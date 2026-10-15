@@ -24,10 +24,28 @@ namespace TaefTestAdapter.VsPackage.Templates
         private const string NamespaceParameter = TaefTemplateWizard.NamespaceParameter;
         private const string ClassNameParameter = TaefTemplateWizard.ClassNameParameter;
 
+        [TestMethod]
+        [TestCategory(Unit)]
+        public void RunStarted_CSharpProject_PreservesNamespaceSegmentsAndCSharpNames()
+        {
+            Dictionary<string, string> parameters = NewProjectParameters("Contoso.Unit Tests");
+            parameters[TaefTemplateWizard.LanguageParameter] = "CSharp";
+            RunStarted(parameters, WizardRunKind.AsNewProject);
+            parameters[NamespaceParameter].Should().Be("Contoso.UnitTests");
+
+            parameters = NewItemParameters("Contoso.System.WEX", "Verify");
+            parameters[TaefTemplateWizard.LanguageParameter] = "CSharp";
+            RunStarted(parameters, WizardRunKind.AsNewItem);
+            parameters[NamespaceParameter].Should().Be("Contoso.System.WEX");
+            parameters[ClassNameParameter].Should().Be("VerifyTests");
+        }
+
         private static readonly string[] TemplateFiles =
         {
             @"ProjectTemplates\Test\TAEF\TaefTest.vstemplate",
-            @"ItemTemplates\Test\TAEF\TaefTest.vstemplate"
+            @"ItemTemplates\Test\TAEF\TaefTest.vstemplate",
+            @"ProjectTemplates\CSharp\Test\TAEF\TaefTest.vstemplate",
+            @"ItemTemplates\CSharp\Test\TAEF\TaefTest.vstemplate"
         };
 
         [TestMethod]
@@ -304,7 +322,7 @@ namespace TaefTestAdapter.VsPackage.Templates
                 .SelectMany(d => Directory.GetFiles(Path.Combine(TestResources.AdapterSolutionDir, d), "*", SearchOption.AllDirectories))
                 .Where(f => !f.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
                 .ToArray();
-            textFiles.Should().HaveCount(5);
+            textFiles.Should().HaveCount(10);
 
             foreach (string textFile in textFiles)
             {

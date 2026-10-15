@@ -124,6 +124,10 @@ namespace TaefTestAdapter.TestResults
             @"^Error: TAEF: \[HRESULT:? 0x[0-9A-Fa-f]{8}\] A failure occurred while preparing to run tests in '",
             RegexOptions.Compiled);
 
+        private static readonly Regex ManagedClassLoadFailureRegex = new Regex(
+            @"^Error: TAEF: \[HRESULT:? 0x[0-9A-Fa-f]{8}\] A failure occurred while preparing to run tests in class '(?<class>[^']+)'",
+            RegexOptions.Compiled);
+
         private enum ScopeKind { Test, Class, TestDll }
 
         private class Group
@@ -209,6 +213,9 @@ namespace TaefTestAdapter.TestResults
         private readonly string _threadName;
         private readonly string _testDll;
         private readonly string _testDllName;
+        private readonly bool _isManaged;
+        private readonly HashSet<string> _managedModuleFixtures;
+        private string ScopeSeparator => _isManaged ? "." : TaefConstants.ScopeSeparator;
 
         /// <summary>Output of fixtures since the last test group, fixture failure etc. (see <see cref="MaxNrOfFixtureOutputLines"/>).</summary>
         private readonly List<string> _fixtureOutput = new List<string>();
@@ -218,6 +225,8 @@ namespace TaefTestAdapter.TestResults
 
         private readonly List<CarriedFailure> _carriedFailures = new List<CarriedFailure>();
         private readonly List<OperationFailure> _operationFailures = new List<OperationFailure>();
+        // A bare managed fixture name acquires a class only from the next otherwise unexplained Blocked test.
+        private OperationFailure _bareManagedOperationFailure;
         private readonly HashSet<string> _namesOfGroupsSeen = new HashSet<string>(StringComparer.Ordinal);
 
         /// <summary>The group of the test (of the run or not) currently running, or null.</summary>
@@ -254,6 +263,9 @@ namespace TaefTestAdapter.TestResults
             _threadName = threadName ?? "";
             _testDll = _testCasesRunInOrder.FirstOrDefault()?.Source ?? "";
             _testDllName = GetFileName(_testDll);
+            _isManaged = _testCasesRunInOrder.Any(tc => tc.IsManaged);
+            _managedModuleFixtures = new HashSet<string>(_testCasesRunInOrder.Where(test => test.IsManaged)
+                .SelectMany(test => test.Properties.OfType<TestCaseModuleFixturesProperty>()).SelectMany(property => property.Names), StringComparer.Ordinal);
         }
 
         /// <summary>
@@ -309,6 +321,7 @@ namespace TaefTestAdapter.TestResults
             }
             _carriedFailures.Clear();
             _operationFailures.Clear();
+            _bareManagedOperationFailure = null;
         }
 
         #region Lines within groups
@@ -460,6 +473,7 @@ namespace TaefTestAdapter.TestResults
                 LogPendingErrors();
                 _carriedFailures.Clear();
                 _operationFailures.Clear();
+                _bareManagedOperationFailure = null;
                 _logger.DebugInfo($"{_threadName}{_testDllName}: {line}");
                 return;
             }
@@ -515,6 +529,15 @@ namespace TaefTestAdapter.TestResults
                 return;
             }
 
+            match = _isManaged ? ManagedClassLoadFailureRegex.Match(line) : Match.Empty;
+            if (match.Success)
+            {
+                List<string> lines = TakeFixtureOutput();
+                lines.Add(line);
+                CarryFailure(match.Groups["class"].Value, ScopeKind.Class, lines);
+                return;
+            }
+
             if (line.StartsWith(MismatchedGroupErrorPrefix, StringComparison.Ordinal))
             {
                 // TE.exe ended a log group left open by a fixture (see ReportLineInsideLogGroup)
@@ -553,6 +576,9 @@ namespace TaefTestAdapter.TestResults
             _nrOfTestGroupsStarted++;
 
             _testCasesRun.TryGetValue(name, out TestCase testCase);
+            if (_bareManagedOperationFailure != null && (testCase == null || !testCase.IsManaged
+                || (_bareManagedOperationFailure.ClassName != null && _bareManagedOperationFailure.ClassName != testCase.TaefClassName)))
+                _bareManagedOperationFailure = null;
             _currentGroup = new Group(name, testCase);
             _namesOfGroupsSeen.Add(name);
 
@@ -645,17 +671,27 @@ namespace TaefTestAdapter.TestResults
 
         private void HandleOperationFailure(string line, string operation)
         {
+            if (_isManaged)
+            {
+                _bareManagedOperationFailure = null;
+                _operationFailures.Clear();
+            }
             List<string> lines = TakeFixtureOutput();
             lines.Add(line);
 
-            foreach (string error in ErrorMessageParser.GetErrors(lines))
+            foreach (string error in ErrorMessageParser.GetErrors(lines, _isManaged))
             {
                 _logger.LogWarning($"{_threadName}{_testDllName}: {error}");
             }
 
             // the operation is a fixture (the failures of test operations are printed within their groups): a setup
             // fixture blocks the following tests of its class, while the tests following a cleanup fixture run normally
-            string className = TaefNames.GetClassName(operation);
+            if (_isManaged && operation.IndexOf('.') < 0)
+            {
+                _bareManagedOperationFailure = new OperationFailure(null, lines);
+                return;
+            }
+            string className = _isManaged && _managedModuleFixtures.Contains(operation) ? "" : GetClassName(operation);
             _operationFailures.RemoveAll(of => of.ClassName == className);
             _operationFailures.Add(new OperationFailure(className, lines));
         }
@@ -680,7 +716,7 @@ namespace TaefTestAdapter.TestResults
                 && string.Equals(GetFileName(scope), _testDllName, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool IsInScope(string testName, CarriedFailure carriedFailure)
+        private bool IsInScope(string testName, CarriedFailure carriedFailure)
         {
             string scope = carriedFailure.Scope;
             switch (carriedFailure.ScopeKind)
@@ -696,28 +732,39 @@ namespace TaefTestAdapter.TestResults
                     // tests start with "<scope>::" (named rows of classes within a namespace can not be told apart from
                     // method rows by their names, see TaefNames)
                     if (scope.IndexOf(TaefConstants.DataRowSeparator) >= 0
-                        && testName.StartsWith(scope + TaefConstants.ScopeSeparator, StringComparison.Ordinal))
+                        && testName.StartsWith(scope + ScopeSeparator, StringComparison.Ordinal))
                         return true;
-                    string className = TaefNames.GetClassName(testName);
+                    string className = GetClassName(testName);
                     if (className.Length > 0)
-                        return className == scope;
+                        return className == scope || (_isManaged && scope.IndexOf(TaefConstants.DataRowSeparator) < 0
+                            && className.StartsWith(scope + TaefConstants.DataRowSeparator, StringComparison.Ordinal));
                     // e.g. Class#metadataSet0::Method (class level data)
                     return testName.StartsWith(scope + TaefConstants.DataRowSeparator, StringComparison.Ordinal)
-                        || testName.StartsWith(scope + TaefConstants.ScopeSeparator, StringComparison.Ordinal);
+                        || testName.StartsWith(scope + ScopeSeparator, StringComparison.Ordinal);
             }
         }
 
-        private static bool IsInScope(string testName, OperationFailure operationFailure)
+        private bool IsInScope(string testName, OperationFailure operationFailure)
         {
             string scope = operationFailure.ClassName;
             if (scope.Length == 0)
                 return true;
 
             // the fixture's class may have class level data (Class#metadataSet0) or contain nested classes
-            string className = TaefNames.GetClassName(testName);
+            string className = GetClassName(testName);
+            if (_isManaged)
+                return className == scope || (scope.IndexOf(TaefConstants.DataRowSeparator) < 0
+                    && className.StartsWith(scope + TaefConstants.DataRowSeparator, StringComparison.Ordinal));
             return className == scope
                 || className.StartsWith(scope + TaefConstants.DataRowSeparator, StringComparison.Ordinal)
-                || className.StartsWith(scope + TaefConstants.ScopeSeparator, StringComparison.Ordinal);
+                || className.StartsWith(scope + ScopeSeparator, StringComparison.Ordinal);
+        }
+
+        private string GetClassName(string name)
+        {
+            if (_testCasesRun.TryGetValue(name, out TestCase testCase))
+                return testCase.TaefClassName;
+            return _isManaged ? TaefNames.GetManagedClassName(name) : TaefNames.GetClassName(name);
         }
 
         private void AddToFixtureOutput(string line)
@@ -752,7 +799,7 @@ namespace TaefTestAdapter.TestResults
         /// </summary>
         private void LogPendingErrors()
         {
-            foreach (string error in ErrorMessageParser.GetErrors(TakeFixtureOutput()))
+            foreach (string error in ErrorMessageParser.GetErrors(TakeFixtureOutput(), _isManaged))
             {
                 _logger.LogWarning($"{_threadName}{_testDllName}: {error}");
             }
@@ -771,6 +818,9 @@ namespace TaefTestAdapter.TestResults
         private TestResult CreateTestResult(Group group, string taefResult)
         {
             TestCase testCase = group.TestCase;
+            // Managed fixture host loss explains only the following uninterrupted blocked execution.
+            if (testCase.IsManaged && taefResult != "Blocked")
+                _operationFailures.Clear();
             TimeSpan duration = NormalizeDuration(group.Stopwatch.Elapsed);
             List<string> lines = group.CarriedLines.Concat(group.Lines).ToList();
             Messages messages = ParseMessages(lines, testCase);
@@ -779,6 +829,23 @@ namespace TaefTestAdapter.TestResults
                 // e.g. blocked because of a crashing setup fixture
                 lines = group.FallbackLines.Concat(lines).ToList();
                 messages = ParseMessages(lines, testCase);
+            }
+            if (_bareManagedOperationFailure != null)
+            {
+                if (taefResult != "Blocked" || !testCase.IsManaged)
+                    _bareManagedOperationFailure = null;
+                else if (messages.NrOfMessages == 0)
+                {
+                    if (_bareManagedOperationFailure.ClassName == null)
+                        _bareManagedOperationFailure = new OperationFailure(testCase.TaefClassName, _bareManagedOperationFailure.Lines);
+                    lines = _bareManagedOperationFailure.Lines.Concat(lines).ToList();
+                    messages = ParseMessages(lines, testCase);
+                }
+                else if (_bareManagedOperationFailure.ClassName == null)
+                {
+                    // The first test has its own reason, so it provides no evidence for the bare fixture's scope.
+                    _bareManagedOperationFailure = null;
+                }
             }
             string output = GetOutput(lines);
 
@@ -892,7 +959,7 @@ namespace TaefTestAdapter.TestResults
         {
             try
             {
-                var parser = new ErrorMessageParser(lines, testCase.CodeFilePath);
+                var parser = new ErrorMessageParser(lines, testCase.CodeFilePath, testCase.IsManaged);
                 parser.Parse();
                 return new Messages { ErrorMessage = parser.ErrorMessage, ErrorStackTrace = parser.ErrorStackTrace, NrOfMessages = parser.NrOfMessages };
             }

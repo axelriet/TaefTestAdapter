@@ -1,6 +1,7 @@
 ﻿// This file has been modified for TAEF support.
 
 using System;
+using System.IO;
 using System.Linq;
 using TaefTestAdapter.Common;
 using TaefTestAdapter.Helpers;
@@ -12,6 +13,7 @@ using TestResult = TaefTestAdapter.Model.TestResult;
 using Trait = TaefTestAdapter.Model.Trait;
 using VsTestCase = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestCase;
 using VsTestProperty = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestProperty;
+using VsTestPropertyAttributes = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestPropertyAttributes;
 using VsTestResult = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestResult;
 using VsTestResultMessage = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestResultMessage;
 using VsTestOutcome = Microsoft.VisualStudio.TestPlatform.ObjectModel.TestOutcome;
@@ -44,12 +46,30 @@ namespace TaefTestAdapter.TestAdapter
 
         private static readonly VsTestProperty TestMetaDataProperty;
         private static readonly VsTestProperty DataRowIndexProperty;
+        private static readonly VsTestProperty TaefClassProperty;
+        private static readonly VsTestProperty ExecutionGroupProperty;
+        private static readonly VsTestProperty ModuleFixturesProperty;
+        private static readonly VsTestProperty HierarchyProperty;
+        private static readonly VsTestProperty ManagedTypeProperty;
+        private static readonly VsTestProperty ManagedMethodProperty;
 
         static DataConversionExtensions()
         {
             TaefNameProperty = VsTestProperty.Register(TaefNamePropertyId, TaefNamePropertyLabel, typeof(string), typeof(VsTestCase));
             TestMetaDataProperty = VsTestProperty.Register(TestCaseMetaDataProperty.Id, TestCaseMetaDataProperty.Label, typeof(string), typeof(VsTestCase));
             DataRowIndexProperty = VsTestProperty.Register(TestCaseDataRowIndexProperty.Id, TestCaseDataRowIndexProperty.Label, typeof(string), typeof(VsTestCase));
+            TaefClassProperty = VsTestProperty.Register(TestCaseTaefClassProperty.Id, TestCaseTaefClassProperty.Label, typeof(string), typeof(VsTestCase));
+            ExecutionGroupProperty = VsTestProperty.Register(TestCaseExecutionGroupProperty.Id, TestCaseExecutionGroupProperty.Label, typeof(string), typeof(VsTestCase));
+            ModuleFixturesProperty = VsTestProperty.Register(TestCaseModuleFixturesProperty.Id, TestCaseModuleFixturesProperty.Label, typeof(string), typeof(VsTestCase));
+            HierarchyProperty = VsTestProperty.Find("TestCase.Hierarchy")
+                ?? VsTestProperty.Register("TestCase.Hierarchy", "Hierarchy", "", "", typeof(string[]), null,
+                    VsTestPropertyAttributes.Hidden, typeof(VsTestCase));
+            ManagedTypeProperty = VsTestProperty.Find("TestCase.ManagedType")
+                ?? VsTestProperty.Register("TestCase.ManagedType", "ManagedType", "", "", typeof(string), null,
+                    VsTestPropertyAttributes.Hidden, typeof(VsTestCase));
+            ManagedMethodProperty = VsTestProperty.Find("TestCase.ManagedMethod")
+                ?? VsTestProperty.Register("TestCase.ManagedMethod", "ManagedMethod", "", "", typeof(string), null,
+                    VsTestPropertyAttributes.Hidden, typeof(VsTestCase));
         }
 
 
@@ -75,6 +95,20 @@ namespace TaefTestAdapter.TestAdapter
             if (dataRowIndex != null)
                 testCase.Properties.Add(dataRowIndex);
 
+            string managedClass = vsTestCase.GetPropertyValue(TaefClassProperty) as string;
+            if (!string.IsNullOrEmpty(managedClass)
+                && (taefName.StartsWith(managedClass + ".", StringComparison.Ordinal) || taefName == managedClass))
+            {
+                testCase.Properties.Add(new TestCaseTaefClassProperty(managedClass));
+                string executionGroup = vsTestCase.GetPropertyValue(ExecutionGroupProperty) as string;
+                if (!string.IsNullOrEmpty(executionGroup))
+                    testCase.Properties.Add(new TestCaseExecutionGroupProperty(executionGroup));
+                TestCaseModuleFixturesProperty moduleFixtures = TestCaseModuleFixturesProperty.TryParse(
+                    vsTestCase.GetPropertyValue(ModuleFixturesProperty) as string);
+                if (moduleFixtures != null)
+                    testCase.Properties.Add(moduleFixtures);
+            }
+
             return testCase;
         }
 
@@ -84,7 +118,8 @@ namespace TaefTestAdapter.TestAdapter
         /// </summary>
         public static VsTestCase ToVsTestCase(this TestCase testCase)
         {
-            var vsTestCase = new VsTestCase(TaefNames.ToVsFullyQualifiedName(testCase.FullyQualifiedName), TestExecutor.ExecutorUri, testCase.Source)
+            string fullyQualifiedName = testCase.IsManaged ? testCase.FullyQualifiedName : TaefNames.ToVsFullyQualifiedName(testCase.FullyQualifiedName);
+            var vsTestCase = new VsTestCase(fullyQualifiedName, TestExecutor.ExecutorUri, testCase.Source)
             {
                 DisplayName = testCase.DisplayName,
                 CodeFilePath = testCase.CodeFilePath,
@@ -101,6 +136,36 @@ namespace TaefTestAdapter.TestAdapter
             var dataRowIndex = testCase.Properties.OfType<TestCaseDataRowIndexProperty>().FirstOrDefault();
             if (dataRowIndex != null)
                 vsTestCase.SetPropertyValue(DataRowIndexProperty, dataRowIndex.Serialization);
+
+            if (testCase.IsManaged)
+            {
+                // VSTest otherwise derives the ID from ManagedType/ManagedMethod, which are shared by all data rows.
+                Guid idFromExactName = vsTestCase.Id;
+                string listedClass = testCase.TaefClassName;
+                vsTestCase.SetPropertyValue(TaefClassProperty, listedClass);
+                TestCaseExecutionGroupProperty executionGroup = testCase.Properties.OfType<TestCaseExecutionGroupProperty>().FirstOrDefault();
+                if (executionGroup != null)
+                    vsTestCase.SetPropertyValue(ExecutionGroupProperty, executionGroup.Serialization);
+                TestCaseModuleFixturesProperty moduleFixtures = testCase.Properties.OfType<TestCaseModuleFixturesProperty>().FirstOrDefault();
+                if (moduleFixtures != null)
+                    vsTestCase.SetPropertyValue(ModuleFixturesProperty, moduleFixtures.Serialization);
+                string type = TaefNames.RemoveManagedRow(listedClass);
+                string method = TaefNames.GetManagedMethodName(testCase.FullyQualifiedName, listedClass);
+                int namespaceEnd = type.LastIndexOf('.');
+                string testNamespace = namespaceEnd < 0 ? "" : type.Substring(0, namespaceEnd);
+                string className = type.Substring(namespaceEnd + 1);
+                string displayedMethod = testCase.FullyQualifiedName.StartsWith(listedClass + ".", StringComparison.Ordinal)
+                    ? testCase.FullyQualifiedName.Substring(listedClass.Length + 1)
+                    : testCase.FullyQualifiedName;
+                string classRow = listedClass.Substring(type.Length);
+                vsTestCase.SetPropertyValue(HierarchyProperty, new[] { Path.GetFileName(testCase.Source), testNamespace, className + classRow, displayedMethod });
+                if (method.Length > 0)
+                {
+                    vsTestCase.SetPropertyValue(ManagedTypeProperty, type);
+                    vsTestCase.SetPropertyValue(ManagedMethodProperty, method);
+                }
+                vsTestCase.Id = idFromExactName;
+            }
 
             return vsTestCase;
         }

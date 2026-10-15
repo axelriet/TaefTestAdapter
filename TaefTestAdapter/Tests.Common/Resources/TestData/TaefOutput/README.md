@@ -1,14 +1,15 @@
 # Captured TE.exe outputs
 
-Verbatim console outputs of TE.exe (TAEF) for the sample test DLLs of `SampleTests\SampleTests.sln`, used as test data
-by the adapter's parser tests (`TestResources.TaefOutputDir`, `TestResources.ReadTaefOutputLines(fileName)`).
-TE.exe writes UTF-8 (without BOM) when called with `/unicodeOutput:false`; the files are UTF-8 with LF line endings
-(TE.exe itself writes CRLF). The enlistment root the outputs were captured in is replaced by `C:\src\TAEF-Test-Adapter` (same length).
+These files contain verbatim TE.exe (TAEF) console output for the sample DLLs in `SampleTests\SampleTests.sln`.
+The adapter's parser tests read them through `TestResources.TaefOutputDir` and `TestResources.ReadTaefOutputLines(fileName)`.
+TE.exe writes UTF-8 without a BOM when called with `/unicodeOutput:false`. The files use UTF-8 with LF line endings;
+TE.exe writes CRLF. The capture script replaces the enlistment root with `C:\src\TAEF-Test-Adapter`, which has the same length.
 
-Captured with `Tests.Common\Resources\capture_taef_outputs.py` (TE.exe 10.104k x64, 10.103k x86) from the Debug x64 build
-(`out\binaries\SampleTests\Debug-x64`) unless noted otherwise; TE.exe is `C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\<arch>\TE.exe`.
-TE.exe's stderr was empty except for the in-process run, whose stderr (the tests' std::cerr output) is in
-`Tests_taef.dll.runInProcess.stderr.txt`. If the samples change, recapture the outputs (and adapt the tests using them).
+`Tests.Common\Resources\capture_taef_outputs.py` captured these files with TE.exe 10.104k x64 and 10.103k x86.
+Unless noted otherwise, the source was the Debug x64 build in `out\binaries\SampleTests\Debug-x64`.
+TE.exe is `C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\<arch>\TE.exe`.
+TE.exe's stderr was empty except during the in-process run. That run's stderr (the tests' std::cerr output) is in
+`Tests_taef.dll.runInProcess.stderr.txt`. When the samples change, recapture the outputs and update the tests that use them.
 
 | File | Arguments (after `TE.exe "<dll>"`) | Working directory / environment | Exit code | Content |
 |---|---|---|---|---|

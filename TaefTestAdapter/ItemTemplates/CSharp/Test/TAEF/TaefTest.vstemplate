@@ -1,0 +1,21 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <Name>TAEF C# Test</Name>
+    <Description>A managed TAEF test class with fixtures, properties and a data-driven test.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <TemplateID>TaefTestAdapter.CSharp.Item.TaefTest</TemplateID>
+    <SortOrder>10</SortOrder>
+    <DefaultName>TaefTest.cs</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$.cs">test.cs</ProjectItem>
+    <CustomParameters>
+      <CustomParameter Name="$taeflanguage$" Value="CSharp" />
+    </CustomParameters>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>TaefTestAdapter.VsPackage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=6dd9e1a7dfb9193e</Assembly>
+    <FullClassName>TaefTestAdapter.VsPackage.Templates.TaefTemplateWizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>
